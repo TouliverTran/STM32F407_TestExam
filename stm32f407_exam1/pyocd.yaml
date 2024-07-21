@@ -1,0 +1,4 @@
+pack:
+  ../Keil.STM32F4xx_DFP.2.17.1.pack
+target_override:
+  STM32F412xE

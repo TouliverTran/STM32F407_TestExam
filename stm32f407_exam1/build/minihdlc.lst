@@ -1,0 +1,898 @@
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"minihdlc.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text._crc_ccitt_update,"ax",%progbits
+  18              		.align	1
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	_crc_ccitt_update:
+  26              	.LVL0:
+  27              	.LFB0:
+  28              		.file 1 "Core/test/minihdlc.c"
+   1:Core/test/minihdlc.c **** #include "minihdlc.h"
+   2:Core/test/minihdlc.c **** 
+   3:Core/test/minihdlc.c **** /* HDLC Asynchronous framing */
+   4:Core/test/minihdlc.c **** /* The frame boundary octet is 01111110, (7E in hexadecimal notation) */
+   5:Core/test/minihdlc.c **** #define FRAME_BOUNDARY_OCTET 0x7E
+   6:Core/test/minihdlc.c **** 
+   7:Core/test/minihdlc.c **** /* A "control escape octet", has the bit sequence '01111101', (7D hexadecimal) */
+   8:Core/test/minihdlc.c **** #define CONTROL_ESCAPE_OCTET 0x7D
+   9:Core/test/minihdlc.c **** 
+  10:Core/test/minihdlc.c **** /* If either of these two octets appears in the transmitted data, an escape octet is sent, */
+  11:Core/test/minihdlc.c **** /* followed by the original data octet with bit 5 inverted */
+  12:Core/test/minihdlc.c **** #define INVERT_OCTET 0x20
+  13:Core/test/minihdlc.c **** 
+  14:Core/test/minihdlc.c **** /* The frame check sequence (FCS) is a 16-bit CRC-CCITT */
+  15:Core/test/minihdlc.c **** /* AVR Libc CRC function is _crc_ccitt_update() */
+  16:Core/test/minihdlc.c **** /* Corresponding CRC function in Qt (www.qt.io) is qChecksum() */
+  17:Core/test/minihdlc.c **** #define CRC16_CCITT_INIT_VAL 0xFFFF
+  18:Core/test/minihdlc.c **** 
+  19:Core/test/minihdlc.c **** /* 16bit low and high bytes copier */
+  20:Core/test/minihdlc.c **** #define low(x)		((x) & 0xFF)
+  21:Core/test/minihdlc.c **** #define high(x)		(((x)>>8) & 0xFF)
+  22:Core/test/minihdlc.c **** 
+  23:Core/test/minihdlc.c **** #define lo8(x)		((x)&0xff)
+  24:Core/test/minihdlc.c **** #define hi8(x)		((x)>>8)
+  25:Core/test/minihdlc.c **** 
+  26:Core/test/minihdlc.c **** extern int debug_printf(const char *fmt, ...);
+  27:Core/test/minihdlc.c **** extern void debug_sendchar(const char pdata);
+  28:Core/test/minihdlc.c **** 
+  29:Core/test/minihdlc.c **** struct {
+  30:Core/test/minihdlc.c **** 	sendchar_type sendchar_function;
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 2
+
+
+  31:Core/test/minihdlc.c **** 	frame_handler_type frame_handler;
+  32:Core/test/minihdlc.c **** 	bool escape_character;
+  33:Core/test/minihdlc.c **** 	uint16_t frame_position;
+  34:Core/test/minihdlc.c **** 	uint16_t frame_checksum;
+  35:Core/test/minihdlc.c **** 	uint8_t receive_frame_buffer[MINIHDLC_MAX_FRAME_LENGTH + 1];
+  36:Core/test/minihdlc.c **** } mhst;
+  37:Core/test/minihdlc.c **** 
+  38:Core/test/minihdlc.c **** /*
+  39:Core/test/minihdlc.c ****  Polynomial: x^16 + x^12 + x^5 + 1 (0x8408) Initial value: 0xffff
+  40:Core/test/minihdlc.c ****  This is the CRC used by PPP and IrDA.
+  41:Core/test/minihdlc.c ****  See RFC1171 (PPP protocol) and IrDA IrLAP 1.1
+  42:Core/test/minihdlc.c ****  */
+  43:Core/test/minihdlc.c **** static uint16_t _crc_ccitt_update(uint16_t crc, uint8_t data) {
+  29              		.loc 1 43 63 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+  44:Core/test/minihdlc.c **** 	data ^= lo8(crc);
+  34              		.loc 1 44 2 view .LVU1
+  35              		.loc 1 44 7 is_stmt 0 view .LVU2
+  36 0000 4140     		eors	r1, r1, r0
+  37              	.LVL1:
+  38              		.loc 1 44 7 view .LVU3
+  39 0002 4BB2     		sxtb	r3, r1
+  40 0004 C9B2     		uxtb	r1, r1
+  41              	.LVL2:
+  45:Core/test/minihdlc.c **** 	data ^= data << 4;
+  42              		.loc 1 45 2 is_stmt 1 view .LVU4
+  43              		.loc 1 45 7 is_stmt 0 view .LVU5
+  44 0006 83EA0113 		eor	r3, r3, r1, lsl #4
+  45 000a DBB2     		uxtb	r3, r3
+  46              	.LVL3:
+  46:Core/test/minihdlc.c **** 
+  47:Core/test/minihdlc.c **** 	return ((((uint16_t) data << 8) | hi8(crc)) ^ (uint8_t) (data >> 4)
+  47              		.loc 1 47 2 is_stmt 1 view .LVU6
+  48              		.loc 1 47 34 is_stmt 0 view .LVU7
+  49 000c 000A     		lsrs	r0, r0, #8
+  50              	.LVL4:
+  51              		.loc 1 47 34 view .LVU8
+  52 000e 40EA0320 		orr	r0, r0, r3, lsl #8
+  53 0012 00B2     		sxth	r0, r0
+  54              		.loc 1 47 46 view .LVU9
+  55 0014 80EA1310 		eor	r0, r0, r3, lsr #4
+  48:Core/test/minihdlc.c **** 			^ ((uint16_t) data << 3));
+  56              		.loc 1 48 4 view .LVU10
+  57 0018 80EAC300 		eor	r0, r0, r3, lsl #3
+  49:Core/test/minihdlc.c **** }
+  58              		.loc 1 49 1 view .LVU11
+  59 001c 80B2     		uxth	r0, r0
+  60 001e 7047     		bx	lr
+  61              		.cfi_endproc
+  62              	.LFE0:
+  64              		.section	.text.minihdlc_init,"ax",%progbits
+  65              		.align	1
+  66              		.global	minihdlc_init
+  67              		.syntax unified
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 3
+
+
+  68              		.thumb
+  69              		.thumb_func
+  70              		.fpu fpv4-sp-d16
+  72              	minihdlc_init:
+  73              	.LVL5:
+  74              	.LFB1:
+  50:Core/test/minihdlc.c **** 
+  51:Core/test/minihdlc.c **** void minihdlc_init(sendchar_type sendchar_function,
+  52:Core/test/minihdlc.c **** 		frame_handler_type frame_hander_function) {
+  75              		.loc 1 52 45 is_stmt 1 view -0
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79              		@ link register save eliminated.
+  53:Core/test/minihdlc.c **** 	mhst.sendchar_function = sendchar_function;
+  80              		.loc 1 53 2 view .LVU13
+  81              		.loc 1 53 25 is_stmt 0 view .LVU14
+  82 0000 044B     		ldr	r3, .L3
+  83 0002 1860     		str	r0, [r3]
+  54:Core/test/minihdlc.c **** 	mhst.frame_handler = frame_hander_function;
+  84              		.loc 1 54 2 is_stmt 1 view .LVU15
+  85              		.loc 1 54 21 is_stmt 0 view .LVU16
+  86 0004 5960     		str	r1, [r3, #4]
+  55:Core/test/minihdlc.c **** 	mhst.frame_position = 0;
+  87              		.loc 1 55 2 is_stmt 1 view .LVU17
+  88              		.loc 1 55 22 is_stmt 0 view .LVU18
+  89 0006 0022     		movs	r2, #0
+  90 0008 5A81     		strh	r2, [r3, #10]	@ movhi
+  56:Core/test/minihdlc.c **** 	mhst.frame_checksum = CRC16_CCITT_INIT_VAL;
+  91              		.loc 1 56 2 is_stmt 1 view .LVU19
+  92              		.loc 1 56 22 is_stmt 0 view .LVU20
+  93 000a 4FF6FF71 		movw	r1, #65535
+  94              	.LVL6:
+  95              		.loc 1 56 22 view .LVU21
+  96 000e 9981     		strh	r1, [r3, #12]	@ movhi
+  57:Core/test/minihdlc.c **** 	mhst.escape_character = false;
+  97              		.loc 1 57 2 is_stmt 1 view .LVU22
+  98              		.loc 1 57 24 is_stmt 0 view .LVU23
+  99 0010 1A72     		strb	r2, [r3, #8]
+  58:Core/test/minihdlc.c **** }
+ 100              		.loc 1 58 1 view .LVU24
+ 101 0012 7047     		bx	lr
+ 102              	.L4:
+ 103              		.align	2
+ 104              	.L3:
+ 105 0014 00000000 		.word	.LANCHOR0
+ 106              		.cfi_endproc
+ 107              	.LFE1:
+ 109              		.section	.text.minihdlc_char_receiver,"ax",%progbits
+ 110              		.align	1
+ 111              		.global	minihdlc_char_receiver
+ 112              		.syntax unified
+ 113              		.thumb
+ 114              		.thumb_func
+ 115              		.fpu fpv4-sp-d16
+ 117              	minihdlc_char_receiver:
+ 118              	.LVL7:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 4
+
+
+ 119              	.LFB3:
+  59:Core/test/minihdlc.c **** 
+  60:Core/test/minihdlc.c **** /* Function to send a byte throug USART, I2C, SPI etc.*/
+  61:Core/test/minihdlc.c **** static inline void minihdlc_sendchar(uint8_t data) {
+  62:Core/test/minihdlc.c **** 	if (mhst.sendchar_function) {
+  63:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+  64:Core/test/minihdlc.c **** 	}
+  65:Core/test/minihdlc.c **** }
+  66:Core/test/minihdlc.c **** 
+  67:Core/test/minihdlc.c **** /* Function to find valid HDLC frame from incoming data */
+  68:Core/test/minihdlc.c **** void minihdlc_char_receiver(uint8_t data) {
+ 120              		.loc 1 68 43 is_stmt 1 view -0
+ 121              		.cfi_startproc
+ 122              		@ args = 0, pretend = 0, frame = 0
+ 123              		@ frame_needed = 0, uses_anonymous_args = 0
+ 124              		.loc 1 68 43 is_stmt 0 view .LVU26
+ 125 0000 38B5     		push	{r3, r4, r5, lr}
+ 126              	.LCFI0:
+ 127              		.cfi_def_cfa_offset 16
+ 128              		.cfi_offset 3, -16
+ 129              		.cfi_offset 4, -12
+ 130              		.cfi_offset 5, -8
+ 131              		.cfi_offset 14, -4
+ 132 0002 0546     		mov	r5, r0
+  69:Core/test/minihdlc.c **** 	/* FRAME FLAG */
+  70:Core/test/minihdlc.c **** 	debug_sendchar(data);
+ 133              		.loc 1 70 2 is_stmt 1 view .LVU27
+ 134 0004 FFF7FEFF 		bl	debug_sendchar
+ 135              	.LVL8:
+  71:Core/test/minihdlc.c **** 	if (data == FRAME_BOUNDARY_OCTET) {
+ 136              		.loc 1 71 2 view .LVU28
+ 137              		.loc 1 71 5 is_stmt 0 view .LVU29
+ 138 0008 7E2D     		cmp	r5, #126
+ 139 000a 1DD0     		beq	.L14
+  72:Core/test/minihdlc.c **** 		if (mhst.escape_character == true) {
+  73:Core/test/minihdlc.c **** 			mhst.escape_character = false;
+  74:Core/test/minihdlc.c **** 		}
+  75:Core/test/minihdlc.c **** 		/* If a valid frame is detected */
+  76:Core/test/minihdlc.c **** 		else if ((mhst.frame_position >= 2)
+  77:Core/test/minihdlc.c **** 				&& (mhst.frame_checksum
+  78:Core/test/minihdlc.c **** 						== ((mhst.receive_frame_buffer[mhst.frame_position - 1]
+  79:Core/test/minihdlc.c **** 								<< 8)
+  80:Core/test/minihdlc.c **** 								| (mhst.receive_frame_buffer[mhst.frame_position
+  81:Core/test/minihdlc.c **** 										- 2] & 0xff)))) // (msb << 8 ) | (lsb & 0xff)
+  82:Core/test/minihdlc.c **** 				{
+  83:Core/test/minihdlc.c **** 			/* Call the user defined function and pass frame to it */
+  84:Core/test/minihdlc.c **** 			(*mhst.frame_handler)(mhst.receive_frame_buffer,
+  85:Core/test/minihdlc.c **** 					mhst.frame_position - 2);
+  86:Core/test/minihdlc.c **** 		}
+  87:Core/test/minihdlc.c **** 		mhst.frame_position = 0;
+  88:Core/test/minihdlc.c **** 		mhst.frame_checksum = CRC16_CCITT_INIT_VAL;
+  89:Core/test/minihdlc.c **** 		return;
+  90:Core/test/minihdlc.c **** 	}
+  91:Core/test/minihdlc.c **** 
+  92:Core/test/minihdlc.c **** 	if (mhst.escape_character) {
+ 140              		.loc 1 92 2 is_stmt 1 view .LVU30
+ 141              		.loc 1 92 10 is_stmt 0 view .LVU31
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 5
+
+
+ 142 000c 254B     		ldr	r3, .L16
+ 143 000e 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 144              		.loc 1 92 5 view .LVU32
+ 145 0010 002B     		cmp	r3, #0
+ 146 0012 3BD0     		beq	.L10
+  93:Core/test/minihdlc.c **** 		mhst.escape_character = false;
+ 147              		.loc 1 93 3 is_stmt 1 view .LVU33
+ 148              		.loc 1 93 25 is_stmt 0 view .LVU34
+ 149 0014 234B     		ldr	r3, .L16
+ 150 0016 0022     		movs	r2, #0
+ 151 0018 1A72     		strb	r2, [r3, #8]
+  94:Core/test/minihdlc.c **** 		data ^= INVERT_OCTET;
+ 152              		.loc 1 94 3 is_stmt 1 view .LVU35
+ 153              		.loc 1 94 8 is_stmt 0 view .LVU36
+ 154 001a 85F02005 		eor	r5, r5, #32
+ 155              	.LVL9:
+ 156              	.L11:
+  95:Core/test/minihdlc.c **** 	} else if (data == CONTROL_ESCAPE_OCTET) {
+  96:Core/test/minihdlc.c **** 		mhst.escape_character = true;
+  97:Core/test/minihdlc.c **** 		return;
+  98:Core/test/minihdlc.c **** 	}
+  99:Core/test/minihdlc.c **** 
+ 100:Core/test/minihdlc.c **** 	mhst.receive_frame_buffer[mhst.frame_position] = data;
+ 157              		.loc 1 100 2 is_stmt 1 view .LVU37
+ 158              		.loc 1 100 32 is_stmt 0 view .LVU38
+ 159 001e 214B     		ldr	r3, .L16
+ 160 0020 5C89     		ldrh	r4, [r3, #10]
+ 161              		.loc 1 100 49 view .LVU39
+ 162 0022 2344     		add	r3, r3, r4
+ 163 0024 9D73     		strb	r5, [r3, #14]
+ 101:Core/test/minihdlc.c **** 
+ 102:Core/test/minihdlc.c **** 	if (mhst.frame_position >= 2) {
+ 164              		.loc 1 102 2 is_stmt 1 view .LVU40
+ 165              		.loc 1 102 5 is_stmt 0 view .LVU41
+ 166 0026 012C     		cmp	r4, #1
+ 167 0028 07D9     		bls	.L12
+ 103:Core/test/minihdlc.c **** 		mhst.frame_checksum = _crc_ccitt_update(mhst.frame_checksum,
+ 168              		.loc 1 103 3 is_stmt 1 view .LVU42
+ 104:Core/test/minihdlc.c **** 				mhst.receive_frame_buffer[mhst.frame_position - 2]);
+ 169              		.loc 1 104 51 is_stmt 0 view .LVU43
+ 170 002a A31E     		subs	r3, r4, #2
+ 103:Core/test/minihdlc.c **** 		mhst.frame_checksum = _crc_ccitt_update(mhst.frame_checksum,
+ 171              		.loc 1 103 25 view .LVU44
+ 172 002c 1D4D     		ldr	r5, .L16
+ 173              	.LVL10:
+ 103:Core/test/minihdlc.c **** 		mhst.frame_checksum = _crc_ccitt_update(mhst.frame_checksum,
+ 174              		.loc 1 103 25 view .LVU45
+ 175 002e 2B44     		add	r3, r3, r5
+ 176 0030 997B     		ldrb	r1, [r3, #14]	@ zero_extendqisi2
+ 177 0032 A889     		ldrh	r0, [r5, #12]
+ 178 0034 FFF7FEFF 		bl	_crc_ccitt_update
+ 179              	.LVL11:
+ 103:Core/test/minihdlc.c **** 		mhst.frame_checksum = _crc_ccitt_update(mhst.frame_checksum,
+ 180              		.loc 1 103 23 view .LVU46
+ 181 0038 A881     		strh	r0, [r5, #12]	@ movhi
+ 182              	.L12:
+ 105:Core/test/minihdlc.c **** 	}
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 6
+
+
+ 106:Core/test/minihdlc.c **** 
+ 107:Core/test/minihdlc.c **** 	mhst.frame_position++;
+ 183              		.loc 1 107 2 is_stmt 1 view .LVU47
+ 184              		.loc 1 107 21 is_stmt 0 view .LVU48
+ 185 003a 0134     		adds	r4, r4, #1
+ 186 003c A4B2     		uxth	r4, r4
+ 187 003e 194B     		ldr	r3, .L16
+ 188 0040 5C81     		strh	r4, [r3, #10]	@ movhi
+ 108:Core/test/minihdlc.c **** 
+ 109:Core/test/minihdlc.c **** 	if (mhst.frame_position == MINIHDLC_MAX_FRAME_LENGTH) {
+ 189              		.loc 1 109 2 is_stmt 1 view .LVU49
+ 190              		.loc 1 109 5 is_stmt 0 view .LVU50
+ 191 0042 402C     		cmp	r4, #64
+ 192 0044 28D0     		beq	.L15
+ 193              	.L5:
+ 110:Core/test/minihdlc.c **** 		mhst.frame_position = 0;
+ 111:Core/test/minihdlc.c **** 		mhst.frame_checksum = CRC16_CCITT_INIT_VAL;
+ 112:Core/test/minihdlc.c **** 	}
+ 113:Core/test/minihdlc.c **** }
+ 194              		.loc 1 113 1 view .LVU51
+ 195 0046 38BD     		pop	{r3, r4, r5, pc}
+ 196              	.LVL12:
+ 197              	.L14:
+  72:Core/test/minihdlc.c **** 			mhst.escape_character = false;
+ 198              		.loc 1 72 3 is_stmt 1 view .LVU52
+  72:Core/test/minihdlc.c **** 			mhst.escape_character = false;
+ 199              		.loc 1 72 11 is_stmt 0 view .LVU53
+ 200 0048 164B     		ldr	r3, .L16
+ 201 004a 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+  72:Core/test/minihdlc.c **** 			mhst.escape_character = false;
+ 202              		.loc 1 72 6 view .LVU54
+ 203 004c 4BB1     		cbz	r3, .L7
+  73:Core/test/minihdlc.c **** 		}
+ 204              		.loc 1 73 4 is_stmt 1 view .LVU55
+  73:Core/test/minihdlc.c **** 		}
+ 205              		.loc 1 73 26 is_stmt 0 view .LVU56
+ 206 004e 154B     		ldr	r3, .L16
+ 207 0050 0022     		movs	r2, #0
+ 208 0052 1A72     		strb	r2, [r3, #8]
+ 209              	.L8:
+  87:Core/test/minihdlc.c **** 		mhst.frame_checksum = CRC16_CCITT_INIT_VAL;
+ 210              		.loc 1 87 3 is_stmt 1 view .LVU57
+  87:Core/test/minihdlc.c **** 		mhst.frame_checksum = CRC16_CCITT_INIT_VAL;
+ 211              		.loc 1 87 23 is_stmt 0 view .LVU58
+ 212 0054 134B     		ldr	r3, .L16
+ 213 0056 0022     		movs	r2, #0
+ 214 0058 5A81     		strh	r2, [r3, #10]	@ movhi
+  88:Core/test/minihdlc.c **** 		return;
+ 215              		.loc 1 88 3 is_stmt 1 view .LVU59
+  88:Core/test/minihdlc.c **** 		return;
+ 216              		.loc 1 88 23 is_stmt 0 view .LVU60
+ 217 005a 4FF6FF72 		movw	r2, #65535
+ 218 005e 9A81     		strh	r2, [r3, #12]	@ movhi
+  89:Core/test/minihdlc.c **** 	}
+ 219              		.loc 1 89 3 is_stmt 1 view .LVU61
+ 220 0060 F1E7     		b	.L5
+ 221              	.L7:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 7
+
+
+  76:Core/test/minihdlc.c **** 				&& (mhst.frame_checksum
+ 222              		.loc 1 76 8 view .LVU62
+  76:Core/test/minihdlc.c **** 				&& (mhst.frame_checksum
+ 223              		.loc 1 76 17 is_stmt 0 view .LVU63
+ 224 0062 104B     		ldr	r3, .L16
+ 225 0064 5989     		ldrh	r1, [r3, #10]
+  76:Core/test/minihdlc.c **** 				&& (mhst.frame_checksum
+ 226              		.loc 1 76 11 view .LVU64
+ 227 0066 0129     		cmp	r1, #1
+ 228 0068 F4D9     		bls	.L8
+  77:Core/test/minihdlc.c **** 						== ((mhst.receive_frame_buffer[mhst.frame_position - 1]
+ 229              		.loc 1 77 13 view .LVU65
+ 230 006a 9889     		ldrh	r0, [r3, #12]
+  78:Core/test/minihdlc.c **** 								<< 8)
+ 231              		.loc 1 78 58 view .LVU66
+ 232 006c 4A1E     		subs	r2, r1, #1
+  78:Core/test/minihdlc.c **** 								<< 8)
+ 233              		.loc 1 78 37 view .LVU67
+ 234 006e 1A44     		add	r2, r2, r3
+ 235 0070 927B     		ldrb	r2, [r2, #14]	@ zero_extendqisi2
+  81:Core/test/minihdlc.c **** 				{
+ 236              		.loc 1 81 11 view .LVU68
+ 237 0072 8C1E     		subs	r4, r1, #2
+  80:Core/test/minihdlc.c **** 										- 2] & 0xff)))) // (msb << 8 ) | (lsb & 0xff)
+ 238              		.loc 1 80 37 view .LVU69
+ 239 0074 2344     		add	r3, r3, r4
+ 240 0076 9B7B     		ldrb	r3, [r3, #14]	@ zero_extendqisi2
+  80:Core/test/minihdlc.c **** 										- 2] & 0xff)))) // (msb << 8 ) | (lsb & 0xff)
+ 241              		.loc 1 80 9 view .LVU70
+ 242 0078 43EA0223 		orr	r3, r3, r2, lsl #8
+  77:Core/test/minihdlc.c **** 						== ((mhst.receive_frame_buffer[mhst.frame_position - 1]
+ 243              		.loc 1 77 5 view .LVU71
+ 244 007c 9842     		cmp	r0, r3
+ 245 007e E9D1     		bne	.L8
+  84:Core/test/minihdlc.c **** 					mhst.frame_position - 2);
+ 246              		.loc 1 84 4 is_stmt 1 view .LVU72
+  84:Core/test/minihdlc.c **** 					mhst.frame_position - 2);
+ 247              		.loc 1 84 5 is_stmt 0 view .LVU73
+ 248 0080 0848     		ldr	r0, .L16
+ 249 0082 4368     		ldr	r3, [r0, #4]
+ 250 0084 A1B2     		uxth	r1, r4
+ 251 0086 0E30     		adds	r0, r0, #14
+ 252 0088 9847     		blx	r3
+ 253              	.LVL13:
+ 254 008a E3E7     		b	.L8
+ 255              	.L10:
+  95:Core/test/minihdlc.c **** 		mhst.escape_character = true;
+ 256              		.loc 1 95 9 is_stmt 1 view .LVU74
+  95:Core/test/minihdlc.c **** 		mhst.escape_character = true;
+ 257              		.loc 1 95 12 is_stmt 0 view .LVU75
+ 258 008c 7D2D     		cmp	r5, #125
+ 259 008e C6D1     		bne	.L11
+  96:Core/test/minihdlc.c **** 		return;
+ 260              		.loc 1 96 3 is_stmt 1 view .LVU76
+  96:Core/test/minihdlc.c **** 		return;
+ 261              		.loc 1 96 25 is_stmt 0 view .LVU77
+ 262 0090 044B     		ldr	r3, .L16
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 8
+
+
+ 263 0092 0122     		movs	r2, #1
+ 264 0094 1A72     		strb	r2, [r3, #8]
+  97:Core/test/minihdlc.c **** 	}
+ 265              		.loc 1 97 3 is_stmt 1 view .LVU78
+ 266 0096 D6E7     		b	.L5
+ 267              	.LVL14:
+ 268              	.L15:
+ 110:Core/test/minihdlc.c **** 		mhst.frame_checksum = CRC16_CCITT_INIT_VAL;
+ 269              		.loc 1 110 3 view .LVU79
+ 110:Core/test/minihdlc.c **** 		mhst.frame_checksum = CRC16_CCITT_INIT_VAL;
+ 270              		.loc 1 110 23 is_stmt 0 view .LVU80
+ 271 0098 0022     		movs	r2, #0
+ 272 009a 5A81     		strh	r2, [r3, #10]	@ movhi
+ 111:Core/test/minihdlc.c **** 	}
+ 273              		.loc 1 111 3 is_stmt 1 view .LVU81
+ 111:Core/test/minihdlc.c **** 	}
+ 274              		.loc 1 111 23 is_stmt 0 view .LVU82
+ 275 009c 4FF6FF72 		movw	r2, #65535
+ 276 00a0 9A81     		strh	r2, [r3, #12]	@ movhi
+ 277 00a2 D0E7     		b	.L5
+ 278              	.L17:
+ 279              		.align	2
+ 280              	.L16:
+ 281 00a4 00000000 		.word	.LANCHOR0
+ 282              		.cfi_endproc
+ 283              	.LFE3:
+ 285              		.section	.text.minihdlc_send_frame,"ax",%progbits
+ 286              		.align	1
+ 287              		.global	minihdlc_send_frame
+ 288              		.syntax unified
+ 289              		.thumb
+ 290              		.thumb_func
+ 291              		.fpu fpv4-sp-d16
+ 293              	minihdlc_send_frame:
+ 294              	.LVL15:
+ 295              	.LFB4:
+ 114:Core/test/minihdlc.c **** 
+ 115:Core/test/minihdlc.c **** /* Wrap given data in HDLC frame and send it out byte at a time*/
+ 116:Core/test/minihdlc.c **** void minihdlc_send_frame(const uint8_t *frame_buffer, uint8_t frame_length) {
+ 296              		.loc 1 116 77 is_stmt 1 view -0
+ 297              		.cfi_startproc
+ 298              		@ args = 0, pretend = 0, frame = 0
+ 299              		@ frame_needed = 0, uses_anonymous_args = 0
+ 300              		.loc 1 116 77 is_stmt 0 view .LVU84
+ 301 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+ 302              	.LCFI1:
+ 303              		.cfi_def_cfa_offset 24
+ 304              		.cfi_offset 3, -24
+ 305              		.cfi_offset 4, -20
+ 306              		.cfi_offset 5, -16
+ 307              		.cfi_offset 6, -12
+ 308              		.cfi_offset 7, -8
+ 309              		.cfi_offset 14, -4
+ 310 0002 0446     		mov	r4, r0
+ 311 0004 0D46     		mov	r5, r1
+ 117:Core/test/minihdlc.c **** 	uint8_t data;
+ 312              		.loc 1 117 2 is_stmt 1 view .LVU85
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 9
+
+
+ 118:Core/test/minihdlc.c **** 	uint16_t fcs = CRC16_CCITT_INIT_VAL;
+ 313              		.loc 1 118 2 view .LVU86
+ 314              	.LVL16:
+ 119:Core/test/minihdlc.c **** 
+ 120:Core/test/minihdlc.c **** 	minihdlc_sendchar((uint8_t) FRAME_BOUNDARY_OCTET);
+ 315              		.loc 1 120 2 view .LVU87
+ 316              	.LBB18:
+ 317              	.LBI18:
+  61:Core/test/minihdlc.c **** 	if (mhst.sendchar_function) {
+ 318              		.loc 1 61 20 view .LVU88
+ 319              	.LBB19:
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 320              		.loc 1 62 2 view .LVU89
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 321              		.loc 1 62 10 is_stmt 0 view .LVU90
+ 322 0006 294B     		ldr	r3, .L36
+ 323 0008 1B68     		ldr	r3, [r3]
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 324              		.loc 1 62 5 view .LVU91
+ 325 000a 0BB1     		cbz	r3, .L19
+  63:Core/test/minihdlc.c **** 	}
+ 326              		.loc 1 63 3 is_stmt 1 view .LVU92
+  63:Core/test/minihdlc.c **** 	}
+ 327              		.loc 1 63 4 is_stmt 0 view .LVU93
+ 328 000c 7E20     		movs	r0, #126
+ 329              	.LVL17:
+  63:Core/test/minihdlc.c **** 	}
+ 330              		.loc 1 63 4 view .LVU94
+ 331 000e 9847     		blx	r3
+ 332              	.LVL18:
+ 333              	.L19:
+  63:Core/test/minihdlc.c **** 	}
+ 334              		.loc 1 63 4 view .LVU95
+ 335              	.LBE19:
+ 336              	.LBE18:
+ 116:Core/test/minihdlc.c **** 	uint8_t data;
+ 337              		.loc 1 116 77 view .LVU96
+ 338 0010 4FF6FF76 		movw	r6, #65535
+ 339 0014 08E0     		b	.L20
+ 340              	.LVL19:
+ 341              	.L22:
+ 121:Core/test/minihdlc.c **** 
+ 122:Core/test/minihdlc.c **** 	while (frame_length) {
+ 123:Core/test/minihdlc.c **** 		data = *frame_buffer++;
+ 124:Core/test/minihdlc.c **** 		fcs = _crc_ccitt_update(fcs, data);
+ 125:Core/test/minihdlc.c **** 		if ((data == CONTROL_ESCAPE_OCTET) || (data == FRAME_BOUNDARY_OCTET)) {
+ 126:Core/test/minihdlc.c **** 			minihdlc_sendchar((uint8_t) CONTROL_ESCAPE_OCTET);
+ 127:Core/test/minihdlc.c **** 			data ^= INVERT_OCTET;
+ 342              		.loc 1 127 4 is_stmt 1 view .LVU97
+ 343              		.loc 1 127 9 is_stmt 0 view .LVU98
+ 344 0016 87F02007 		eor	r7, r7, #32
+ 345              	.LVL20:
+ 346              	.L21:
+ 128:Core/test/minihdlc.c **** 		}
+ 129:Core/test/minihdlc.c **** 		minihdlc_sendchar((uint8_t) data);
+ 347              		.loc 1 129 3 is_stmt 1 view .LVU99
+ 348              	.LBB20:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 10
+
+
+ 349              	.LBI20:
+  61:Core/test/minihdlc.c **** 	if (mhst.sendchar_function) {
+ 350              		.loc 1 61 20 view .LVU100
+ 351              	.LBB21:
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 352              		.loc 1 62 2 view .LVU101
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 353              		.loc 1 62 10 is_stmt 0 view .LVU102
+ 354 001a 244B     		ldr	r3, .L36
+ 355 001c 1B68     		ldr	r3, [r3]
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 356              		.loc 1 62 5 view .LVU103
+ 357 001e 0BB1     		cbz	r3, .L23
+  63:Core/test/minihdlc.c **** 	}
+ 358              		.loc 1 63 3 is_stmt 1 view .LVU104
+  63:Core/test/minihdlc.c **** 	}
+ 359              		.loc 1 63 4 is_stmt 0 view .LVU105
+ 360 0020 3846     		mov	r0, r7
+ 361 0022 9847     		blx	r3
+ 362              	.LVL21:
+ 363              	.L23:
+  63:Core/test/minihdlc.c **** 	}
+ 364              		.loc 1 63 4 view .LVU106
+ 365              	.LBE21:
+ 366              	.LBE20:
+ 130:Core/test/minihdlc.c **** 		frame_length--;
+ 367              		.loc 1 130 3 is_stmt 1 view .LVU107
+ 368              		.loc 1 130 15 is_stmt 0 view .LVU108
+ 369 0024 013D     		subs	r5, r5, #1
+ 370              	.LVL22:
+ 371              		.loc 1 130 15 view .LVU109
+ 372 0026 EDB2     		uxtb	r5, r5
+ 373              	.LVL23:
+ 374              	.L20:
+ 122:Core/test/minihdlc.c **** 		data = *frame_buffer++;
+ 375              		.loc 1 122 8 is_stmt 1 view .LVU110
+ 376 0028 95B1     		cbz	r5, .L33
+ 123:Core/test/minihdlc.c **** 		fcs = _crc_ccitt_update(fcs, data);
+ 377              		.loc 1 123 3 view .LVU111
+ 378              	.LVL24:
+ 123:Core/test/minihdlc.c **** 		fcs = _crc_ccitt_update(fcs, data);
+ 379              		.loc 1 123 8 is_stmt 0 view .LVU112
+ 380 002a 14F8017B 		ldrb	r7, [r4], #1	@ zero_extendqisi2
+ 381              	.LVL25:
+ 124:Core/test/minihdlc.c **** 		if ((data == CONTROL_ESCAPE_OCTET) || (data == FRAME_BOUNDARY_OCTET)) {
+ 382              		.loc 1 124 3 is_stmt 1 view .LVU113
+ 124:Core/test/minihdlc.c **** 		if ((data == CONTROL_ESCAPE_OCTET) || (data == FRAME_BOUNDARY_OCTET)) {
+ 383              		.loc 1 124 9 is_stmt 0 view .LVU114
+ 384 002e 3946     		mov	r1, r7
+ 385 0030 3046     		mov	r0, r6
+ 386 0032 FFF7FEFF 		bl	_crc_ccitt_update
+ 387              	.LVL26:
+ 388 0036 0646     		mov	r6, r0
+ 389              	.LVL27:
+ 125:Core/test/minihdlc.c **** 			minihdlc_sendchar((uint8_t) CONTROL_ESCAPE_OCTET);
+ 390              		.loc 1 125 3 is_stmt 1 view .LVU115
+ 125:Core/test/minihdlc.c **** 			minihdlc_sendchar((uint8_t) CONTROL_ESCAPE_OCTET);
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 11
+
+
+ 391              		.loc 1 125 38 is_stmt 0 view .LVU116
+ 392 0038 A7F17D03 		sub	r3, r7, #125
+ 393 003c DBB2     		uxtb	r3, r3
+ 125:Core/test/minihdlc.c **** 			minihdlc_sendchar((uint8_t) CONTROL_ESCAPE_OCTET);
+ 394              		.loc 1 125 6 view .LVU117
+ 395 003e 012B     		cmp	r3, #1
+ 396 0040 EBD8     		bhi	.L21
+ 126:Core/test/minihdlc.c **** 			data ^= INVERT_OCTET;
+ 397              		.loc 1 126 4 is_stmt 1 view .LVU118
+ 398              	.LVL28:
+ 399              	.LBB22:
+ 400              	.LBI22:
+  61:Core/test/minihdlc.c **** 	if (mhst.sendchar_function) {
+ 401              		.loc 1 61 20 view .LVU119
+ 402              	.LBB23:
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 403              		.loc 1 62 2 view .LVU120
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 404              		.loc 1 62 10 is_stmt 0 view .LVU121
+ 405 0042 1A4B     		ldr	r3, .L36
+ 406 0044 1B68     		ldr	r3, [r3]
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 407              		.loc 1 62 5 view .LVU122
+ 408 0046 002B     		cmp	r3, #0
+ 409 0048 E5D0     		beq	.L22
+  63:Core/test/minihdlc.c **** 	}
+ 410              		.loc 1 63 3 is_stmt 1 view .LVU123
+  63:Core/test/minihdlc.c **** 	}
+ 411              		.loc 1 63 4 is_stmt 0 view .LVU124
+ 412 004a 7D20     		movs	r0, #125
+ 413 004c 9847     		blx	r3
+ 414              	.LVL29:
+ 415 004e E2E7     		b	.L22
+ 416              	.LVL30:
+ 417              	.L33:
+  63:Core/test/minihdlc.c **** 	}
+ 418              		.loc 1 63 4 view .LVU125
+ 419              	.LBE23:
+ 420              	.LBE22:
+ 131:Core/test/minihdlc.c **** 	}
+ 132:Core/test/minihdlc.c **** 	data = low(fcs);
+ 421              		.loc 1 132 2 is_stmt 1 view .LVU126
+ 422              		.loc 1 132 7 is_stmt 0 view .LVU127
+ 423 0050 F4B2     		uxtb	r4, r6
+ 424              	.LVL31:
+ 133:Core/test/minihdlc.c **** 	if ((data == CONTROL_ESCAPE_OCTET) || (data == FRAME_BOUNDARY_OCTET)) {
+ 425              		.loc 1 133 2 is_stmt 1 view .LVU128
+ 426              		.loc 1 133 37 is_stmt 0 view .LVU129
+ 427 0052 A4F17D03 		sub	r3, r4, #125
+ 428 0056 DBB2     		uxtb	r3, r3
+ 429              		.loc 1 133 5 view .LVU130
+ 430 0058 012B     		cmp	r3, #1
+ 431 005a 16D9     		bls	.L34
+ 432              	.L25:
+ 134:Core/test/minihdlc.c **** 		minihdlc_sendchar((uint8_t) CONTROL_ESCAPE_OCTET);
+ 135:Core/test/minihdlc.c **** 		data ^= (uint8_t) INVERT_OCTET;
+ 136:Core/test/minihdlc.c **** 	}
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 12
+
+
+ 137:Core/test/minihdlc.c **** 	minihdlc_sendchar((uint8_t) data);
+ 433              		.loc 1 137 2 is_stmt 1 view .LVU131
+ 434              	.LVL32:
+ 435              	.LBB24:
+ 436              	.LBI24:
+  61:Core/test/minihdlc.c **** 	if (mhst.sendchar_function) {
+ 437              		.loc 1 61 20 view .LVU132
+ 438              	.LBB25:
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 439              		.loc 1 62 2 view .LVU133
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 440              		.loc 1 62 10 is_stmt 0 view .LVU134
+ 441 005c 134B     		ldr	r3, .L36
+ 442 005e 1B68     		ldr	r3, [r3]
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 443              		.loc 1 62 5 view .LVU135
+ 444 0060 0BB1     		cbz	r3, .L27
+  63:Core/test/minihdlc.c **** 	}
+ 445              		.loc 1 63 3 is_stmt 1 view .LVU136
+  63:Core/test/minihdlc.c **** 	}
+ 446              		.loc 1 63 4 is_stmt 0 view .LVU137
+ 447 0062 2046     		mov	r0, r4
+ 448 0064 9847     		blx	r3
+ 449              	.LVL33:
+ 450              	.L27:
+  63:Core/test/minihdlc.c **** 	}
+ 451              		.loc 1 63 4 view .LVU138
+ 452              	.LBE25:
+ 453              	.LBE24:
+ 138:Core/test/minihdlc.c **** 	data = high(fcs);
+ 454              		.loc 1 138 2 is_stmt 1 view .LVU139
+ 455              		.loc 1 138 7 is_stmt 0 view .LVU140
+ 456 0066 C6F30726 		ubfx	r6, r6, #8, #8
+ 457              	.LVL34:
+ 139:Core/test/minihdlc.c **** 	if ((data == CONTROL_ESCAPE_OCTET) || (data == FRAME_BOUNDARY_OCTET)) {
+ 458              		.loc 1 139 2 is_stmt 1 view .LVU141
+ 459              		.loc 1 139 37 is_stmt 0 view .LVU142
+ 460 006a A6F17D03 		sub	r3, r6, #125
+ 461 006e DBB2     		uxtb	r3, r3
+ 462              		.loc 1 139 5 view .LVU143
+ 463 0070 012B     		cmp	r3, #1
+ 464 0072 12D9     		bls	.L35
+ 465              	.L28:
+ 140:Core/test/minihdlc.c **** 		minihdlc_sendchar(CONTROL_ESCAPE_OCTET);
+ 141:Core/test/minihdlc.c **** 		data ^= INVERT_OCTET;
+ 142:Core/test/minihdlc.c **** 	}
+ 143:Core/test/minihdlc.c **** 	minihdlc_sendchar(data);
+ 466              		.loc 1 143 2 is_stmt 1 view .LVU144
+ 467              	.LVL35:
+ 468              	.LBB26:
+ 469              	.LBI26:
+  61:Core/test/minihdlc.c **** 	if (mhst.sendchar_function) {
+ 470              		.loc 1 61 20 view .LVU145
+ 471              	.LBB27:
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 472              		.loc 1 62 2 view .LVU146
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 13
+
+
+ 473              		.loc 1 62 10 is_stmt 0 view .LVU147
+ 474 0074 0D4B     		ldr	r3, .L36
+ 475 0076 1B68     		ldr	r3, [r3]
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 476              		.loc 1 62 5 view .LVU148
+ 477 0078 0BB1     		cbz	r3, .L30
+  63:Core/test/minihdlc.c **** 	}
+ 478              		.loc 1 63 3 is_stmt 1 view .LVU149
+  63:Core/test/minihdlc.c **** 	}
+ 479              		.loc 1 63 4 is_stmt 0 view .LVU150
+ 480 007a 3046     		mov	r0, r6
+ 481 007c 9847     		blx	r3
+ 482              	.LVL36:
+ 483              	.L30:
+  63:Core/test/minihdlc.c **** 	}
+ 484              		.loc 1 63 4 view .LVU151
+ 485              	.LBE27:
+ 486              	.LBE26:
+ 144:Core/test/minihdlc.c **** 	minihdlc_sendchar(FRAME_BOUNDARY_OCTET);
+ 487              		.loc 1 144 2 is_stmt 1 view .LVU152
+ 488              	.LBB28:
+ 489              	.LBI28:
+  61:Core/test/minihdlc.c **** 	if (mhst.sendchar_function) {
+ 490              		.loc 1 61 20 view .LVU153
+ 491              	.LBB29:
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 492              		.loc 1 62 2 view .LVU154
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 493              		.loc 1 62 10 is_stmt 0 view .LVU155
+ 494 007e 0B4B     		ldr	r3, .L36
+ 495 0080 1B68     		ldr	r3, [r3]
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 496              		.loc 1 62 5 view .LVU156
+ 497 0082 0BB1     		cbz	r3, .L18
+  63:Core/test/minihdlc.c **** 	}
+ 498              		.loc 1 63 3 is_stmt 1 view .LVU157
+  63:Core/test/minihdlc.c **** 	}
+ 499              		.loc 1 63 4 is_stmt 0 view .LVU158
+ 500 0084 7E20     		movs	r0, #126
+ 501 0086 9847     		blx	r3
+ 502              	.LVL37:
+ 503              	.L18:
+  63:Core/test/minihdlc.c **** 	}
+ 504              		.loc 1 63 4 view .LVU159
+ 505              	.LBE29:
+ 506              	.LBE28:
+ 145:Core/test/minihdlc.c **** }
+ 507              		.loc 1 145 1 view .LVU160
+ 508 0088 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 509              	.LVL38:
+ 510              	.L34:
+ 134:Core/test/minihdlc.c **** 		data ^= (uint8_t) INVERT_OCTET;
+ 511              		.loc 1 134 3 is_stmt 1 view .LVU161
+ 512              	.LBB30:
+ 513              	.LBI30:
+  61:Core/test/minihdlc.c **** 	if (mhst.sendchar_function) {
+ 514              		.loc 1 61 20 view .LVU162
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 14
+
+
+ 515              	.LBB31:
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 516              		.loc 1 62 2 view .LVU163
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 517              		.loc 1 62 10 is_stmt 0 view .LVU164
+ 518 008a 084B     		ldr	r3, .L36
+ 519 008c 1B68     		ldr	r3, [r3]
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 520              		.loc 1 62 5 view .LVU165
+ 521 008e 0BB1     		cbz	r3, .L26
+  63:Core/test/minihdlc.c **** 	}
+ 522              		.loc 1 63 3 is_stmt 1 view .LVU166
+  63:Core/test/minihdlc.c **** 	}
+ 523              		.loc 1 63 4 is_stmt 0 view .LVU167
+ 524 0090 7D20     		movs	r0, #125
+ 525 0092 9847     		blx	r3
+ 526              	.LVL39:
+ 527              	.L26:
+  63:Core/test/minihdlc.c **** 	}
+ 528              		.loc 1 63 4 view .LVU168
+ 529              	.LBE31:
+ 530              	.LBE30:
+ 135:Core/test/minihdlc.c **** 	}
+ 531              		.loc 1 135 3 is_stmt 1 view .LVU169
+ 135:Core/test/minihdlc.c **** 	}
+ 532              		.loc 1 135 8 is_stmt 0 view .LVU170
+ 533 0094 84F02004 		eor	r4, r4, #32
+ 534              	.LVL40:
+ 135:Core/test/minihdlc.c **** 	}
+ 535              		.loc 1 135 8 view .LVU171
+ 536 0098 E0E7     		b	.L25
+ 537              	.LVL41:
+ 538              	.L35:
+ 140:Core/test/minihdlc.c **** 		data ^= INVERT_OCTET;
+ 539              		.loc 1 140 3 is_stmt 1 view .LVU172
+ 540              	.LBB32:
+ 541              	.LBI32:
+  61:Core/test/minihdlc.c **** 	if (mhst.sendchar_function) {
+ 542              		.loc 1 61 20 view .LVU173
+ 543              	.LBB33:
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 544              		.loc 1 62 2 view .LVU174
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 545              		.loc 1 62 10 is_stmt 0 view .LVU175
+ 546 009a 044B     		ldr	r3, .L36
+ 547 009c 1B68     		ldr	r3, [r3]
+  62:Core/test/minihdlc.c **** 		(*mhst.sendchar_function)(data);
+ 548              		.loc 1 62 5 view .LVU176
+ 549 009e 0BB1     		cbz	r3, .L29
+  63:Core/test/minihdlc.c **** 	}
+ 550              		.loc 1 63 3 is_stmt 1 view .LVU177
+  63:Core/test/minihdlc.c **** 	}
+ 551              		.loc 1 63 4 is_stmt 0 view .LVU178
+ 552 00a0 7D20     		movs	r0, #125
+ 553 00a2 9847     		blx	r3
+ 554              	.LVL42:
+ 555              	.L29:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 15
+
+
+  63:Core/test/minihdlc.c **** 	}
+ 556              		.loc 1 63 4 view .LVU179
+ 557              	.LBE33:
+ 558              	.LBE32:
+ 141:Core/test/minihdlc.c **** 	}
+ 559              		.loc 1 141 3 is_stmt 1 view .LVU180
+ 141:Core/test/minihdlc.c **** 	}
+ 560              		.loc 1 141 8 is_stmt 0 view .LVU181
+ 561 00a4 86F02006 		eor	r6, r6, #32
+ 562              	.LVL43:
+ 141:Core/test/minihdlc.c **** 	}
+ 563              		.loc 1 141 8 view .LVU182
+ 564 00a8 E4E7     		b	.L28
+ 565              	.L37:
+ 566 00aa 00BF     		.align	2
+ 567              	.L36:
+ 568 00ac 00000000 		.word	.LANCHOR0
+ 569              		.cfi_endproc
+ 570              	.LFE4:
+ 572              		.global	mhst
+ 573              		.section	.bss.mhst,"aw",%nobits
+ 574              		.align	2
+ 575              		.set	.LANCHOR0,. + 0
+ 578              	mhst:
+ 579 0000 00000000 		.space	80
+ 579      00000000 
+ 579      00000000 
+ 579      00000000 
+ 579      00000000 
+ 580              		.text
+ 581              	.Letext0:
+ 582              		.file 2 "c:\\gnu-arm-embedded-toolchain\\gcc-arm-none-eabi-10-2020-q4-major\\arm-none-eabi\\includ
+ 583              		.file 3 "c:\\gnu-arm-embedded-toolchain\\gcc-arm-none-eabi-10-2020-q4-major\\arm-none-eabi\\includ
+ 584              		.file 4 "Core/test/minihdlc.h"
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 minihdlc.c
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:18     .text._crc_ccitt_update:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:25     .text._crc_ccitt_update:00000000 _crc_ccitt_update
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:65     .text.minihdlc_init:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:72     .text.minihdlc_init:00000000 minihdlc_init
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:105    .text.minihdlc_init:00000014 $d
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:110    .text.minihdlc_char_receiver:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:117    .text.minihdlc_char_receiver:00000000 minihdlc_char_receiver
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:281    .text.minihdlc_char_receiver:000000a4 $d
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:286    .text.minihdlc_send_frame:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:293    .text.minihdlc_send_frame:00000000 minihdlc_send_frame
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:568    .text.minihdlc_send_frame:000000ac $d
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:578    .bss.mhst:00000000 mhst
+C:\Users\ASUS\AppData\Local\Temp\cc8U1c4X.s:574    .bss.mhst:00000000 $d
+
+UNDEFINED SYMBOLS
+debug_sendchar

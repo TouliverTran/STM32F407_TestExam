@@ -1,0 +1,3194 @@
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.MX_GPIO_Init,"ax",%progbits
+  18              		.align	1
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	MX_GPIO_Init:
+  26              	.LFB141:
+  27              		.file 1 "Core/Src/main.c"
+   1:Core/Src/main.c **** /* USER CODE BEGIN Header */
+   2:Core/Src/main.c **** /**
+   3:Core/Src/main.c ****   ******************************************************************************
+   4:Core/Src/main.c ****   * @file           : main.c
+   5:Core/Src/main.c ****   * @brief          : Main program body
+   6:Core/Src/main.c ****   ******************************************************************************
+   7:Core/Src/main.c ****   * @attention
+   8:Core/Src/main.c ****   *
+   9:Core/Src/main.c ****   * Copyright (c) 2024 STMicroelectronics.
+  10:Core/Src/main.c ****   * All rights reserved.
+  11:Core/Src/main.c ****   *
+  12:Core/Src/main.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  13:Core/Src/main.c ****   * in the root directory of this software component.
+  14:Core/Src/main.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  15:Core/Src/main.c ****   *
+  16:Core/Src/main.c ****   ******************************************************************************
+  17:Core/Src/main.c ****   */
+  18:Core/Src/main.c **** /* USER CODE END Header */
+  19:Core/Src/main.c **** /* Includes ------------------------------------------------------------------*/
+  20:Core/Src/main.c **** #include "main.h"
+  21:Core/Src/main.c **** 
+  22:Core/Src/main.c **** /* Private includes ----------------------------------------------------------*/
+  23:Core/Src/main.c **** /* USER CODE BEGIN Includes */
+  24:Core/Src/main.c **** #include <stdio.h>
+  25:Core/Src/main.c **** #include <stdarg.h>
+  26:Core/Src/main.c **** #include <string.h>
+  27:Core/Src/main.c **** #include <assert.h>
+  28:Core/Src/main.c **** 
+  29:Core/Src/main.c **** #include "unity.h"
+  30:Core/Src/main.c **** #include "minihdlc.h"
+  31:Core/Src/main.c **** #include "yahdlc.h"
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 2
+
+
+  32:Core/Src/main.c **** /* USER CODE END Includes */
+  33:Core/Src/main.c **** 
+  34:Core/Src/main.c **** /* Private typedef -----------------------------------------------------------*/
+  35:Core/Src/main.c **** /* USER CODE BEGIN PTD */
+  36:Core/Src/main.c **** 
+  37:Core/Src/main.c **** /* USER CODE END PTD */
+  38:Core/Src/main.c **** 
+  39:Core/Src/main.c **** /* Private define ------------------------------------------------------------*/
+  40:Core/Src/main.c **** /* USER CODE BEGIN PD */
+  41:Core/Src/main.c **** 
+  42:Core/Src/main.c **** /* USER CODE END PD */
+  43:Core/Src/main.c **** 
+  44:Core/Src/main.c **** /* Private macro -------------------------------------------------------------*/
+  45:Core/Src/main.c **** /* USER CODE BEGIN PM */
+  46:Core/Src/main.c **** 
+  47:Core/Src/main.c **** /* USER CODE END PM */
+  48:Core/Src/main.c **** 
+  49:Core/Src/main.c **** /* Private variables ---------------------------------------------------------*/
+  50:Core/Src/main.c **** UART_HandleTypeDef huart1;
+  51:Core/Src/main.c **** UART_HandleTypeDef huart2;
+  52:Core/Src/main.c **** 
+  53:Core/Src/main.c **** /* USER CODE BEGIN PV */
+  54:Core/Src/main.c **** 
+  55:Core/Src/main.c **** /* USER CODE END PV */
+  56:Core/Src/main.c **** 
+  57:Core/Src/main.c **** /* Private function prototypes -----------------------------------------------*/
+  58:Core/Src/main.c **** void SystemClock_Config(void);
+  59:Core/Src/main.c **** static void MX_GPIO_Init(void);
+  60:Core/Src/main.c **** static void MX_USART1_UART_Init(void);
+  61:Core/Src/main.c **** static void MX_USART2_UART_Init(void);
+  62:Core/Src/main.c **** /* USER CODE BEGIN PFP */
+  63:Core/Src/main.c **** int uart_printf(const char *fmt, ...);
+  64:Core/Src/main.c **** 
+  65:Core/Src/main.c **** int add(int a, int b);
+  66:Core/Src/main.c **** void test_add(void);
+  67:Core/Src/main.c **** void setUp();
+  68:Core/Src/main.c **** void tearDown();
+  69:Core/Src/main.c **** void send_char(uint8_t data);
+  70:Core/Src/main.c **** void frame_received(const uint8_t *frame_buffer, uint16_t frame_length);
+  71:Core/Src/main.c **** void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+  72:Core/Src/main.c **** 
+  73:Core/Src/main.c **** extern int debug_printf(const char *fmt, ...);
+  74:Core/Src/main.c **** extern void debug_sendchar(const char pdata);
+  75:Core/Src/main.c **** /* USER CODE END PFP */
+  76:Core/Src/main.c **** 
+  77:Core/Src/main.c **** /* Private user code ---------------------------------------------------------*/
+  78:Core/Src/main.c **** /* USER CODE BEGIN 0 */
+  79:Core/Src/main.c **** uint8_t data_rx[2];
+  80:Core/Src/main.c **** uint8_t buf_rx[20];
+  81:Core/Src/main.c **** uint8_t t = 0;
+  82:Core/Src/main.c **** /* USER CODE END 0 */
+  83:Core/Src/main.c **** 
+  84:Core/Src/main.c **** /**
+  85:Core/Src/main.c ****   * @brief  The application entry point.
+  86:Core/Src/main.c ****   * @retval int
+  87:Core/Src/main.c ****   */
+  88:Core/Src/main.c **** int main(void)
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 3
+
+
+  89:Core/Src/main.c **** {
+  90:Core/Src/main.c **** 
+  91:Core/Src/main.c ****   /* USER CODE BEGIN 1 */
+  92:Core/Src/main.c **** 
+  93:Core/Src/main.c ****   /* USER CODE END 1 */
+  94:Core/Src/main.c **** 
+  95:Core/Src/main.c ****   /* MCU Configuration--------------------------------------------------------*/
+  96:Core/Src/main.c **** 
+  97:Core/Src/main.c ****   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  98:Core/Src/main.c ****   HAL_Init();
+  99:Core/Src/main.c **** 
+ 100:Core/Src/main.c ****   /* USER CODE BEGIN Init */
+ 101:Core/Src/main.c **** 
+ 102:Core/Src/main.c ****   /* USER CODE END Init */
+ 103:Core/Src/main.c **** 
+ 104:Core/Src/main.c ****   /* Configure the system clock */
+ 105:Core/Src/main.c ****   SystemClock_Config();
+ 106:Core/Src/main.c **** 
+ 107:Core/Src/main.c ****   /* USER CODE BEGIN SysInit */
+ 108:Core/Src/main.c **** 
+ 109:Core/Src/main.c ****   /* USER CODE END SysInit */
+ 110:Core/Src/main.c **** 
+ 111:Core/Src/main.c ****   /* Initialize all configured peripherals */
+ 112:Core/Src/main.c ****   MX_GPIO_Init();
+ 113:Core/Src/main.c ****   MX_USART1_UART_Init();
+ 114:Core/Src/main.c ****   MX_USART2_UART_Init();
+ 115:Core/Src/main.c ****   /* USER CODE BEGIN 2 */
+ 116:Core/Src/main.c ****   debug_printf("HELLO WORLD!!!\r\n");
+ 117:Core/Src/main.c ****   HAL_UART_Receive_IT(&huart1, data_rx, 1);
+ 118:Core/Src/main.c ****   UNITY_BEGIN();
+ 119:Core/Src/main.c ****   RUN_TEST(test_add);
+ 120:Core/Src/main.c ****   UNITY_END();
+ 121:Core/Src/main.c ****   minihdlc_init(send_char, frame_received);
+ 122:Core/Src/main.c ****   char string_buffer[256];
+ 123:Core/Src/main.c ****   for (int i = 0; i < 10; i++)
+ 124:Core/Src/main.c ****   {
+ 125:Core/Src/main.c ****       snprintf(string_buffer, sizeof(string_buffer), "i = %d\r\n", i);
+ 126:Core/Src/main.c ****       minihdlc_send_frame((const uint8_t *)string_buffer, strlen(string_buffer));
+ 127:Core/Src/main.c ****   }
+ 128:Core/Src/main.c **** 
+ 129:Core/Src/main.c **** 
+ 130:Core/Src/main.c **** 
+ 131:Core/Src/main.c **** 
+ 132:Core/Src/main.c ****   yahdlc_state_t state;
+ 133:Core/Src/main.c ****   yahdlc_set_state(&state);
+ 134:Core/Src/main.c **** 
+ 135:Core/Src/main.c ****   yahdlc_control_t control;
+ 136:Core/Src/main.c ****   control.frame = YAHDLC_FRAME_DATA;
+ 137:Core/Src/main.c ****   control.seq_no = 0;
+ 138:Core/Src/main.c **** 
+ 139:Core/Src/main.c ****   uint8_t input_data[] = "1234567890\r\n";
+ 140:Core/Src/main.c ****   uint8_t output_frame[256];
+ 141:Core/Src/main.c ****   int frame_len;
+ 142:Core/Src/main.c **** 
+ 143:Core/Src/main.c ****   frame_len = yahdlc_frame_data(&control, input_data, sizeof(input_data), output_frame, sizeof(outp
+ 144:Core/Src/main.c ****   for(int i=0; i<frame_len; i++)
+ 145:Core/Src/main.c ****   {
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 4
+
+
+ 146:Core/Src/main.c ****     debug_sendchar(output_frame[i]);
+ 147:Core/Src/main.c ****     uart_sendchar(output_frame[i]);
+ 148:Core/Src/main.c ****   }
+ 149:Core/Src/main.c **** 
+ 150:Core/Src/main.c **** 
+ 151:Core/Src/main.c ****   // int ret;
+ 152:Core/Src/main.c ****   // uint8_t received_data[256];
+ 153:Core/Src/main.c ****   // int received_len;
+ 154:Core/Src/main.c **** 
+ 155:Core/Src/main.c ****   // ret = yahdlc_get_data(&state, output_frame, frame_len, received_data, &received_len);
+ 156:Core/Src/main.c ****   // if (ret == 0) {
+ 157:Core/Src/main.c ****   //     debug_printf("Received data: %s\n", received_data);
+ 158:Core/Src/main.c ****   // } else {
+ 159:Core/Src/main.c ****   //     debug_printf("Error decoding frame\n");
+ 160:Core/Src/main.c ****   // }
+ 161:Core/Src/main.c **** 
+ 162:Core/Src/main.c **** 
+ 163:Core/Src/main.c **** 
+ 164:Core/Src/main.c ****   /* USER CODE END 2 */
+ 165:Core/Src/main.c **** 
+ 166:Core/Src/main.c ****   /* Infinite loop */
+ 167:Core/Src/main.c ****   /* USER CODE BEGIN WHILE */
+ 168:Core/Src/main.c ****   while (1)
+ 169:Core/Src/main.c ****   {
+ 170:Core/Src/main.c ****     /* USER CODE END WHILE */
+ 171:Core/Src/main.c ****     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
+ 172:Core/Src/main.c ****     HAL_Delay(1000);
+ 173:Core/Src/main.c ****     for(int i=0; i<frame_len; i++)
+ 174:Core/Src/main.c ****     {
+ 175:Core/Src/main.c ****       debug_sendchar(output_frame[i]);
+ 176:Core/Src/main.c ****       uart_sendchar(output_frame[i]);
+ 177:Core/Src/main.c ****     }
+ 178:Core/Src/main.c ****     /* USER CODE BEGIN 3 */
+ 179:Core/Src/main.c ****   }
+ 180:Core/Src/main.c ****   /* USER CODE END 3 */
+ 181:Core/Src/main.c **** }
+ 182:Core/Src/main.c **** 
+ 183:Core/Src/main.c **** /**
+ 184:Core/Src/main.c ****   * @brief System Clock Configuration
+ 185:Core/Src/main.c ****   * @retval None
+ 186:Core/Src/main.c ****   */
+ 187:Core/Src/main.c **** void SystemClock_Config(void)
+ 188:Core/Src/main.c **** {
+ 189:Core/Src/main.c ****   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+ 190:Core/Src/main.c ****   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+ 191:Core/Src/main.c **** 
+ 192:Core/Src/main.c ****   /** Configure the main internal regulator output voltage
+ 193:Core/Src/main.c ****   */
+ 194:Core/Src/main.c ****   __HAL_RCC_PWR_CLK_ENABLE();
+ 195:Core/Src/main.c ****   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+ 196:Core/Src/main.c **** 
+ 197:Core/Src/main.c ****   /** Initializes the RCC Oscillators according to the specified parameters
+ 198:Core/Src/main.c ****   * in the RCC_OscInitTypeDef structure.
+ 199:Core/Src/main.c ****   */
+ 200:Core/Src/main.c ****   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+ 201:Core/Src/main.c ****   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+ 202:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 5
+
+
+ 203:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+ 204:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLM = 4;
+ 205:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLN = 144;
+ 206:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+ 207:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLQ = 4;
+ 208:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+ 209:Core/Src/main.c ****   {
+ 210:Core/Src/main.c ****     Error_Handler();
+ 211:Core/Src/main.c ****   }
+ 212:Core/Src/main.c **** 
+ 213:Core/Src/main.c ****   /** Initializes the CPU, AHB and APB buses clocks
+ 214:Core/Src/main.c ****   */
+ 215:Core/Src/main.c ****   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+ 216:Core/Src/main.c ****                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+ 217:Core/Src/main.c ****   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+ 218:Core/Src/main.c ****   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+ 219:Core/Src/main.c ****   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+ 220:Core/Src/main.c ****   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+ 221:Core/Src/main.c **** 
+ 222:Core/Src/main.c ****   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+ 223:Core/Src/main.c ****   {
+ 224:Core/Src/main.c ****     Error_Handler();
+ 225:Core/Src/main.c ****   }
+ 226:Core/Src/main.c **** }
+ 227:Core/Src/main.c **** 
+ 228:Core/Src/main.c **** /**
+ 229:Core/Src/main.c ****   * @brief USART1 Initialization Function
+ 230:Core/Src/main.c ****   * @param None
+ 231:Core/Src/main.c ****   * @retval None
+ 232:Core/Src/main.c ****   */
+ 233:Core/Src/main.c **** static void MX_USART1_UART_Init(void)
+ 234:Core/Src/main.c **** {
+ 235:Core/Src/main.c **** 
+ 236:Core/Src/main.c ****   /* USER CODE BEGIN USART1_Init 0 */
+ 237:Core/Src/main.c **** 
+ 238:Core/Src/main.c ****   /* USER CODE END USART1_Init 0 */
+ 239:Core/Src/main.c **** 
+ 240:Core/Src/main.c ****   /* USER CODE BEGIN USART1_Init 1 */
+ 241:Core/Src/main.c **** 
+ 242:Core/Src/main.c ****   /* USER CODE END USART1_Init 1 */
+ 243:Core/Src/main.c ****   huart1.Instance = USART1;
+ 244:Core/Src/main.c ****   huart1.Init.BaudRate = 115200;
+ 245:Core/Src/main.c ****   huart1.Init.WordLength = UART_WORDLENGTH_8B;
+ 246:Core/Src/main.c ****   huart1.Init.StopBits = UART_STOPBITS_1;
+ 247:Core/Src/main.c ****   huart1.Init.Parity = UART_PARITY_NONE;
+ 248:Core/Src/main.c ****   huart1.Init.Mode = UART_MODE_TX_RX;
+ 249:Core/Src/main.c ****   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+ 250:Core/Src/main.c ****   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+ 251:Core/Src/main.c ****   if (HAL_UART_Init(&huart1) != HAL_OK)
+ 252:Core/Src/main.c ****   {
+ 253:Core/Src/main.c ****     Error_Handler();
+ 254:Core/Src/main.c ****   }
+ 255:Core/Src/main.c ****   /* USER CODE BEGIN USART1_Init 2 */
+ 256:Core/Src/main.c **** 
+ 257:Core/Src/main.c ****   /* USER CODE END USART1_Init 2 */
+ 258:Core/Src/main.c **** 
+ 259:Core/Src/main.c **** }
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 6
+
+
+ 260:Core/Src/main.c **** 
+ 261:Core/Src/main.c **** /**
+ 262:Core/Src/main.c ****   * @brief USART2 Initialization Function
+ 263:Core/Src/main.c ****   * @param None
+ 264:Core/Src/main.c ****   * @retval None
+ 265:Core/Src/main.c ****   */
+ 266:Core/Src/main.c **** static void MX_USART2_UART_Init(void)
+ 267:Core/Src/main.c **** {
+ 268:Core/Src/main.c **** 
+ 269:Core/Src/main.c ****   /* USER CODE BEGIN USART2_Init 0 */
+ 270:Core/Src/main.c **** 
+ 271:Core/Src/main.c ****   /* USER CODE END USART2_Init 0 */
+ 272:Core/Src/main.c **** 
+ 273:Core/Src/main.c ****   /* USER CODE BEGIN USART2_Init 1 */
+ 274:Core/Src/main.c **** 
+ 275:Core/Src/main.c ****   /* USER CODE END USART2_Init 1 */
+ 276:Core/Src/main.c ****   huart2.Instance = USART2;
+ 277:Core/Src/main.c ****   huart2.Init.BaudRate = 115200;
+ 278:Core/Src/main.c ****   huart2.Init.WordLength = UART_WORDLENGTH_8B;
+ 279:Core/Src/main.c ****   huart2.Init.StopBits = UART_STOPBITS_1;
+ 280:Core/Src/main.c ****   huart2.Init.Parity = UART_PARITY_NONE;
+ 281:Core/Src/main.c ****   huart2.Init.Mode = UART_MODE_TX_RX;
+ 282:Core/Src/main.c ****   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+ 283:Core/Src/main.c ****   huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+ 284:Core/Src/main.c ****   if (HAL_UART_Init(&huart2) != HAL_OK)
+ 285:Core/Src/main.c ****   {
+ 286:Core/Src/main.c ****     Error_Handler();
+ 287:Core/Src/main.c ****   }
+ 288:Core/Src/main.c ****   /* USER CODE BEGIN USART2_Init 2 */
+ 289:Core/Src/main.c **** 
+ 290:Core/Src/main.c ****   /* USER CODE END USART2_Init 2 */
+ 291:Core/Src/main.c **** 
+ 292:Core/Src/main.c **** }
+ 293:Core/Src/main.c **** 
+ 294:Core/Src/main.c **** /**
+ 295:Core/Src/main.c ****   * @brief GPIO Initialization Function
+ 296:Core/Src/main.c ****   * @param None
+ 297:Core/Src/main.c ****   * @retval None
+ 298:Core/Src/main.c ****   */
+ 299:Core/Src/main.c **** static void MX_GPIO_Init(void)
+ 300:Core/Src/main.c **** {
+  28              		.loc 1 300 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 32
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 30B5     		push	{r4, r5, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 12
+  35              		.cfi_offset 4, -12
+  36              		.cfi_offset 5, -8
+  37              		.cfi_offset 14, -4
+  38 0002 89B0     		sub	sp, sp, #36
+  39              	.LCFI1:
+  40              		.cfi_def_cfa_offset 48
+ 301:Core/Src/main.c ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
+  41              		.loc 1 301 3 view .LVU1
+  42              		.loc 1 301 20 is_stmt 0 view .LVU2
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 7
+
+
+  43 0004 0024     		movs	r4, #0
+  44 0006 0394     		str	r4, [sp, #12]
+  45 0008 0494     		str	r4, [sp, #16]
+  46 000a 0594     		str	r4, [sp, #20]
+  47 000c 0694     		str	r4, [sp, #24]
+  48 000e 0794     		str	r4, [sp, #28]
+ 302:Core/Src/main.c **** /* USER CODE BEGIN MX_GPIO_Init_1 */
+ 303:Core/Src/main.c **** /* USER CODE END MX_GPIO_Init_1 */
+ 304:Core/Src/main.c **** 
+ 305:Core/Src/main.c ****   /* GPIO Ports Clock Enable */
+ 306:Core/Src/main.c ****   __HAL_RCC_GPIOH_CLK_ENABLE();
+  49              		.loc 1 306 3 is_stmt 1 view .LVU3
+  50              	.LBB4:
+  51              		.loc 1 306 3 view .LVU4
+  52 0010 0194     		str	r4, [sp, #4]
+  53              		.loc 1 306 3 view .LVU5
+  54 0012 134B     		ldr	r3, .L3
+  55 0014 1A6B     		ldr	r2, [r3, #48]
+  56 0016 42F08002 		orr	r2, r2, #128
+  57 001a 1A63     		str	r2, [r3, #48]
+  58              		.loc 1 306 3 view .LVU6
+  59 001c 1A6B     		ldr	r2, [r3, #48]
+  60 001e 02F08002 		and	r2, r2, #128
+  61 0022 0192     		str	r2, [sp, #4]
+  62              		.loc 1 306 3 view .LVU7
+  63 0024 019A     		ldr	r2, [sp, #4]
+  64              	.LBE4:
+  65              		.loc 1 306 3 view .LVU8
+ 307:Core/Src/main.c ****   __HAL_RCC_GPIOA_CLK_ENABLE();
+  66              		.loc 1 307 3 view .LVU9
+  67              	.LBB5:
+  68              		.loc 1 307 3 view .LVU10
+  69 0026 0294     		str	r4, [sp, #8]
+  70              		.loc 1 307 3 view .LVU11
+  71 0028 1A6B     		ldr	r2, [r3, #48]
+  72 002a 42F00102 		orr	r2, r2, #1
+  73 002e 1A63     		str	r2, [r3, #48]
+  74              		.loc 1 307 3 view .LVU12
+  75 0030 1B6B     		ldr	r3, [r3, #48]
+  76 0032 03F00103 		and	r3, r3, #1
+  77 0036 0293     		str	r3, [sp, #8]
+  78              		.loc 1 307 3 view .LVU13
+  79 0038 029B     		ldr	r3, [sp, #8]
+  80              	.LBE5:
+  81              		.loc 1 307 3 view .LVU14
+ 308:Core/Src/main.c **** 
+ 309:Core/Src/main.c ****   /*Configure GPIO pin Output Level */
+ 310:Core/Src/main.c ****   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);
+  82              		.loc 1 310 3 view .LVU15
+  83 003a 0A4D     		ldr	r5, .L3+4
+  84 003c 2246     		mov	r2, r4
+  85 003e 4021     		movs	r1, #64
+  86 0040 2846     		mov	r0, r5
+  87 0042 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  88              	.LVL0:
+ 311:Core/Src/main.c **** 
+ 312:Core/Src/main.c ****   /*Configure GPIO pin : PA6 */
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 8
+
+
+ 313:Core/Src/main.c ****   GPIO_InitStruct.Pin = GPIO_PIN_6;
+  89              		.loc 1 313 3 view .LVU16
+  90              		.loc 1 313 23 is_stmt 0 view .LVU17
+  91 0046 4023     		movs	r3, #64
+  92 0048 0393     		str	r3, [sp, #12]
+ 314:Core/Src/main.c ****   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  93              		.loc 1 314 3 is_stmt 1 view .LVU18
+  94              		.loc 1 314 24 is_stmt 0 view .LVU19
+  95 004a 0123     		movs	r3, #1
+  96 004c 0493     		str	r3, [sp, #16]
+ 315:Core/Src/main.c ****   GPIO_InitStruct.Pull = GPIO_NOPULL;
+  97              		.loc 1 315 3 is_stmt 1 view .LVU20
+  98              		.loc 1 315 24 is_stmt 0 view .LVU21
+  99 004e 0594     		str	r4, [sp, #20]
+ 316:Core/Src/main.c ****   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+ 100              		.loc 1 316 3 is_stmt 1 view .LVU22
+ 101              		.loc 1 316 25 is_stmt 0 view .LVU23
+ 102 0050 0694     		str	r4, [sp, #24]
+ 317:Core/Src/main.c ****   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 103              		.loc 1 317 3 is_stmt 1 view .LVU24
+ 104 0052 03A9     		add	r1, sp, #12
+ 105 0054 2846     		mov	r0, r5
+ 106 0056 FFF7FEFF 		bl	HAL_GPIO_Init
+ 107              	.LVL1:
+ 318:Core/Src/main.c **** 
+ 319:Core/Src/main.c **** /* USER CODE BEGIN MX_GPIO_Init_2 */
+ 320:Core/Src/main.c **** /* USER CODE END MX_GPIO_Init_2 */
+ 321:Core/Src/main.c **** }
+ 108              		.loc 1 321 1 is_stmt 0 view .LVU25
+ 109 005a 09B0     		add	sp, sp, #36
+ 110              	.LCFI2:
+ 111              		.cfi_def_cfa_offset 12
+ 112              		@ sp needed
+ 113 005c 30BD     		pop	{r4, r5, pc}
+ 114              	.L4:
+ 115 005e 00BF     		.align	2
+ 116              	.L3:
+ 117 0060 00380240 		.word	1073887232
+ 118 0064 00000240 		.word	1073872896
+ 119              		.cfi_endproc
+ 120              	.LFE141:
+ 122              		.section	.text.uart_printf,"ax",%progbits
+ 123              		.align	1
+ 124              		.global	uart_printf
+ 125              		.syntax unified
+ 126              		.thumb
+ 127              		.thumb_func
+ 128              		.fpu fpv4-sp-d16
+ 130              	uart_printf:
+ 131              	.LVL2:
+ 132              	.LFB142:
+ 322:Core/Src/main.c **** 
+ 323:Core/Src/main.c **** /* USER CODE BEGIN 4 */
+ 324:Core/Src/main.c **** int uart_printf(const char *fmt, ...)
+ 325:Core/Src/main.c **** {
+ 133              		.loc 1 325 1 is_stmt 1 view -0
+ 134              		.cfi_startproc
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 9
+
+
+ 135              		@ args = 4, pretend = 16, frame = 1032
+ 136              		@ frame_needed = 0, uses_anonymous_args = 1
+ 137              		.loc 1 325 1 is_stmt 0 view .LVU27
+ 138 0000 0FB4     		push	{r0, r1, r2, r3}
+ 139              	.LCFI3:
+ 140              		.cfi_def_cfa_offset 16
+ 141              		.cfi_offset 0, -16
+ 142              		.cfi_offset 1, -12
+ 143              		.cfi_offset 2, -8
+ 144              		.cfi_offset 3, -4
+ 145 0002 30B5     		push	{r4, r5, lr}
+ 146              	.LCFI4:
+ 147              		.cfi_def_cfa_offset 28
+ 148              		.cfi_offset 4, -28
+ 149              		.cfi_offset 5, -24
+ 150              		.cfi_offset 14, -20
+ 151 0004 ADF20C4D 		subw	sp, sp, #1036
+ 152              	.LCFI5:
+ 153              		.cfi_def_cfa_offset 1064
+ 154 0008 0DF58362 		add	r2, sp, #1048
+ 155 000c 52F8041B 		ldr	r1, [r2], #4
+ 326:Core/Src/main.c ****   char buf[1024];
+ 156              		.loc 1 326 3 is_stmt 1 view .LVU28
+ 327:Core/Src/main.c ****   int len, i;
+ 157              		.loc 1 327 3 view .LVU29
+ 328:Core/Src/main.c ****   va_list args;
+ 158              		.loc 1 328 3 view .LVU30
+ 329:Core/Src/main.c ****   va_start (args, fmt);
+ 159              		.loc 1 329 3 view .LVU31
+ 160 0010 0192     		str	r2, [sp, #4]
+ 330:Core/Src/main.c **** 
+ 331:Core/Src/main.c ****   len = vsprintf(buf, fmt, args);
+ 161              		.loc 1 331 3 view .LVU32
+ 162              		.loc 1 331 9 is_stmt 0 view .LVU33
+ 163 0012 02A8     		add	r0, sp, #8
+ 164 0014 FFF7FEFF 		bl	vsprintf
+ 165              	.LVL3:
+ 166 0018 0546     		mov	r5, r0
+ 167              	.LVL4:
+ 332:Core/Src/main.c ****   for (i=0; i<len; i++)
+ 168              		.loc 1 332 3 is_stmt 1 view .LVU34
+ 169              		.loc 1 332 9 is_stmt 0 view .LVU35
+ 170 001a 0024     		movs	r4, #0
+ 171              		.loc 1 332 3 view .LVU36
+ 172 001c 07E0     		b	.L6
+ 173              	.LVL5:
+ 174              	.L7:
+ 333:Core/Src/main.c ****   {
+ 334:Core/Src/main.c ****     HAL_UART_Transmit(&huart1, &buf[i], sizeof(char), 10);
+ 175              		.loc 1 334 5 is_stmt 1 discriminator 3 view .LVU37
+ 176 001e 0A23     		movs	r3, #10
+ 177 0020 0122     		movs	r2, #1
+ 178 0022 02A9     		add	r1, sp, #8
+ 179 0024 2144     		add	r1, r1, r4
+ 180 0026 0648     		ldr	r0, .L9
+ 181 0028 FFF7FEFF 		bl	HAL_UART_Transmit
+ 182              	.LVL6:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 10
+
+
+ 332:Core/Src/main.c ****   for (i=0; i<len; i++)
+ 183              		.loc 1 332 20 discriminator 3 view .LVU38
+ 332:Core/Src/main.c ****   for (i=0; i<len; i++)
+ 184              		.loc 1 332 21 is_stmt 0 discriminator 3 view .LVU39
+ 185 002c 0134     		adds	r4, r4, #1
+ 186              	.LVL7:
+ 187              	.L6:
+ 332:Core/Src/main.c ****   for (i=0; i<len; i++)
+ 188              		.loc 1 332 13 is_stmt 1 discriminator 1 view .LVU40
+ 332:Core/Src/main.c ****   for (i=0; i<len; i++)
+ 189              		.loc 1 332 3 is_stmt 0 discriminator 1 view .LVU41
+ 190 002e AC42     		cmp	r4, r5
+ 191 0030 F5DB     		blt	.L7
+ 335:Core/Src/main.c ****   }
+ 336:Core/Src/main.c ****   va_end(args);
+ 192              		.loc 1 336 3 is_stmt 1 view .LVU42
+ 337:Core/Src/main.c ****   return len;
+ 193              		.loc 1 337 3 view .LVU43
+ 338:Core/Src/main.c **** }
+ 194              		.loc 1 338 1 is_stmt 0 view .LVU44
+ 195 0032 2846     		mov	r0, r5
+ 196 0034 0DF20C4D 		addw	sp, sp, #1036
+ 197              	.LCFI6:
+ 198              		.cfi_def_cfa_offset 28
+ 199              		@ sp needed
+ 200 0038 BDE83040 		pop	{r4, r5, lr}
+ 201              	.LCFI7:
+ 202              		.cfi_restore 14
+ 203              		.cfi_restore 5
+ 204              		.cfi_restore 4
+ 205              		.cfi_def_cfa_offset 16
+ 206              	.LVL8:
+ 207              		.loc 1 338 1 view .LVU45
+ 208 003c 04B0     		add	sp, sp, #16
+ 209              	.LCFI8:
+ 210              		.cfi_restore 3
+ 211              		.cfi_restore 2
+ 212              		.cfi_restore 1
+ 213              		.cfi_restore 0
+ 214              		.cfi_def_cfa_offset 0
+ 215 003e 7047     		bx	lr
+ 216              	.L10:
+ 217              		.align	2
+ 218              	.L9:
+ 219 0040 00000000 		.word	.LANCHOR0
+ 220              		.cfi_endproc
+ 221              	.LFE142:
+ 223              		.section	.text.uart_sendchar,"ax",%progbits
+ 224              		.align	1
+ 225              		.global	uart_sendchar
+ 226              		.syntax unified
+ 227              		.thumb
+ 228              		.thumb_func
+ 229              		.fpu fpv4-sp-d16
+ 231              	uart_sendchar:
+ 232              	.LVL9:
+ 233              	.LFB143:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 11
+
+
+ 339:Core/Src/main.c **** 
+ 340:Core/Src/main.c **** void uart_sendchar(const char pdata)
+ 341:Core/Src/main.c **** {
+ 234              		.loc 1 341 1 is_stmt 1 view -0
+ 235              		.cfi_startproc
+ 236              		@ args = 0, pretend = 0, frame = 8
+ 237              		@ frame_needed = 0, uses_anonymous_args = 0
+ 238              		.loc 1 341 1 is_stmt 0 view .LVU47
+ 239 0000 00B5     		push	{lr}
+ 240              	.LCFI9:
+ 241              		.cfi_def_cfa_offset 4
+ 242              		.cfi_offset 14, -4
+ 243 0002 83B0     		sub	sp, sp, #12
+ 244              	.LCFI10:
+ 245              		.cfi_def_cfa_offset 16
+ 342:Core/Src/main.c ****   char temp = pdata;
+ 246              		.loc 1 342 3 is_stmt 1 view .LVU48
+ 247              		.loc 1 342 8 is_stmt 0 view .LVU49
+ 248 0004 8DF80700 		strb	r0, [sp, #7]
+ 343:Core/Src/main.c ****   HAL_UART_Transmit(&huart1, &temp, sizeof(char), 10);
+ 249              		.loc 1 343 3 is_stmt 1 view .LVU50
+ 250 0008 0A23     		movs	r3, #10
+ 251 000a 0122     		movs	r2, #1
+ 252 000c 0DF10701 		add	r1, sp, #7
+ 253 0010 0248     		ldr	r0, .L13
+ 254              	.LVL10:
+ 255              		.loc 1 343 3 is_stmt 0 view .LVU51
+ 256 0012 FFF7FEFF 		bl	HAL_UART_Transmit
+ 257              	.LVL11:
+ 344:Core/Src/main.c ****   // if ('\n' == pdata)
+ 345:Core/Src/main.c ****   // {
+ 346:Core/Src/main.c ****   //   temp = '\r';
+ 347:Core/Src/main.c ****   //   HAL_UART_Transmit(&huart1, &temp, sizeof(char), 10);
+ 348:Core/Src/main.c ****   // }
+ 349:Core/Src/main.c **** }
+ 258              		.loc 1 349 1 view .LVU52
+ 259 0016 03B0     		add	sp, sp, #12
+ 260              	.LCFI11:
+ 261              		.cfi_def_cfa_offset 4
+ 262              		@ sp needed
+ 263 0018 5DF804FB 		ldr	pc, [sp], #4
+ 264              	.L14:
+ 265              		.align	2
+ 266              	.L13:
+ 267 001c 00000000 		.word	.LANCHOR0
+ 268              		.cfi_endproc
+ 269              	.LFE143:
+ 271              		.section	.text.send_char,"ax",%progbits
+ 272              		.align	1
+ 273              		.global	send_char
+ 274              		.syntax unified
+ 275              		.thumb
+ 276              		.thumb_func
+ 277              		.fpu fpv4-sp-d16
+ 279              	send_char:
+ 280              	.LVL12:
+ 281              	.LFB150:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 12
+
+
+ 350:Core/Src/main.c **** 
+ 351:Core/Src/main.c **** int debug_printf(const char *fmt, ...)
+ 352:Core/Src/main.c **** {
+ 353:Core/Src/main.c ****   char buf[1024];
+ 354:Core/Src/main.c ****   int len, i;
+ 355:Core/Src/main.c ****   va_list args;
+ 356:Core/Src/main.c ****   va_start (args, fmt);
+ 357:Core/Src/main.c **** 
+ 358:Core/Src/main.c ****   len = vsprintf(buf, fmt, args);
+ 359:Core/Src/main.c ****   for (i=0; i<len; i++)
+ 360:Core/Src/main.c ****   {
+ 361:Core/Src/main.c ****     HAL_UART_Transmit(&huart2, &buf[i], sizeof(char), 10);
+ 362:Core/Src/main.c ****   }
+ 363:Core/Src/main.c ****   va_end(args);
+ 364:Core/Src/main.c ****   return len;
+ 365:Core/Src/main.c **** }
+ 366:Core/Src/main.c **** 
+ 367:Core/Src/main.c **** void debug_sendchar(const char pdata)
+ 368:Core/Src/main.c **** {
+ 369:Core/Src/main.c ****   char temp = pdata;
+ 370:Core/Src/main.c ****   HAL_UART_Transmit(&huart2, &temp, sizeof(char), 10);
+ 371:Core/Src/main.c ****   // if ('\n' == pdata)
+ 372:Core/Src/main.c ****   // {
+ 373:Core/Src/main.c ****   //   temp = '\r';
+ 374:Core/Src/main.c ****   //   HAL_UART_Transmit(&huart1, &temp, sizeof(char), 10);
+ 375:Core/Src/main.c ****   // }
+ 376:Core/Src/main.c **** }
+ 377:Core/Src/main.c **** 
+ 378:Core/Src/main.c **** int add(int a, int b){
+ 379:Core/Src/main.c ****     return a + b;
+ 380:Core/Src/main.c **** }
+ 381:Core/Src/main.c **** 
+ 382:Core/Src/main.c **** void test_add(void){
+ 383:Core/Src/main.c ****     for(int i=0; i<9; i++){
+ 384:Core/Src/main.c ****         for(int j=0; j<9; j++){
+ 385:Core/Src/main.c ****             TEST_ASSERT_EQUAL_INT((i+j), add(i,j));
+ 386:Core/Src/main.c ****         }
+ 387:Core/Src/main.c ****     }
+ 388:Core/Src/main.c **** }
+ 389:Core/Src/main.c **** 
+ 390:Core/Src/main.c **** void setUp(){
+ 391:Core/Src/main.c **** 
+ 392:Core/Src/main.c **** }
+ 393:Core/Src/main.c **** void tearDown(){
+ 394:Core/Src/main.c **** 
+ 395:Core/Src/main.c **** }
+ 396:Core/Src/main.c **** 
+ 397:Core/Src/main.c **** void send_char(uint8_t data)
+ 398:Core/Src/main.c **** {
+ 282              		.loc 1 398 1 is_stmt 1 view -0
+ 283              		.cfi_startproc
+ 284              		@ args = 0, pretend = 0, frame = 0
+ 285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 286              		.loc 1 398 1 is_stmt 0 view .LVU54
+ 287 0000 08B5     		push	{r3, lr}
+ 288              	.LCFI12:
+ 289              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 13
+
+
+ 290              		.cfi_offset 3, -8
+ 291              		.cfi_offset 14, -4
+ 399:Core/Src/main.c ****     uart_sendchar(data);
+ 292              		.loc 1 399 5 is_stmt 1 view .LVU55
+ 293 0002 FFF7FEFF 		bl	uart_sendchar
+ 294              	.LVL13:
+ 400:Core/Src/main.c **** }
+ 295              		.loc 1 400 1 is_stmt 0 view .LVU56
+ 296 0006 08BD     		pop	{r3, pc}
+ 297              		.cfi_endproc
+ 298              	.LFE150:
+ 300              		.section	.text.debug_printf,"ax",%progbits
+ 301              		.align	1
+ 302              		.global	debug_printf
+ 303              		.syntax unified
+ 304              		.thumb
+ 305              		.thumb_func
+ 306              		.fpu fpv4-sp-d16
+ 308              	debug_printf:
+ 309              	.LVL14:
+ 310              	.LFB144:
+ 352:Core/Src/main.c ****   char buf[1024];
+ 311              		.loc 1 352 1 is_stmt 1 view -0
+ 312              		.cfi_startproc
+ 313              		@ args = 4, pretend = 16, frame = 1032
+ 314              		@ frame_needed = 0, uses_anonymous_args = 1
+ 352:Core/Src/main.c ****   char buf[1024];
+ 315              		.loc 1 352 1 is_stmt 0 view .LVU58
+ 316 0000 0FB4     		push	{r0, r1, r2, r3}
+ 317              	.LCFI13:
+ 318              		.cfi_def_cfa_offset 16
+ 319              		.cfi_offset 0, -16
+ 320              		.cfi_offset 1, -12
+ 321              		.cfi_offset 2, -8
+ 322              		.cfi_offset 3, -4
+ 323 0002 30B5     		push	{r4, r5, lr}
+ 324              	.LCFI14:
+ 325              		.cfi_def_cfa_offset 28
+ 326              		.cfi_offset 4, -28
+ 327              		.cfi_offset 5, -24
+ 328              		.cfi_offset 14, -20
+ 329 0004 ADF20C4D 		subw	sp, sp, #1036
+ 330              	.LCFI15:
+ 331              		.cfi_def_cfa_offset 1064
+ 332 0008 0DF58362 		add	r2, sp, #1048
+ 333 000c 52F8041B 		ldr	r1, [r2], #4
+ 353:Core/Src/main.c ****   int len, i;
+ 334              		.loc 1 353 3 is_stmt 1 view .LVU59
+ 354:Core/Src/main.c ****   va_list args;
+ 335              		.loc 1 354 3 view .LVU60
+ 355:Core/Src/main.c ****   va_start (args, fmt);
+ 336              		.loc 1 355 3 view .LVU61
+ 356:Core/Src/main.c **** 
+ 337              		.loc 1 356 3 view .LVU62
+ 338 0010 0192     		str	r2, [sp, #4]
+ 358:Core/Src/main.c ****   for (i=0; i<len; i++)
+ 339              		.loc 1 358 3 view .LVU63
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 14
+
+
+ 358:Core/Src/main.c ****   for (i=0; i<len; i++)
+ 340              		.loc 1 358 9 is_stmt 0 view .LVU64
+ 341 0012 02A8     		add	r0, sp, #8
+ 342 0014 FFF7FEFF 		bl	vsprintf
+ 343              	.LVL15:
+ 344 0018 0546     		mov	r5, r0
+ 345              	.LVL16:
+ 359:Core/Src/main.c ****   {
+ 346              		.loc 1 359 3 is_stmt 1 view .LVU65
+ 359:Core/Src/main.c ****   {
+ 347              		.loc 1 359 9 is_stmt 0 view .LVU66
+ 348 001a 0024     		movs	r4, #0
+ 359:Core/Src/main.c ****   {
+ 349              		.loc 1 359 3 view .LVU67
+ 350 001c 07E0     		b	.L18
+ 351              	.LVL17:
+ 352              	.L19:
+ 361:Core/Src/main.c ****   }
+ 353              		.loc 1 361 5 is_stmt 1 discriminator 3 view .LVU68
+ 354 001e 0A23     		movs	r3, #10
+ 355 0020 0122     		movs	r2, #1
+ 356 0022 02A9     		add	r1, sp, #8
+ 357 0024 2144     		add	r1, r1, r4
+ 358 0026 0648     		ldr	r0, .L21
+ 359 0028 FFF7FEFF 		bl	HAL_UART_Transmit
+ 360              	.LVL18:
+ 359:Core/Src/main.c ****   {
+ 361              		.loc 1 359 20 discriminator 3 view .LVU69
+ 359:Core/Src/main.c ****   {
+ 362              		.loc 1 359 21 is_stmt 0 discriminator 3 view .LVU70
+ 363 002c 0134     		adds	r4, r4, #1
+ 364              	.LVL19:
+ 365              	.L18:
+ 359:Core/Src/main.c ****   {
+ 366              		.loc 1 359 13 is_stmt 1 discriminator 1 view .LVU71
+ 359:Core/Src/main.c ****   {
+ 367              		.loc 1 359 3 is_stmt 0 discriminator 1 view .LVU72
+ 368 002e AC42     		cmp	r4, r5
+ 369 0030 F5DB     		blt	.L19
+ 363:Core/Src/main.c ****   return len;
+ 370              		.loc 1 363 3 is_stmt 1 view .LVU73
+ 364:Core/Src/main.c **** }
+ 371              		.loc 1 364 3 view .LVU74
+ 365:Core/Src/main.c **** 
+ 372              		.loc 1 365 1 is_stmt 0 view .LVU75
+ 373 0032 2846     		mov	r0, r5
+ 374 0034 0DF20C4D 		addw	sp, sp, #1036
+ 375              	.LCFI16:
+ 376              		.cfi_def_cfa_offset 28
+ 377              		@ sp needed
+ 378 0038 BDE83040 		pop	{r4, r5, lr}
+ 379              	.LCFI17:
+ 380              		.cfi_restore 14
+ 381              		.cfi_restore 5
+ 382              		.cfi_restore 4
+ 383              		.cfi_def_cfa_offset 16
+ 384              	.LVL20:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 15
+
+
+ 365:Core/Src/main.c **** 
+ 385              		.loc 1 365 1 view .LVU76
+ 386 003c 04B0     		add	sp, sp, #16
+ 387              	.LCFI18:
+ 388              		.cfi_restore 3
+ 389              		.cfi_restore 2
+ 390              		.cfi_restore 1
+ 391              		.cfi_restore 0
+ 392              		.cfi_def_cfa_offset 0
+ 393 003e 7047     		bx	lr
+ 394              	.L22:
+ 395              		.align	2
+ 396              	.L21:
+ 397 0040 00000000 		.word	.LANCHOR1
+ 398              		.cfi_endproc
+ 399              	.LFE144:
+ 401              		.section	.text.debug_sendchar,"ax",%progbits
+ 402              		.align	1
+ 403              		.global	debug_sendchar
+ 404              		.syntax unified
+ 405              		.thumb
+ 406              		.thumb_func
+ 407              		.fpu fpv4-sp-d16
+ 409              	debug_sendchar:
+ 410              	.LVL21:
+ 411              	.LFB145:
+ 368:Core/Src/main.c ****   char temp = pdata;
+ 412              		.loc 1 368 1 is_stmt 1 view -0
+ 413              		.cfi_startproc
+ 414              		@ args = 0, pretend = 0, frame = 8
+ 415              		@ frame_needed = 0, uses_anonymous_args = 0
+ 368:Core/Src/main.c ****   char temp = pdata;
+ 416              		.loc 1 368 1 is_stmt 0 view .LVU78
+ 417 0000 00B5     		push	{lr}
+ 418              	.LCFI19:
+ 419              		.cfi_def_cfa_offset 4
+ 420              		.cfi_offset 14, -4
+ 421 0002 83B0     		sub	sp, sp, #12
+ 422              	.LCFI20:
+ 423              		.cfi_def_cfa_offset 16
+ 369:Core/Src/main.c ****   HAL_UART_Transmit(&huart2, &temp, sizeof(char), 10);
+ 424              		.loc 1 369 3 is_stmt 1 view .LVU79
+ 369:Core/Src/main.c ****   HAL_UART_Transmit(&huart2, &temp, sizeof(char), 10);
+ 425              		.loc 1 369 8 is_stmt 0 view .LVU80
+ 426 0004 8DF80700 		strb	r0, [sp, #7]
+ 370:Core/Src/main.c ****   // if ('\n' == pdata)
+ 427              		.loc 1 370 3 is_stmt 1 view .LVU81
+ 428 0008 0A23     		movs	r3, #10
+ 429 000a 0122     		movs	r2, #1
+ 430 000c 0DF10701 		add	r1, sp, #7
+ 431 0010 0248     		ldr	r0, .L25
+ 432              	.LVL22:
+ 370:Core/Src/main.c ****   // if ('\n' == pdata)
+ 433              		.loc 1 370 3 is_stmt 0 view .LVU82
+ 434 0012 FFF7FEFF 		bl	HAL_UART_Transmit
+ 435              	.LVL23:
+ 376:Core/Src/main.c **** 
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 16
+
+
+ 436              		.loc 1 376 1 view .LVU83
+ 437 0016 03B0     		add	sp, sp, #12
+ 438              	.LCFI21:
+ 439              		.cfi_def_cfa_offset 4
+ 440              		@ sp needed
+ 441 0018 5DF804FB 		ldr	pc, [sp], #4
+ 442              	.L26:
+ 443              		.align	2
+ 444              	.L25:
+ 445 001c 00000000 		.word	.LANCHOR1
+ 446              		.cfi_endproc
+ 447              	.LFE145:
+ 449              		.section	.rodata.frame_received.str1.4,"aMS",%progbits,1
+ 450              		.align	2
+ 451              	.LC0:
+ 452 0000 0D0A5265 		.ascii	"\015\012Received frame: \000"
+ 452      63656976 
+ 452      65642066 
+ 452      72616D65 
+ 452      3A2000
+ 453              		.section	.text.frame_received,"ax",%progbits
+ 454              		.align	1
+ 455              		.global	frame_received
+ 456              		.syntax unified
+ 457              		.thumb
+ 458              		.thumb_func
+ 459              		.fpu fpv4-sp-d16
+ 461              	frame_received:
+ 462              	.LVL24:
+ 463              	.LFB151:
+ 401:Core/Src/main.c **** 
+ 402:Core/Src/main.c **** void frame_received(const uint8_t *frame_buffer, uint16_t frame_length)
+ 403:Core/Src/main.c **** {
+ 464              		.loc 1 403 1 is_stmt 1 view -0
+ 465              		.cfi_startproc
+ 466              		@ args = 0, pretend = 0, frame = 0
+ 467              		@ frame_needed = 0, uses_anonymous_args = 0
+ 468              		.loc 1 403 1 is_stmt 0 view .LVU85
+ 469 0000 70B5     		push	{r4, r5, r6, lr}
+ 470              	.LCFI22:
+ 471              		.cfi_def_cfa_offset 16
+ 472              		.cfi_offset 4, -16
+ 473              		.cfi_offset 5, -12
+ 474              		.cfi_offset 6, -8
+ 475              		.cfi_offset 14, -4
+ 476 0002 0646     		mov	r6, r0
+ 477 0004 0D46     		mov	r5, r1
+ 404:Core/Src/main.c ****   debug_printf("\r\nReceived frame: ");
+ 478              		.loc 1 404 3 is_stmt 1 view .LVU86
+ 479 0006 0648     		ldr	r0, .L31
+ 480              	.LVL25:
+ 481              		.loc 1 404 3 is_stmt 0 view .LVU87
+ 482 0008 FFF7FEFF 		bl	debug_printf
+ 483              	.LVL26:
+ 405:Core/Src/main.c ****   for (uint16_t i = 0; i < frame_length; i++)
+ 484              		.loc 1 405 3 is_stmt 1 view .LVU88
+ 485              	.LBB6:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 17
+
+
+ 486              		.loc 1 405 8 view .LVU89
+ 487              		.loc 1 405 17 is_stmt 0 view .LVU90
+ 488 000c 0024     		movs	r4, #0
+ 489              		.loc 1 405 3 view .LVU91
+ 490 000e 04E0     		b	.L28
+ 491              	.LVL27:
+ 492              	.L29:
+ 406:Core/Src/main.c ****   {
+ 407:Core/Src/main.c ****       debug_sendchar(frame_buffer[i]);
+ 493              		.loc 1 407 7 is_stmt 1 discriminator 3 view .LVU92
+ 494 0010 305D     		ldrb	r0, [r6, r4]	@ zero_extendqisi2
+ 495 0012 FFF7FEFF 		bl	debug_sendchar
+ 496              	.LVL28:
+ 405:Core/Src/main.c ****   for (uint16_t i = 0; i < frame_length; i++)
+ 497              		.loc 1 405 42 discriminator 3 view .LVU93
+ 405:Core/Src/main.c ****   for (uint16_t i = 0; i < frame_length; i++)
+ 498              		.loc 1 405 43 is_stmt 0 discriminator 3 view .LVU94
+ 499 0016 0134     		adds	r4, r4, #1
+ 500              	.LVL29:
+ 405:Core/Src/main.c ****   for (uint16_t i = 0; i < frame_length; i++)
+ 501              		.loc 1 405 43 discriminator 3 view .LVU95
+ 502 0018 A4B2     		uxth	r4, r4
+ 503              	.LVL30:
+ 504              	.L28:
+ 405:Core/Src/main.c ****   for (uint16_t i = 0; i < frame_length; i++)
+ 505              		.loc 1 405 24 is_stmt 1 discriminator 1 view .LVU96
+ 405:Core/Src/main.c ****   for (uint16_t i = 0; i < frame_length; i++)
+ 506              		.loc 1 405 3 is_stmt 0 discriminator 1 view .LVU97
+ 507 001a AC42     		cmp	r4, r5
+ 508 001c F8D3     		bcc	.L29
+ 509              	.LBE6:
+ 408:Core/Src/main.c ****   }
+ 409:Core/Src/main.c **** }
+ 510              		.loc 1 409 1 view .LVU98
+ 511 001e 70BD     		pop	{r4, r5, r6, pc}
+ 512              	.LVL31:
+ 513              	.L32:
+ 514              		.loc 1 409 1 view .LVU99
+ 515              		.align	2
+ 516              	.L31:
+ 517 0020 00000000 		.word	.LC0
+ 518              		.cfi_endproc
+ 519              	.LFE151:
+ 521              		.section	.text.add,"ax",%progbits
+ 522              		.align	1
+ 523              		.global	add
+ 524              		.syntax unified
+ 525              		.thumb
+ 526              		.thumb_func
+ 527              		.fpu fpv4-sp-d16
+ 529              	add:
+ 530              	.LVL32:
+ 531              	.LFB146:
+ 378:Core/Src/main.c ****     return a + b;
+ 532              		.loc 1 378 22 is_stmt 1 view -0
+ 533              		.cfi_startproc
+ 534              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 18
+
+
+ 535              		@ frame_needed = 0, uses_anonymous_args = 0
+ 536              		@ link register save eliminated.
+ 379:Core/Src/main.c **** }
+ 537              		.loc 1 379 5 view .LVU101
+ 380:Core/Src/main.c **** 
+ 538              		.loc 1 380 1 is_stmt 0 view .LVU102
+ 539 0000 0844     		add	r0, r0, r1
+ 540              	.LVL33:
+ 380:Core/Src/main.c **** 
+ 541              		.loc 1 380 1 view .LVU103
+ 542 0002 7047     		bx	lr
+ 543              		.cfi_endproc
+ 544              	.LFE146:
+ 546              		.section	.text.test_add,"ax",%progbits
+ 547              		.align	1
+ 548              		.global	test_add
+ 549              		.syntax unified
+ 550              		.thumb
+ 551              		.thumb_func
+ 552              		.fpu fpv4-sp-d16
+ 554              	test_add:
+ 555              	.LFB147:
+ 382:Core/Src/main.c ****     for(int i=0; i<9; i++){
+ 556              		.loc 1 382 20 is_stmt 1 view -0
+ 557              		.cfi_startproc
+ 558              		@ args = 0, pretend = 0, frame = 0
+ 559              		@ frame_needed = 0, uses_anonymous_args = 0
+ 560 0000 70B5     		push	{r4, r5, r6, lr}
+ 561              	.LCFI23:
+ 562              		.cfi_def_cfa_offset 16
+ 563              		.cfi_offset 4, -16
+ 564              		.cfi_offset 5, -12
+ 565              		.cfi_offset 6, -8
+ 566              		.cfi_offset 14, -4
+ 567 0002 82B0     		sub	sp, sp, #8
+ 568              	.LCFI24:
+ 569              		.cfi_def_cfa_offset 24
+ 383:Core/Src/main.c ****         for(int j=0; j<9; j++){
+ 570              		.loc 1 383 5 view .LVU105
+ 571              	.LBB7:
+ 383:Core/Src/main.c ****         for(int j=0; j<9; j++){
+ 572              		.loc 1 383 9 view .LVU106
+ 573              	.LVL34:
+ 383:Core/Src/main.c ****         for(int j=0; j<9; j++){
+ 574              		.loc 1 383 13 is_stmt 0 view .LVU107
+ 575 0004 0025     		movs	r5, #0
+ 383:Core/Src/main.c ****         for(int j=0; j<9; j++){
+ 576              		.loc 1 383 5 view .LVU108
+ 577 0006 11E0     		b	.L35
+ 578              	.LVL35:
+ 579              	.L36:
+ 580              	.LBB8:
+ 385:Core/Src/main.c ****         }
+ 581              		.loc 1 385 13 is_stmt 1 discriminator 3 view .LVU109
+ 582 0008 2E19     		adds	r6, r5, r4
+ 583 000a 2146     		mov	r1, r4
+ 584 000c 2846     		mov	r0, r5
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 19
+
+
+ 585 000e FFF7FEFF 		bl	add
+ 586              	.LVL36:
+ 587 0012 0146     		mov	r1, r0
+ 588 0014 1423     		movs	r3, #20
+ 589 0016 0093     		str	r3, [sp]
+ 590 0018 40F28113 		movw	r3, #385
+ 591 001c 0022     		movs	r2, #0
+ 592 001e 3046     		mov	r0, r6
+ 593 0020 FFF7FEFF 		bl	UnityAssertEqualNumber
+ 594              	.LVL37:
+ 384:Core/Src/main.c ****             TEST_ASSERT_EQUAL_INT((i+j), add(i,j));
+ 595              		.loc 1 384 27 discriminator 3 view .LVU110
+ 384:Core/Src/main.c ****             TEST_ASSERT_EQUAL_INT((i+j), add(i,j));
+ 596              		.loc 1 384 28 is_stmt 0 discriminator 3 view .LVU111
+ 597 0024 0134     		adds	r4, r4, #1
+ 598              	.LVL38:
+ 599              	.L37:
+ 384:Core/Src/main.c ****             TEST_ASSERT_EQUAL_INT((i+j), add(i,j));
+ 600              		.loc 1 384 22 is_stmt 1 discriminator 1 view .LVU112
+ 384:Core/Src/main.c ****             TEST_ASSERT_EQUAL_INT((i+j), add(i,j));
+ 601              		.loc 1 384 9 is_stmt 0 discriminator 1 view .LVU113
+ 602 0026 082C     		cmp	r4, #8
+ 603 0028 EEDD     		ble	.L36
+ 604              	.LBE8:
+ 383:Core/Src/main.c ****         for(int j=0; j<9; j++){
+ 605              		.loc 1 383 23 is_stmt 1 discriminator 2 view .LVU114
+ 383:Core/Src/main.c ****         for(int j=0; j<9; j++){
+ 606              		.loc 1 383 24 is_stmt 0 discriminator 2 view .LVU115
+ 607 002a 0135     		adds	r5, r5, #1
+ 608              	.LVL39:
+ 609              	.L35:
+ 383:Core/Src/main.c ****         for(int j=0; j<9; j++){
+ 610              		.loc 1 383 18 is_stmt 1 discriminator 1 view .LVU116
+ 383:Core/Src/main.c ****         for(int j=0; j<9; j++){
+ 611              		.loc 1 383 5 is_stmt 0 discriminator 1 view .LVU117
+ 612 002c 082D     		cmp	r5, #8
+ 613 002e 01DC     		bgt	.L40
+ 614              	.LBB9:
+ 384:Core/Src/main.c ****             TEST_ASSERT_EQUAL_INT((i+j), add(i,j));
+ 615              		.loc 1 384 17 view .LVU118
+ 616 0030 0024     		movs	r4, #0
+ 617 0032 F8E7     		b	.L37
+ 618              	.L40:
+ 619              	.LBE9:
+ 620              	.LBE7:
+ 388:Core/Src/main.c **** 
+ 621              		.loc 1 388 1 view .LVU119
+ 622 0034 02B0     		add	sp, sp, #8
+ 623              	.LCFI25:
+ 624              		.cfi_def_cfa_offset 16
+ 625              		@ sp needed
+ 626 0036 70BD     		pop	{r4, r5, r6, pc}
+ 388:Core/Src/main.c **** 
+ 627              		.loc 1 388 1 view .LVU120
+ 628              		.cfi_endproc
+ 629              	.LFE147:
+ 631              		.section	.text.setUp,"ax",%progbits
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 20
+
+
+ 632              		.align	1
+ 633              		.global	setUp
+ 634              		.syntax unified
+ 635              		.thumb
+ 636              		.thumb_func
+ 637              		.fpu fpv4-sp-d16
+ 639              	setUp:
+ 640              	.LFB148:
+ 390:Core/Src/main.c **** 
+ 641              		.loc 1 390 13 is_stmt 1 view -0
+ 642              		.cfi_startproc
+ 643              		@ args = 0, pretend = 0, frame = 0
+ 644              		@ frame_needed = 0, uses_anonymous_args = 0
+ 645              		@ link register save eliminated.
+ 392:Core/Src/main.c **** void tearDown(){
+ 646              		.loc 1 392 1 view .LVU122
+ 647 0000 7047     		bx	lr
+ 648              		.cfi_endproc
+ 649              	.LFE148:
+ 651              		.section	.text.tearDown,"ax",%progbits
+ 652              		.align	1
+ 653              		.global	tearDown
+ 654              		.syntax unified
+ 655              		.thumb
+ 656              		.thumb_func
+ 657              		.fpu fpv4-sp-d16
+ 659              	tearDown:
+ 660              	.LFB149:
+ 393:Core/Src/main.c **** 
+ 661              		.loc 1 393 16 view -0
+ 662              		.cfi_startproc
+ 663              		@ args = 0, pretend = 0, frame = 0
+ 664              		@ frame_needed = 0, uses_anonymous_args = 0
+ 665              		@ link register save eliminated.
+ 395:Core/Src/main.c **** 
+ 666              		.loc 1 395 1 view .LVU124
+ 667 0000 7047     		bx	lr
+ 668              		.cfi_endproc
+ 669              	.LFE149:
+ 671              		.section	.text.HAL_UART_RxCpltCallback,"ax",%progbits
+ 672              		.align	1
+ 673              		.global	HAL_UART_RxCpltCallback
+ 674              		.syntax unified
+ 675              		.thumb
+ 676              		.thumb_func
+ 677              		.fpu fpv4-sp-d16
+ 679              	HAL_UART_RxCpltCallback:
+ 680              	.LVL40:
+ 681              	.LFB152:
+ 410:Core/Src/main.c **** 
+ 411:Core/Src/main.c **** void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+ 412:Core/Src/main.c **** {
+ 682              		.loc 1 412 1 view -0
+ 683              		.cfi_startproc
+ 684              		@ args = 0, pretend = 0, frame = 0
+ 685              		@ frame_needed = 0, uses_anonymous_args = 0
+ 686              		.loc 1 412 1 is_stmt 0 view .LVU126
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 21
+
+
+ 687 0000 10B5     		push	{r4, lr}
+ 688              	.LCFI26:
+ 689              		.cfi_def_cfa_offset 8
+ 690              		.cfi_offset 4, -8
+ 691              		.cfi_offset 14, -4
+ 413:Core/Src/main.c ****   minihdlc_char_receiver(data_rx[0]);
+ 692              		.loc 1 413 3 is_stmt 1 view .LVU127
+ 693 0002 054C     		ldr	r4, .L45
+ 694 0004 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 695              	.LVL41:
+ 696              		.loc 1 413 3 is_stmt 0 view .LVU128
+ 697 0006 FFF7FEFF 		bl	minihdlc_char_receiver
+ 698              	.LVL42:
+ 414:Core/Src/main.c ****   // debug_sendchar(data_rx[0]);
+ 415:Core/Src/main.c ****   // memcpy(buf_rx+t, data_rx, 1);
+ 416:Core/Src/main.c ****   // if (++t >= 20) t = 0;
+ 417:Core/Src/main.c ****   HAL_UART_Receive_IT(&huart1, data_rx, 1);
+ 699              		.loc 1 417 3 is_stmt 1 view .LVU129
+ 700 000a 0122     		movs	r2, #1
+ 701 000c 2146     		mov	r1, r4
+ 702 000e 0348     		ldr	r0, .L45+4
+ 703 0010 FFF7FEFF 		bl	HAL_UART_Receive_IT
+ 704              	.LVL43:
+ 418:Core/Src/main.c **** }
+ 705              		.loc 1 418 1 is_stmt 0 view .LVU130
+ 706 0014 10BD     		pop	{r4, pc}
+ 707              	.L46:
+ 708 0016 00BF     		.align	2
+ 709              	.L45:
+ 710 0018 00000000 		.word	.LANCHOR2
+ 711 001c 00000000 		.word	.LANCHOR0
+ 712              		.cfi_endproc
+ 713              	.LFE152:
+ 715              		.section	.text.Error_Handler,"ax",%progbits
+ 716              		.align	1
+ 717              		.global	Error_Handler
+ 718              		.syntax unified
+ 719              		.thumb
+ 720              		.thumb_func
+ 721              		.fpu fpv4-sp-d16
+ 723              	Error_Handler:
+ 724              	.LFB153:
+ 419:Core/Src/main.c **** /* USER CODE END 4 */
+ 420:Core/Src/main.c **** 
+ 421:Core/Src/main.c **** /**
+ 422:Core/Src/main.c ****   * @brief  This function is executed in case of error occurrence.
+ 423:Core/Src/main.c ****   * @retval None
+ 424:Core/Src/main.c ****   */
+ 425:Core/Src/main.c **** void Error_Handler(void)
+ 426:Core/Src/main.c **** {
+ 725              		.loc 1 426 1 is_stmt 1 view -0
+ 726              		.cfi_startproc
+ 727              		@ Volatile: function does not return.
+ 728              		@ args = 0, pretend = 0, frame = 0
+ 729              		@ frame_needed = 0, uses_anonymous_args = 0
+ 730              		@ link register save eliminated.
+ 427:Core/Src/main.c ****   /* USER CODE BEGIN Error_Handler_Debug */
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 22
+
+
+ 428:Core/Src/main.c ****   /* User can add his own implementation to report the HAL error return state */
+ 429:Core/Src/main.c ****   __disable_irq();
+ 731              		.loc 1 429 3 view .LVU132
+ 732              	.LBB10:
+ 733              	.LBI10:
+ 734              		.file 2 "Drivers/CMSIS/Include/cmsis_gcc.h"
+   1:Drivers/CMSIS/Include/cmsis_gcc.h **** /**************************************************************************//**
+   2:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @file     cmsis_gcc.h
+   3:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @brief    CMSIS compiler GCC header file
+   4:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @version  V5.4.1
+   5:Drivers/CMSIS/Include/cmsis_gcc.h ****  * @date     27. May 2021
+   6:Drivers/CMSIS/Include/cmsis_gcc.h ****  ******************************************************************************/
+   7:Drivers/CMSIS/Include/cmsis_gcc.h **** /*
+   8:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Copyright (c) 2009-2021 Arm Limited. All rights reserved.
+   9:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  10:Drivers/CMSIS/Include/cmsis_gcc.h ****  * SPDX-License-Identifier: Apache-2.0
+  11:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  12:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Licensed under the Apache License, Version 2.0 (the License); you may
+  13:Drivers/CMSIS/Include/cmsis_gcc.h ****  * not use this file except in compliance with the License.
+  14:Drivers/CMSIS/Include/cmsis_gcc.h ****  * You may obtain a copy of the License at
+  15:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  16:Drivers/CMSIS/Include/cmsis_gcc.h ****  * www.apache.org/licenses/LICENSE-2.0
+  17:Drivers/CMSIS/Include/cmsis_gcc.h ****  *
+  18:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Unless required by applicable law or agreed to in writing, software
+  19:Drivers/CMSIS/Include/cmsis_gcc.h ****  * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+  20:Drivers/CMSIS/Include/cmsis_gcc.h ****  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  21:Drivers/CMSIS/Include/cmsis_gcc.h ****  * See the License for the specific language governing permissions and
+  22:Drivers/CMSIS/Include/cmsis_gcc.h ****  * limitations under the License.
+  23:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+  24:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  25:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __CMSIS_GCC_H
+  26:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_H
+  27:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  28:Drivers/CMSIS/Include/cmsis_gcc.h **** /* ignore some GCC warnings */
+  29:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic push
+  30:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wsign-conversion"
+  31:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wconversion"
+  32:Drivers/CMSIS/Include/cmsis_gcc.h **** #pragma GCC diagnostic ignored "-Wunused-parameter"
+  33:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  34:Drivers/CMSIS/Include/cmsis_gcc.h **** /* Fallback for __has_builtin */
+  35:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __has_builtin
+  36:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __has_builtin(x) (0)
+  37:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  38:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+  39:Drivers/CMSIS/Include/cmsis_gcc.h **** /* CMSIS compiler specific defines */
+  40:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __ASM
+  41:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __ASM                                  __asm
+  42:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  43:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __INLINE
+  44:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __INLINE                               inline
+  45:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  46:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __STATIC_INLINE
+  47:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __STATIC_INLINE                        static inline
+  48:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  49:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __STATIC_FORCEINLINE
+  50:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __STATIC_FORCEINLINE                   __attribute__((always_inline)) static inline
+  51:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 23
+
+
+  52:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __NO_RETURN
+  53:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __NO_RETURN                            __attribute__((__noreturn__))
+  54:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  55:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __USED
+  56:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __USED                                 __attribute__((used))
+  57:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  58:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __WEAK
+  59:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __WEAK                                 __attribute__((weak))
+  60:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  61:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED
+  62:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED                               __attribute__((packed, aligned(1)))
+  63:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  64:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED_STRUCT
+  65:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED_STRUCT                        struct __attribute__((packed, aligned(1)))
+  66:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  67:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __PACKED_UNION
+  68:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __PACKED_UNION                         union __attribute__((packed, aligned(1)))
+  69:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  70:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32        /* deprecated */
+  71:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  72:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  73:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  74:Drivers/CMSIS/Include/cmsis_gcc.h ****   struct __attribute__((packed)) T_UINT32 { uint32_t v; };
+  75:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  76:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32(x)                  (((struct T_UINT32 *)(x))->v)
+  77:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  78:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_WRITE
+  79:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  80:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  81:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  82:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_WRITE { uint16_t v; };
+  83:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  84:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_WRITE(addr, val)    (void)((((struct T_UINT16_WRITE *)(void *)(addr))-
+  85:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  86:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT16_READ
+  87:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  88:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  89:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  90:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT16_READ { uint16_t v; };
+  91:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+  92:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT16_READ(addr)          (((const struct T_UINT16_READ *)(const void *)(add
+  93:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+  94:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_WRITE
+  95:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+  96:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+  97:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+  98:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_WRITE { uint32_t v; };
+  99:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 100:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_WRITE(addr, val)    (void)((((struct T_UINT32_WRITE *)(void *)(addr))-
+ 101:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 102:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __UNALIGNED_UINT32_READ
+ 103:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic push
+ 104:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wpacked"
+ 105:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic ignored "-Wattributes"
+ 106:Drivers/CMSIS/Include/cmsis_gcc.h ****   __PACKED_STRUCT T_UINT32_READ { uint32_t v; };
+ 107:Drivers/CMSIS/Include/cmsis_gcc.h ****   #pragma GCC diagnostic pop
+ 108:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __UNALIGNED_UINT32_READ(addr)          (((const struct T_UINT32_READ *)(const void *)(add
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 24
+
+
+ 109:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 110:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __ALIGNED
+ 111:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __ALIGNED(x)                           __attribute__((aligned(x)))
+ 112:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 113:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __RESTRICT
+ 114:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __RESTRICT                             __restrict
+ 115:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 116:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef   __COMPILER_BARRIER
+ 117:Drivers/CMSIS/Include/cmsis_gcc.h ****   #define __COMPILER_BARRIER()                   __ASM volatile("":::"memory")
+ 118:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 119:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 120:Drivers/CMSIS/Include/cmsis_gcc.h **** /* #########################  Startup and Lowlevel Init  ######################## */
+ 121:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 122:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __PROGRAM_START
+ 123:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 124:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 125:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Initializes data and bss sections
+ 126:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details This default implementations initialized all data and additional bss
+ 127:Drivers/CMSIS/Include/cmsis_gcc.h ****            sections relying on .copy.table and .zero.table specified properly
+ 128:Drivers/CMSIS/Include/cmsis_gcc.h ****            in the used linker script.
+ 129:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 130:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 131:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE __NO_RETURN void __cmsis_start(void)
+ 132:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 133:Drivers/CMSIS/Include/cmsis_gcc.h ****   extern void _start(void) __NO_RETURN;
+ 134:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 135:Drivers/CMSIS/Include/cmsis_gcc.h ****   typedef struct {
+ 136:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t const* src;
+ 137:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t* dest;
+ 138:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t  wlen;
+ 139:Drivers/CMSIS/Include/cmsis_gcc.h ****   } __copy_table_t;
+ 140:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 141:Drivers/CMSIS/Include/cmsis_gcc.h ****   typedef struct {
+ 142:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t* dest;
+ 143:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t  wlen;
+ 144:Drivers/CMSIS/Include/cmsis_gcc.h ****   } __zero_table_t;
+ 145:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 146:Drivers/CMSIS/Include/cmsis_gcc.h ****   extern const __copy_table_t __copy_table_start__;
+ 147:Drivers/CMSIS/Include/cmsis_gcc.h ****   extern const __copy_table_t __copy_table_end__;
+ 148:Drivers/CMSIS/Include/cmsis_gcc.h ****   extern const __zero_table_t __zero_table_start__;
+ 149:Drivers/CMSIS/Include/cmsis_gcc.h ****   extern const __zero_table_t __zero_table_end__;
+ 150:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 151:Drivers/CMSIS/Include/cmsis_gcc.h ****   for (__copy_table_t const* pTable = &__copy_table_start__; pTable < &__copy_table_end__; ++pTable
+ 152:Drivers/CMSIS/Include/cmsis_gcc.h ****     for(uint32_t i=0u; i<pTable->wlen; ++i) {
+ 153:Drivers/CMSIS/Include/cmsis_gcc.h ****       pTable->dest[i] = pTable->src[i];
+ 154:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
+ 155:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
+ 156:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 157:Drivers/CMSIS/Include/cmsis_gcc.h ****   for (__zero_table_t const* pTable = &__zero_table_start__; pTable < &__zero_table_end__; ++pTable
+ 158:Drivers/CMSIS/Include/cmsis_gcc.h ****     for(uint32_t i=0u; i<pTable->wlen; ++i) {
+ 159:Drivers/CMSIS/Include/cmsis_gcc.h ****       pTable->dest[i] = 0u;
+ 160:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
+ 161:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
+ 162:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 163:Drivers/CMSIS/Include/cmsis_gcc.h ****   _start();
+ 164:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 165:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 25
+
+
+ 166:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __PROGRAM_START           __cmsis_start
+ 167:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 168:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 169:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __INITIAL_SP
+ 170:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __INITIAL_SP              __StackTop
+ 171:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 172:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 173:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __STACK_LIMIT
+ 174:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __STACK_LIMIT             __StackLimit
+ 175:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 176:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 177:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __VECTOR_TABLE
+ 178:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __VECTOR_TABLE            __Vectors
+ 179:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 180:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 181:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __VECTOR_TABLE_ATTRIBUTE
+ 182:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __VECTOR_TABLE_ATTRIBUTE  __attribute__((used, section(".vectors")))
+ 183:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 184:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 185:Drivers/CMSIS/Include/cmsis_gcc.h **** #if defined (__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+ 186:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __STACK_SEAL
+ 187:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __STACK_SEAL              __StackSeal
+ 188:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 189:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 190:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __TZ_STACK_SEAL_SIZE
+ 191:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __TZ_STACK_SEAL_SIZE      8U
+ 192:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 193:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 194:Drivers/CMSIS/Include/cmsis_gcc.h **** #ifndef __TZ_STACK_SEAL_VALUE
+ 195:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __TZ_STACK_SEAL_VALUE     0xFEF5EDA5FEF5EDA5ULL
+ 196:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 197:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 198:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 199:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __TZ_set_STACKSEAL_S (uint32_t* stackTop) {
+ 200:Drivers/CMSIS/Include/cmsis_gcc.h ****   *((uint64_t *)stackTop) = __TZ_STACK_SEAL_VALUE;
+ 201:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 202:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 203:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 204:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 205:Drivers/CMSIS/Include/cmsis_gcc.h **** /* ##########################  Core Instruction Access  ######################### */
+ 206:Drivers/CMSIS/Include/cmsis_gcc.h **** /** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
+ 207:Drivers/CMSIS/Include/cmsis_gcc.h ****   Access to dedicated instructions
+ 208:Drivers/CMSIS/Include/cmsis_gcc.h ****   @{
+ 209:Drivers/CMSIS/Include/cmsis_gcc.h **** */
+ 210:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 211:Drivers/CMSIS/Include/cmsis_gcc.h **** /* Define macros for porting to both thumb1 and thumb2.
+ 212:Drivers/CMSIS/Include/cmsis_gcc.h ****  * For thumb1, use low register (r0-r7), specified by constraint "l"
+ 213:Drivers/CMSIS/Include/cmsis_gcc.h ****  * Otherwise, use general registers, specified by constraint "r" */
+ 214:Drivers/CMSIS/Include/cmsis_gcc.h **** #if defined (__thumb__) && !defined (__thumb2__)
+ 215:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_OUT_REG(r) "=l" (r)
+ 216:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_RW_REG(r) "+l" (r)
+ 217:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_USE_REG(r) "l" (r)
+ 218:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
+ 219:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_OUT_REG(r) "=r" (r)
+ 220:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_RW_REG(r) "+r" (r)
+ 221:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __CMSIS_GCC_USE_REG(r) "r" (r)
+ 222:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 26
+
+
+ 223:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 224:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 225:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   No Operation
+ 226:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details No Operation does nothing. This instruction can be used for code alignment purposes.
+ 227:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 228:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __NOP()                             __ASM volatile ("nop")
+ 229:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 230:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 231:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Wait For Interrupt
+ 232:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Wait For Interrupt is a hint instruction that suspends execution until one of a number o
+ 233:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 234:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __WFI()                             __ASM volatile ("wfi":::"memory")
+ 235:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 236:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 237:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 238:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Wait For Event
+ 239:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Wait For Event is a hint instruction that permits the processor to enter
+ 240:Drivers/CMSIS/Include/cmsis_gcc.h ****            a low-power state until one of a number of events occurs.
+ 241:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 242:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __WFE()                             __ASM volatile ("wfe":::"memory")
+ 243:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 244:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 245:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 246:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Send Event
+ 247:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Send Event is a hint instruction. It causes an event to be signaled to the CPU.
+ 248:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 249:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __SEV()                             __ASM volatile ("sev")
+ 250:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 251:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 252:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 253:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Instruction Synchronization Barrier
+ 254:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Instruction Synchronization Barrier flushes the pipeline in the processor,
+ 255:Drivers/CMSIS/Include/cmsis_gcc.h ****            so that all instructions following the ISB are fetched from cache or memory,
+ 256:Drivers/CMSIS/Include/cmsis_gcc.h ****            after the instruction has been completed.
+ 257:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 258:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __ISB(void)
+ 259:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 260:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("isb 0xF":::"memory");
+ 261:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 262:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 263:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 264:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 265:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Data Synchronization Barrier
+ 266:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Acts as a special kind of Data Memory Barrier.
+ 267:Drivers/CMSIS/Include/cmsis_gcc.h ****            It completes when all explicit memory accesses before this instruction complete.
+ 268:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 269:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __DSB(void)
+ 270:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 271:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("dsb 0xF":::"memory");
+ 272:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 273:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 274:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 275:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 276:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Data Memory Barrier
+ 277:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Ensures the apparent order of the explicit memory operations before
+ 278:Drivers/CMSIS/Include/cmsis_gcc.h ****            and after the instruction, without ensuring their completion.
+ 279:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 27
+
+
+ 280:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __DMB(void)
+ 281:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 282:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("dmb 0xF":::"memory");
+ 283:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 284:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 285:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 286:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 287:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Reverse byte order (32 bit)
+ 288:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Reverses the byte order in unsigned integer value. For example, 0x12345678 becomes 0x785
+ 289:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    value  Value to reverse
+ 290:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Reversed value
+ 291:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 292:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __REV(uint32_t value)
+ 293:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 294:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+ 295:Drivers/CMSIS/Include/cmsis_gcc.h ****   return __builtin_bswap32(value);
+ 296:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
+ 297:Drivers/CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 298:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 299:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM ("rev %0, %1" : __CMSIS_GCC_OUT_REG (result) : __CMSIS_GCC_USE_REG (value) );
+ 300:Drivers/CMSIS/Include/cmsis_gcc.h ****   return result;
+ 301:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 302:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 303:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 304:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 305:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 306:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Reverse byte order (16 bit)
+ 307:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Reverses the byte order within each halfword of a word. For example, 0x12345678 becomes 
+ 308:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    value  Value to reverse
+ 309:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Reversed value
+ 310:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 311:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __REV16(uint32_t value)
+ 312:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 313:Drivers/CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 314:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 315:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM ("rev16 %0, %1" : __CMSIS_GCC_OUT_REG (result) : __CMSIS_GCC_USE_REG (value) );
+ 316:Drivers/CMSIS/Include/cmsis_gcc.h ****   return result;
+ 317:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 318:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 319:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 320:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 321:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Reverse byte order (16 bit)
+ 322:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Reverses the byte order in a 16-bit value and returns the signed 16-bit result. For exam
+ 323:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    value  Value to reverse
+ 324:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Reversed value
+ 325:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 326:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE int16_t __REVSH(int16_t value)
+ 327:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 328:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
+ 329:Drivers/CMSIS/Include/cmsis_gcc.h ****   return (int16_t)__builtin_bswap16(value);
+ 330:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
+ 331:Drivers/CMSIS/Include/cmsis_gcc.h ****   int16_t result;
+ 332:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 333:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM ("revsh %0, %1" : __CMSIS_GCC_OUT_REG (result) : __CMSIS_GCC_USE_REG (value) );
+ 334:Drivers/CMSIS/Include/cmsis_gcc.h ****   return result;
+ 335:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 336:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 28
+
+
+ 337:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 338:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 339:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 340:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Rotate Right in unsigned value (32 bit)
+ 341:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Rotate Right (immediate) provides the value of the contents of a register rotated by a v
+ 342:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    op1  Value to rotate
+ 343:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    op2  Number of Bits to rotate
+ 344:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Rotated value
+ 345:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 346:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __ROR(uint32_t op1, uint32_t op2)
+ 347:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 348:Drivers/CMSIS/Include/cmsis_gcc.h ****   op2 %= 32U;
+ 349:Drivers/CMSIS/Include/cmsis_gcc.h ****   if (op2 == 0U)
+ 350:Drivers/CMSIS/Include/cmsis_gcc.h ****   {
+ 351:Drivers/CMSIS/Include/cmsis_gcc.h ****     return op1;
+ 352:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
+ 353:Drivers/CMSIS/Include/cmsis_gcc.h ****   return (op1 >> op2) | (op1 << (32U - op2));
+ 354:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 355:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 356:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 357:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 358:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Breakpoint
+ 359:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Causes the processor to enter Debug state.
+ 360:Drivers/CMSIS/Include/cmsis_gcc.h ****            Debug tools can use this to investigate system state when the instruction at a particula
+ 361:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    value  is ignored by the processor.
+ 362:Drivers/CMSIS/Include/cmsis_gcc.h ****                  If required, a debugger can use it to store additional information about the break
+ 363:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 364:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __BKPT(value)                       __ASM volatile ("bkpt "#value)
+ 365:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 366:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 367:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 368:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Reverse bit order of value
+ 369:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Reverses the bit order of the given value.
+ 370:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    value  Value to reverse
+ 371:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Reversed value
+ 372:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 373:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __RBIT(uint32_t value)
+ 374:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 375:Drivers/CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 376:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 377:Drivers/CMSIS/Include/cmsis_gcc.h **** #if ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
+ 378:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
+ 379:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1))    )
+ 380:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM ("rbit %0, %1" : "=r" (result) : "r" (value) );
+ 381:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
+ 382:Drivers/CMSIS/Include/cmsis_gcc.h ****   uint32_t s = (4U /*sizeof(v)*/ * 8U) - 1U; /* extra shift needed at end */
+ 383:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 384:Drivers/CMSIS/Include/cmsis_gcc.h ****   result = value;                      /* r will be reversed bits of v; first get LSB of v */
+ 385:Drivers/CMSIS/Include/cmsis_gcc.h ****   for (value >>= 1U; value != 0U; value >>= 1U)
+ 386:Drivers/CMSIS/Include/cmsis_gcc.h ****   {
+ 387:Drivers/CMSIS/Include/cmsis_gcc.h ****     result <<= 1U;
+ 388:Drivers/CMSIS/Include/cmsis_gcc.h ****     result |= value & 1U;
+ 389:Drivers/CMSIS/Include/cmsis_gcc.h ****     s--;
+ 390:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
+ 391:Drivers/CMSIS/Include/cmsis_gcc.h ****   result <<= s;                        /* shift when v's highest bits are zero */
+ 392:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 393:Drivers/CMSIS/Include/cmsis_gcc.h ****   return result;
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 29
+
+
+ 394:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 395:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 396:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 397:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 398:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Count leading zeros
+ 399:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Counts the number of leading zeros of a data value.
+ 400:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to count the leading zeros
+ 401:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             number of leading zeros in value
+ 402:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 403:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint8_t __CLZ(uint32_t value)
+ 404:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 405:Drivers/CMSIS/Include/cmsis_gcc.h ****   /* Even though __builtin_clz produces a CLZ instruction on ARM, formally
+ 406:Drivers/CMSIS/Include/cmsis_gcc.h ****      __builtin_clz(0) is undefined behaviour, so handle this case specially.
+ 407:Drivers/CMSIS/Include/cmsis_gcc.h ****      This guarantees ARM-compatible results if happening to compile on a non-ARM
+ 408:Drivers/CMSIS/Include/cmsis_gcc.h ****      target, and ensures the compiler doesn't decide to activate any
+ 409:Drivers/CMSIS/Include/cmsis_gcc.h ****      optimisations using the logic "value was passed to __builtin_clz, so it
+ 410:Drivers/CMSIS/Include/cmsis_gcc.h ****      is non-zero".
+ 411:Drivers/CMSIS/Include/cmsis_gcc.h ****      ARM GCC 7.3 and possibly earlier will optimise this test away, leaving a
+ 412:Drivers/CMSIS/Include/cmsis_gcc.h ****      single CLZ instruction.
+ 413:Drivers/CMSIS/Include/cmsis_gcc.h ****    */
+ 414:Drivers/CMSIS/Include/cmsis_gcc.h ****   if (value == 0U)
+ 415:Drivers/CMSIS/Include/cmsis_gcc.h ****   {
+ 416:Drivers/CMSIS/Include/cmsis_gcc.h ****     return 32U;
+ 417:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
+ 418:Drivers/CMSIS/Include/cmsis_gcc.h ****   return __builtin_clz(value);
+ 419:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 420:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 421:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 422:Drivers/CMSIS/Include/cmsis_gcc.h **** #if ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
+ 423:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
+ 424:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) || \
+ 425:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_8M_BASE__ ) && (__ARM_ARCH_8M_BASE__ == 1))    )
+ 426:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 427:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   LDR Exclusive (8 bit)
+ 428:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a exclusive LDR instruction for 8 bit value.
+ 429:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 430:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             value of type uint8_t at (*ptr)
+ 431:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 432:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint8_t __LDREXB(volatile uint8_t *addr)
+ 433:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 434:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 435:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 436:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
+ 437:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrexb %0, %1" : "=r" (result) : "Q" (*addr) );
+ 438:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
+ 439:Drivers/CMSIS/Include/cmsis_gcc.h ****     /* Prior to GCC 4.8, "Q" will be expanded to [rx, #0] which is not
+ 440:Drivers/CMSIS/Include/cmsis_gcc.h ****        accepted by assembler. So has to use following less efficient pattern.
+ 441:Drivers/CMSIS/Include/cmsis_gcc.h ****     */
+ 442:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrexb %0, [%1]" : "=r" (result) : "r" (addr) : "memory" );
+ 443:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 444:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint8_t) result);    /* Add explicit type cast here */
+ 445:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 446:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 447:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 448:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 449:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   LDR Exclusive (16 bit)
+ 450:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a exclusive LDR instruction for 16 bit values.
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 30
+
+
+ 451:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 452:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint16_t at (*ptr)
+ 453:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 454:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDREXH(volatile uint16_t *addr)
+ 455:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 456:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 457:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 458:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
+ 459:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrexh %0, %1" : "=r" (result) : "Q" (*addr) );
+ 460:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
+ 461:Drivers/CMSIS/Include/cmsis_gcc.h ****     /* Prior to GCC 4.8, "Q" will be expanded to [rx, #0] which is not
+ 462:Drivers/CMSIS/Include/cmsis_gcc.h ****        accepted by assembler. So has to use following less efficient pattern.
+ 463:Drivers/CMSIS/Include/cmsis_gcc.h ****     */
+ 464:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrexh %0, [%1]" : "=r" (result) : "r" (addr) : "memory" );
+ 465:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 466:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint16_t) result);    /* Add explicit type cast here */
+ 467:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 468:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 469:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 470:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 471:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   LDR Exclusive (32 bit)
+ 472:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a exclusive LDR instruction for 32 bit values.
+ 473:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 474:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint32_t at (*ptr)
+ 475:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 476:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __LDREXW(volatile uint32_t *addr)
+ 477:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 478:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 479:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 480:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrex %0, %1" : "=r" (result) : "Q" (*addr) );
+ 481:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
+ 482:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 483:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 484:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 485:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 486:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STR Exclusive (8 bit)
+ 487:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a exclusive STR instruction for 8 bit values.
+ 488:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 489:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 490:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          0  Function succeeded
+ 491:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          1  Function failed
+ 492:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 493:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STREXB(uint8_t value, volatile uint8_t *addr)
+ 494:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 495:Drivers/CMSIS/Include/cmsis_gcc.h ****    uint32_t result;
+ 496:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 497:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strexb %0, %2, %1" : "=&r" (result), "=Q" (*addr) : "r" ((uint32_t)value) );
+ 498:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
+ 499:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 500:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 501:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 502:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 503:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STR Exclusive (16 bit)
+ 504:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a exclusive STR instruction for 16 bit values.
+ 505:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 506:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 507:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          0  Function succeeded
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 31
+
+
+ 508:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          1  Function failed
+ 509:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 510:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STREXH(uint16_t value, volatile uint16_t *addr)
+ 511:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 512:Drivers/CMSIS/Include/cmsis_gcc.h ****    uint32_t result;
+ 513:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 514:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strexh %0, %2, %1" : "=&r" (result), "=Q" (*addr) : "r" ((uint32_t)value) );
+ 515:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
+ 516:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 517:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 518:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 519:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 520:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STR Exclusive (32 bit)
+ 521:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a exclusive STR instruction for 32 bit values.
+ 522:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 523:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 524:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          0  Function succeeded
+ 525:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          1  Function failed
+ 526:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 527:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STREXW(uint32_t value, volatile uint32_t *addr)
+ 528:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 529:Drivers/CMSIS/Include/cmsis_gcc.h ****    uint32_t result;
+ 530:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 531:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strex %0, %2, %1" : "=&r" (result), "=Q" (*addr) : "r" (value) );
+ 532:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
+ 533:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 534:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 535:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 536:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 537:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Remove the exclusive lock
+ 538:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Removes the exclusive lock which is created by LDREX.
+ 539:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 540:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __CLREX(void)
+ 541:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 542:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("clrex" ::: "memory");
+ 543:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 544:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 545:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif /* ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
+ 546:Drivers/CMSIS/Include/cmsis_gcc.h ****            (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
+ 547:Drivers/CMSIS/Include/cmsis_gcc.h ****            (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) || \
+ 548:Drivers/CMSIS/Include/cmsis_gcc.h ****            (defined (__ARM_ARCH_8M_BASE__ ) && (__ARM_ARCH_8M_BASE__ == 1))    ) */
+ 549:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 550:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 551:Drivers/CMSIS/Include/cmsis_gcc.h **** #if ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
+ 552:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
+ 553:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1))    )
+ 554:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 555:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Signed Saturate
+ 556:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Saturates a signed value.
+ 557:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  ARG1  Value to be saturated
+ 558:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  ARG2  Bit position to saturate to (1..32)
+ 559:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             Saturated value
+ 560:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 561:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __SSAT(ARG1, ARG2) \
+ 562:Drivers/CMSIS/Include/cmsis_gcc.h **** __extension__ \
+ 563:Drivers/CMSIS/Include/cmsis_gcc.h **** ({                          \
+ 564:Drivers/CMSIS/Include/cmsis_gcc.h ****   int32_t __RES, __ARG1 = (ARG1); \
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 32
+
+
+ 565:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("ssat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) : "cc" ); \
+ 566:Drivers/CMSIS/Include/cmsis_gcc.h ****   __RES; \
+ 567:Drivers/CMSIS/Include/cmsis_gcc.h ****  })
+ 568:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 569:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 570:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 571:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Unsigned Saturate
+ 572:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Saturates an unsigned value.
+ 573:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  ARG1  Value to be saturated
+ 574:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  ARG2  Bit position to saturate to (0..31)
+ 575:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             Saturated value
+ 576:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 577:Drivers/CMSIS/Include/cmsis_gcc.h **** #define __USAT(ARG1, ARG2) \
+ 578:Drivers/CMSIS/Include/cmsis_gcc.h **** __extension__ \
+ 579:Drivers/CMSIS/Include/cmsis_gcc.h **** ({                          \
+ 580:Drivers/CMSIS/Include/cmsis_gcc.h ****   uint32_t __RES, __ARG1 = (ARG1); \
+ 581:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("usat %0, %1, %2" : "=r" (__RES) :  "I" (ARG2), "r" (__ARG1) : "cc" ); \
+ 582:Drivers/CMSIS/Include/cmsis_gcc.h ****   __RES; \
+ 583:Drivers/CMSIS/Include/cmsis_gcc.h ****  })
+ 584:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 585:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 586:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 587:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Rotate Right with Extend (32 bit)
+ 588:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Moves each bit of a bitstring right by one bit.
+ 589:Drivers/CMSIS/Include/cmsis_gcc.h ****            The carry input is shifted in at the left end of the bitstring.
+ 590:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    value  Value to rotate
+ 591:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return               Rotated value
+ 592:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 593:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __RRX(uint32_t value)
+ 594:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 595:Drivers/CMSIS/Include/cmsis_gcc.h ****   uint32_t result;
+ 596:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 597:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("rrx %0, %1" : __CMSIS_GCC_OUT_REG (result) : __CMSIS_GCC_USE_REG (value) );
+ 598:Drivers/CMSIS/Include/cmsis_gcc.h ****   return(result);
+ 599:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 600:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 601:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 602:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 603:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   LDRT Unprivileged (8 bit)
+ 604:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged LDRT instruction for 8 bit value.
+ 605:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 606:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             value of type uint8_t at (*ptr)
+ 607:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 608:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint8_t __LDRBT(volatile uint8_t *ptr)
+ 609:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 610:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 611:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 612:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
+ 613:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrbt %0, %1" : "=r" (result) : "Q" (*ptr) );
+ 614:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
+ 615:Drivers/CMSIS/Include/cmsis_gcc.h ****     /* Prior to GCC 4.8, "Q" will be expanded to [rx, #0] which is not
+ 616:Drivers/CMSIS/Include/cmsis_gcc.h ****        accepted by assembler. So has to use following less efficient pattern.
+ 617:Drivers/CMSIS/Include/cmsis_gcc.h ****     */
+ 618:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrbt %0, [%1]" : "=r" (result) : "r" (ptr) : "memory" );
+ 619:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 620:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint8_t) result);    /* Add explicit type cast here */
+ 621:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 33
+
+
+ 622:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 623:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 624:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 625:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   LDRT Unprivileged (16 bit)
+ 626:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged LDRT instruction for 16 bit values.
+ 627:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 628:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint16_t at (*ptr)
+ 629:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 630:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDRHT(volatile uint16_t *ptr)
+ 631:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 632:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 633:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 634:Drivers/CMSIS/Include/cmsis_gcc.h **** #if (__GNUC__ > 4) || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)
+ 635:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrht %0, %1" : "=r" (result) : "Q" (*ptr) );
+ 636:Drivers/CMSIS/Include/cmsis_gcc.h **** #else
+ 637:Drivers/CMSIS/Include/cmsis_gcc.h ****     /* Prior to GCC 4.8, "Q" will be expanded to [rx, #0] which is not
+ 638:Drivers/CMSIS/Include/cmsis_gcc.h ****        accepted by assembler. So has to use following less efficient pattern.
+ 639:Drivers/CMSIS/Include/cmsis_gcc.h ****     */
+ 640:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrht %0, [%1]" : "=r" (result) : "r" (ptr) : "memory" );
+ 641:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif
+ 642:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint16_t) result);    /* Add explicit type cast here */
+ 643:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 644:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 645:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 646:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 647:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   LDRT Unprivileged (32 bit)
+ 648:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged LDRT instruction for 32 bit values.
+ 649:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 650:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint32_t at (*ptr)
+ 651:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 652:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __LDRT(volatile uint32_t *ptr)
+ 653:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 654:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 655:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 656:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldrt %0, %1" : "=r" (result) : "Q" (*ptr) );
+ 657:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
+ 658:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 659:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 660:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 661:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 662:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STRT Unprivileged (8 bit)
+ 663:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged STRT instruction for 8 bit values.
+ 664:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 665:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 666:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 667:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STRBT(uint8_t value, volatile uint8_t *ptr)
+ 668:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 669:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strbt %1, %0" : "=Q" (*ptr) : "r" ((uint32_t)value) );
+ 670:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 671:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 672:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 673:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 674:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STRT Unprivileged (16 bit)
+ 675:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged STRT instruction for 16 bit values.
+ 676:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 677:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 678:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 34
+
+
+ 679:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STRHT(uint16_t value, volatile uint16_t *ptr)
+ 680:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 681:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strht %1, %0" : "=Q" (*ptr) : "r" ((uint32_t)value) );
+ 682:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 683:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 684:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 685:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 686:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   STRT Unprivileged (32 bit)
+ 687:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a Unprivileged STRT instruction for 32 bit values.
+ 688:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 689:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 690:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 691:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STRT(uint32_t value, volatile uint32_t *ptr)
+ 692:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 693:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("strt %1, %0" : "=Q" (*ptr) : "r" (value) );
+ 694:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 695:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 696:Drivers/CMSIS/Include/cmsis_gcc.h **** #else  /* ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
+ 697:Drivers/CMSIS/Include/cmsis_gcc.h ****            (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
+ 698:Drivers/CMSIS/Include/cmsis_gcc.h ****            (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1))    ) */
+ 699:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 700:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 701:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Signed Saturate
+ 702:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Saturates a signed value.
+ 703:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to be saturated
+ 704:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    sat  Bit position to saturate to (1..32)
+ 705:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             Saturated value
+ 706:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 707:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE int32_t __SSAT(int32_t val, uint32_t sat)
+ 708:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 709:Drivers/CMSIS/Include/cmsis_gcc.h ****   if ((sat >= 1U) && (sat <= 32U))
+ 710:Drivers/CMSIS/Include/cmsis_gcc.h ****   {
+ 711:Drivers/CMSIS/Include/cmsis_gcc.h ****     const int32_t max = (int32_t)((1U << (sat - 1U)) - 1U);
+ 712:Drivers/CMSIS/Include/cmsis_gcc.h ****     const int32_t min = -1 - max ;
+ 713:Drivers/CMSIS/Include/cmsis_gcc.h ****     if (val > max)
+ 714:Drivers/CMSIS/Include/cmsis_gcc.h ****     {
+ 715:Drivers/CMSIS/Include/cmsis_gcc.h ****       return max;
+ 716:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
+ 717:Drivers/CMSIS/Include/cmsis_gcc.h ****     else if (val < min)
+ 718:Drivers/CMSIS/Include/cmsis_gcc.h ****     {
+ 719:Drivers/CMSIS/Include/cmsis_gcc.h ****       return min;
+ 720:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
+ 721:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
+ 722:Drivers/CMSIS/Include/cmsis_gcc.h ****   return val;
+ 723:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 724:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 725:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 726:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Unsigned Saturate
+ 727:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Saturates an unsigned value.
+ 728:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to be saturated
+ 729:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    sat  Bit position to saturate to (0..31)
+ 730:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             Saturated value
+ 731:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 732:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __USAT(int32_t val, uint32_t sat)
+ 733:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 734:Drivers/CMSIS/Include/cmsis_gcc.h ****   if (sat <= 31U)
+ 735:Drivers/CMSIS/Include/cmsis_gcc.h ****   {
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 35
+
+
+ 736:Drivers/CMSIS/Include/cmsis_gcc.h ****     const uint32_t max = ((1U << sat) - 1U);
+ 737:Drivers/CMSIS/Include/cmsis_gcc.h ****     if (val > (int32_t)max)
+ 738:Drivers/CMSIS/Include/cmsis_gcc.h ****     {
+ 739:Drivers/CMSIS/Include/cmsis_gcc.h ****       return max;
+ 740:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
+ 741:Drivers/CMSIS/Include/cmsis_gcc.h ****     else if (val < 0)
+ 742:Drivers/CMSIS/Include/cmsis_gcc.h ****     {
+ 743:Drivers/CMSIS/Include/cmsis_gcc.h ****       return 0U;
+ 744:Drivers/CMSIS/Include/cmsis_gcc.h ****     }
+ 745:Drivers/CMSIS/Include/cmsis_gcc.h ****   }
+ 746:Drivers/CMSIS/Include/cmsis_gcc.h ****   return (uint32_t)val;
+ 747:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 748:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 749:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif /* ((defined (__ARM_ARCH_7M__      ) && (__ARM_ARCH_7M__      == 1)) || \
+ 750:Drivers/CMSIS/Include/cmsis_gcc.h ****            (defined (__ARM_ARCH_7EM__     ) && (__ARM_ARCH_7EM__     == 1)) || \
+ 751:Drivers/CMSIS/Include/cmsis_gcc.h ****            (defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1))    ) */
+ 752:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 753:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 754:Drivers/CMSIS/Include/cmsis_gcc.h **** #if ((defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) || \
+ 755:Drivers/CMSIS/Include/cmsis_gcc.h ****      (defined (__ARM_ARCH_8M_BASE__ ) && (__ARM_ARCH_8M_BASE__ == 1))    )
+ 756:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 757:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Load-Acquire (8 bit)
+ 758:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a LDAB instruction for 8 bit value.
+ 759:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 760:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             value of type uint8_t at (*ptr)
+ 761:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 762:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint8_t __LDAB(volatile uint8_t *ptr)
+ 763:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 764:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 765:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 766:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldab %0, %1" : "=r" (result) : "Q" (*ptr) : "memory" );
+ 767:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint8_t) result);
+ 768:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 769:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 770:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 771:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 772:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Load-Acquire (16 bit)
+ 773:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a LDAH instruction for 16 bit values.
+ 774:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 775:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint16_t at (*ptr)
+ 776:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 777:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDAH(volatile uint16_t *ptr)
+ 778:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 779:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 780:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 781:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldah %0, %1" : "=r" (result) : "Q" (*ptr) : "memory" );
+ 782:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint16_t) result);
+ 783:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 784:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 785:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 786:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 787:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Load-Acquire (32 bit)
+ 788:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a LDA instruction for 32 bit values.
+ 789:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 790:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint32_t at (*ptr)
+ 791:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 792:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __LDA(volatile uint32_t *ptr)
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 36
+
+
+ 793:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 794:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 795:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 796:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("lda %0, %1" : "=r" (result) : "Q" (*ptr) : "memory" );
+ 797:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
+ 798:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 799:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 800:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 801:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 802:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release (8 bit)
+ 803:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STLB instruction for 8 bit values.
+ 804:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 805:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 806:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 807:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STLB(uint8_t value, volatile uint8_t *ptr)
+ 808:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 809:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("stlb %1, %0" : "=Q" (*ptr) : "r" ((uint32_t)value) : "memory" );
+ 810:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 811:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 812:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 813:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 814:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release (16 bit)
+ 815:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STLH instruction for 16 bit values.
+ 816:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 817:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 818:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 819:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STLH(uint16_t value, volatile uint16_t *ptr)
+ 820:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 821:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("stlh %1, %0" : "=Q" (*ptr) : "r" ((uint32_t)value) : "memory" );
+ 822:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 823:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 824:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 825:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 826:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release (32 bit)
+ 827:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STL instruction for 32 bit values.
+ 828:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 829:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 830:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 831:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __STL(uint32_t value, volatile uint32_t *ptr)
+ 832:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 833:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("stl %1, %0" : "=Q" (*ptr) : "r" ((uint32_t)value) : "memory" );
+ 834:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 835:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 836:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 837:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 838:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Load-Acquire Exclusive (8 bit)
+ 839:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a LDAB exclusive instruction for 8 bit value.
+ 840:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 841:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return             value of type uint8_t at (*ptr)
+ 842:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 843:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint8_t __LDAEXB(volatile uint8_t *ptr)
+ 844:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 845:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 846:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 847:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldaexb %0, %1" : "=r" (result) : "Q" (*ptr) : "memory" );
+ 848:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint8_t) result);
+ 849:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 37
+
+
+ 850:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 851:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 852:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 853:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Load-Acquire Exclusive (16 bit)
+ 854:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a LDAH exclusive instruction for 16 bit values.
+ 855:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 856:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint16_t at (*ptr)
+ 857:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 858:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint16_t __LDAEXH(volatile uint16_t *ptr)
+ 859:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 860:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 861:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 862:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldaexh %0, %1" : "=r" (result) : "Q" (*ptr) : "memory" );
+ 863:Drivers/CMSIS/Include/cmsis_gcc.h ****    return ((uint16_t) result);
+ 864:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 865:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 866:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 867:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 868:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Load-Acquire Exclusive (32 bit)
+ 869:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a LDA exclusive instruction for 32 bit values.
+ 870:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to data
+ 871:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return        value of type uint32_t at (*ptr)
+ 872:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 873:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __LDAEX(volatile uint32_t *ptr)
+ 874:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 875:Drivers/CMSIS/Include/cmsis_gcc.h ****     uint32_t result;
+ 876:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 877:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("ldaex %0, %1" : "=r" (result) : "Q" (*ptr) : "memory" );
+ 878:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
+ 879:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 880:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 881:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 882:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 883:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release Exclusive (8 bit)
+ 884:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STLB exclusive instruction for 8 bit values.
+ 885:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 886:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 887:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          0  Function succeeded
+ 888:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          1  Function failed
+ 889:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 890:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STLEXB(uint8_t value, volatile uint8_t *ptr)
+ 891:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 892:Drivers/CMSIS/Include/cmsis_gcc.h ****    uint32_t result;
+ 893:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 894:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("stlexb %0, %2, %1" : "=&r" (result), "=Q" (*ptr) : "r" ((uint32_t)value) : "mem
+ 895:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
+ 896:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 897:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 898:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 899:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 900:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release Exclusive (16 bit)
+ 901:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STLH exclusive instruction for 16 bit values.
+ 902:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 903:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 904:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          0  Function succeeded
+ 905:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          1  Function failed
+ 906:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 38
+
+
+ 907:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STLEXH(uint16_t value, volatile uint16_t *ptr)
+ 908:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 909:Drivers/CMSIS/Include/cmsis_gcc.h ****    uint32_t result;
+ 910:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 911:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("stlexh %0, %2, %1" : "=&r" (result), "=Q" (*ptr) : "r" ((uint32_t)value) : "mem
+ 912:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
+ 913:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 914:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 915:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 916:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 917:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Store-Release Exclusive (32 bit)
+ 918:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Executes a STL exclusive instruction for 32 bit values.
+ 919:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]  value  Value to store
+ 920:Drivers/CMSIS/Include/cmsis_gcc.h ****   \param [in]    ptr  Pointer to location
+ 921:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          0  Function succeeded
+ 922:Drivers/CMSIS/Include/cmsis_gcc.h ****   \return          1  Function failed
+ 923:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 924:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE uint32_t __STLEX(uint32_t value, volatile uint32_t *ptr)
+ 925:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 926:Drivers/CMSIS/Include/cmsis_gcc.h ****    uint32_t result;
+ 927:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 928:Drivers/CMSIS/Include/cmsis_gcc.h ****    __ASM volatile ("stlex %0, %2, %1" : "=&r" (result), "=Q" (*ptr) : "r" ((uint32_t)value) : "memo
+ 929:Drivers/CMSIS/Include/cmsis_gcc.h ****    return(result);
+ 930:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 931:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 932:Drivers/CMSIS/Include/cmsis_gcc.h **** #endif /* ((defined (__ARM_ARCH_8M_MAIN__ ) && (__ARM_ARCH_8M_MAIN__ == 1)) || \
+ 933:Drivers/CMSIS/Include/cmsis_gcc.h ****            (defined (__ARM_ARCH_8M_BASE__ ) && (__ARM_ARCH_8M_BASE__ == 1))    ) */
+ 934:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 935:Drivers/CMSIS/Include/cmsis_gcc.h **** /*@}*/ /* end of group CMSIS_Core_InstructionInterface */
+ 936:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 937:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 938:Drivers/CMSIS/Include/cmsis_gcc.h **** /* ###########################  Core Function Access  ########################### */
+ 939:Drivers/CMSIS/Include/cmsis_gcc.h **** /** \ingroup  CMSIS_Core_FunctionInterface
+ 940:Drivers/CMSIS/Include/cmsis_gcc.h ****     \defgroup CMSIS_Core_RegAccFunctions CMSIS Core Register Access Functions
+ 941:Drivers/CMSIS/Include/cmsis_gcc.h ****   @{
+ 942:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 943:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 944:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 945:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Enable IRQ Interrupts
+ 946:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Enables IRQ interrupts by clearing special-purpose register PRIMASK.
+ 947:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 948:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 949:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __enable_irq(void)
+ 950:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ 951:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsie i" : : : "memory");
+ 952:Drivers/CMSIS/Include/cmsis_gcc.h **** }
+ 953:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 954:Drivers/CMSIS/Include/cmsis_gcc.h **** 
+ 955:Drivers/CMSIS/Include/cmsis_gcc.h **** /**
+ 956:Drivers/CMSIS/Include/cmsis_gcc.h ****   \brief   Disable IRQ Interrupts
+ 957:Drivers/CMSIS/Include/cmsis_gcc.h ****   \details Disables IRQ interrupts by setting special-purpose register PRIMASK.
+ 958:Drivers/CMSIS/Include/cmsis_gcc.h ****            Can only be executed in Privileged modes.
+ 959:Drivers/CMSIS/Include/cmsis_gcc.h ****  */
+ 960:Drivers/CMSIS/Include/cmsis_gcc.h **** __STATIC_FORCEINLINE void __disable_irq(void)
+ 735              		.loc 2 960 27 view .LVU133
+ 736              	.LBB11:
+ 961:Drivers/CMSIS/Include/cmsis_gcc.h **** {
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 39
+
+
+ 962:Drivers/CMSIS/Include/cmsis_gcc.h ****   __ASM volatile ("cpsid i" : : : "memory");
+ 737              		.loc 2 962 3 view .LVU134
+ 738              		.syntax unified
+ 739              	@ 962 "Drivers/CMSIS/Include/cmsis_gcc.h" 1
+ 740 0000 72B6     		cpsid i
+ 741              	@ 0 "" 2
+ 742              		.thumb
+ 743              		.syntax unified
+ 744              	.L48:
+ 745              	.LBE11:
+ 746              	.LBE10:
+ 430:Core/Src/main.c ****   while (1)
+ 747              		.loc 1 430 3 discriminator 1 view .LVU135
+ 431:Core/Src/main.c ****   {
+ 432:Core/Src/main.c ****   }
+ 748              		.loc 1 432 3 discriminator 1 view .LVU136
+ 430:Core/Src/main.c ****   while (1)
+ 749              		.loc 1 430 9 discriminator 1 view .LVU137
+ 750 0002 FEE7     		b	.L48
+ 751              		.cfi_endproc
+ 752              	.LFE153:
+ 754              		.section	.text.MX_USART1_UART_Init,"ax",%progbits
+ 755              		.align	1
+ 756              		.syntax unified
+ 757              		.thumb
+ 758              		.thumb_func
+ 759              		.fpu fpv4-sp-d16
+ 761              	MX_USART1_UART_Init:
+ 762              	.LFB139:
+ 234:Core/Src/main.c **** 
+ 763              		.loc 1 234 1 view -0
+ 764              		.cfi_startproc
+ 765              		@ args = 0, pretend = 0, frame = 0
+ 766              		@ frame_needed = 0, uses_anonymous_args = 0
+ 767 0000 08B5     		push	{r3, lr}
+ 768              	.LCFI27:
+ 769              		.cfi_def_cfa_offset 8
+ 770              		.cfi_offset 3, -8
+ 771              		.cfi_offset 14, -4
+ 243:Core/Src/main.c ****   huart1.Init.BaudRate = 115200;
+ 772              		.loc 1 243 3 view .LVU139
+ 243:Core/Src/main.c ****   huart1.Init.BaudRate = 115200;
+ 773              		.loc 1 243 19 is_stmt 0 view .LVU140
+ 774 0002 0A48     		ldr	r0, .L53
+ 775 0004 0A4B     		ldr	r3, .L53+4
+ 776 0006 0360     		str	r3, [r0]
+ 244:Core/Src/main.c ****   huart1.Init.WordLength = UART_WORDLENGTH_8B;
+ 777              		.loc 1 244 3 is_stmt 1 view .LVU141
+ 244:Core/Src/main.c ****   huart1.Init.WordLength = UART_WORDLENGTH_8B;
+ 778              		.loc 1 244 24 is_stmt 0 view .LVU142
+ 779 0008 4FF4E133 		mov	r3, #115200
+ 780 000c 4360     		str	r3, [r0, #4]
+ 245:Core/Src/main.c ****   huart1.Init.StopBits = UART_STOPBITS_1;
+ 781              		.loc 1 245 3 is_stmt 1 view .LVU143
+ 245:Core/Src/main.c ****   huart1.Init.StopBits = UART_STOPBITS_1;
+ 782              		.loc 1 245 26 is_stmt 0 view .LVU144
+ 783 000e 0023     		movs	r3, #0
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 40
+
+
+ 784 0010 8360     		str	r3, [r0, #8]
+ 246:Core/Src/main.c ****   huart1.Init.Parity = UART_PARITY_NONE;
+ 785              		.loc 1 246 3 is_stmt 1 view .LVU145
+ 246:Core/Src/main.c ****   huart1.Init.Parity = UART_PARITY_NONE;
+ 786              		.loc 1 246 24 is_stmt 0 view .LVU146
+ 787 0012 C360     		str	r3, [r0, #12]
+ 247:Core/Src/main.c ****   huart1.Init.Mode = UART_MODE_TX_RX;
+ 788              		.loc 1 247 3 is_stmt 1 view .LVU147
+ 247:Core/Src/main.c ****   huart1.Init.Mode = UART_MODE_TX_RX;
+ 789              		.loc 1 247 22 is_stmt 0 view .LVU148
+ 790 0014 0361     		str	r3, [r0, #16]
+ 248:Core/Src/main.c ****   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+ 791              		.loc 1 248 3 is_stmt 1 view .LVU149
+ 248:Core/Src/main.c ****   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+ 792              		.loc 1 248 20 is_stmt 0 view .LVU150
+ 793 0016 0C22     		movs	r2, #12
+ 794 0018 4261     		str	r2, [r0, #20]
+ 249:Core/Src/main.c ****   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+ 795              		.loc 1 249 3 is_stmt 1 view .LVU151
+ 249:Core/Src/main.c ****   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+ 796              		.loc 1 249 25 is_stmt 0 view .LVU152
+ 797 001a 8361     		str	r3, [r0, #24]
+ 250:Core/Src/main.c ****   if (HAL_UART_Init(&huart1) != HAL_OK)
+ 798              		.loc 1 250 3 is_stmt 1 view .LVU153
+ 250:Core/Src/main.c ****   if (HAL_UART_Init(&huart1) != HAL_OK)
+ 799              		.loc 1 250 28 is_stmt 0 view .LVU154
+ 800 001c C361     		str	r3, [r0, #28]
+ 251:Core/Src/main.c ****   {
+ 801              		.loc 1 251 3 is_stmt 1 view .LVU155
+ 251:Core/Src/main.c ****   {
+ 802              		.loc 1 251 7 is_stmt 0 view .LVU156
+ 803 001e FFF7FEFF 		bl	HAL_UART_Init
+ 804              	.LVL44:
+ 251:Core/Src/main.c ****   {
+ 805              		.loc 1 251 6 view .LVU157
+ 806 0022 00B9     		cbnz	r0, .L52
+ 259:Core/Src/main.c **** 
+ 807              		.loc 1 259 1 view .LVU158
+ 808 0024 08BD     		pop	{r3, pc}
+ 809              	.L52:
+ 253:Core/Src/main.c ****   }
+ 810              		.loc 1 253 5 is_stmt 1 view .LVU159
+ 811 0026 FFF7FEFF 		bl	Error_Handler
+ 812              	.LVL45:
+ 813              	.L54:
+ 814 002a 00BF     		.align	2
+ 815              	.L53:
+ 816 002c 00000000 		.word	.LANCHOR0
+ 817 0030 00100140 		.word	1073811456
+ 818              		.cfi_endproc
+ 819              	.LFE139:
+ 821              		.section	.text.MX_USART2_UART_Init,"ax",%progbits
+ 822              		.align	1
+ 823              		.syntax unified
+ 824              		.thumb
+ 825              		.thumb_func
+ 826              		.fpu fpv4-sp-d16
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 41
+
+
+ 828              	MX_USART2_UART_Init:
+ 829              	.LFB140:
+ 267:Core/Src/main.c **** 
+ 830              		.loc 1 267 1 view -0
+ 831              		.cfi_startproc
+ 832              		@ args = 0, pretend = 0, frame = 0
+ 833              		@ frame_needed = 0, uses_anonymous_args = 0
+ 834 0000 08B5     		push	{r3, lr}
+ 835              	.LCFI28:
+ 836              		.cfi_def_cfa_offset 8
+ 837              		.cfi_offset 3, -8
+ 838              		.cfi_offset 14, -4
+ 276:Core/Src/main.c ****   huart2.Init.BaudRate = 115200;
+ 839              		.loc 1 276 3 view .LVU161
+ 276:Core/Src/main.c ****   huart2.Init.BaudRate = 115200;
+ 840              		.loc 1 276 19 is_stmt 0 view .LVU162
+ 841 0002 0A48     		ldr	r0, .L59
+ 842 0004 0A4B     		ldr	r3, .L59+4
+ 843 0006 0360     		str	r3, [r0]
+ 277:Core/Src/main.c ****   huart2.Init.WordLength = UART_WORDLENGTH_8B;
+ 844              		.loc 1 277 3 is_stmt 1 view .LVU163
+ 277:Core/Src/main.c ****   huart2.Init.WordLength = UART_WORDLENGTH_8B;
+ 845              		.loc 1 277 24 is_stmt 0 view .LVU164
+ 846 0008 4FF4E133 		mov	r3, #115200
+ 847 000c 4360     		str	r3, [r0, #4]
+ 278:Core/Src/main.c ****   huart2.Init.StopBits = UART_STOPBITS_1;
+ 848              		.loc 1 278 3 is_stmt 1 view .LVU165
+ 278:Core/Src/main.c ****   huart2.Init.StopBits = UART_STOPBITS_1;
+ 849              		.loc 1 278 26 is_stmt 0 view .LVU166
+ 850 000e 0023     		movs	r3, #0
+ 851 0010 8360     		str	r3, [r0, #8]
+ 279:Core/Src/main.c ****   huart2.Init.Parity = UART_PARITY_NONE;
+ 852              		.loc 1 279 3 is_stmt 1 view .LVU167
+ 279:Core/Src/main.c ****   huart2.Init.Parity = UART_PARITY_NONE;
+ 853              		.loc 1 279 24 is_stmt 0 view .LVU168
+ 854 0012 C360     		str	r3, [r0, #12]
+ 280:Core/Src/main.c ****   huart2.Init.Mode = UART_MODE_TX_RX;
+ 855              		.loc 1 280 3 is_stmt 1 view .LVU169
+ 280:Core/Src/main.c ****   huart2.Init.Mode = UART_MODE_TX_RX;
+ 856              		.loc 1 280 22 is_stmt 0 view .LVU170
+ 857 0014 0361     		str	r3, [r0, #16]
+ 281:Core/Src/main.c ****   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+ 858              		.loc 1 281 3 is_stmt 1 view .LVU171
+ 281:Core/Src/main.c ****   huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+ 859              		.loc 1 281 20 is_stmt 0 view .LVU172
+ 860 0016 0C22     		movs	r2, #12
+ 861 0018 4261     		str	r2, [r0, #20]
+ 282:Core/Src/main.c ****   huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+ 862              		.loc 1 282 3 is_stmt 1 view .LVU173
+ 282:Core/Src/main.c ****   huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+ 863              		.loc 1 282 25 is_stmt 0 view .LVU174
+ 864 001a 8361     		str	r3, [r0, #24]
+ 283:Core/Src/main.c ****   if (HAL_UART_Init(&huart2) != HAL_OK)
+ 865              		.loc 1 283 3 is_stmt 1 view .LVU175
+ 283:Core/Src/main.c ****   if (HAL_UART_Init(&huart2) != HAL_OK)
+ 866              		.loc 1 283 28 is_stmt 0 view .LVU176
+ 867 001c C361     		str	r3, [r0, #28]
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 42
+
+
+ 284:Core/Src/main.c ****   {
+ 868              		.loc 1 284 3 is_stmt 1 view .LVU177
+ 284:Core/Src/main.c ****   {
+ 869              		.loc 1 284 7 is_stmt 0 view .LVU178
+ 870 001e FFF7FEFF 		bl	HAL_UART_Init
+ 871              	.LVL46:
+ 284:Core/Src/main.c ****   {
+ 872              		.loc 1 284 6 view .LVU179
+ 873 0022 00B9     		cbnz	r0, .L58
+ 292:Core/Src/main.c **** 
+ 874              		.loc 1 292 1 view .LVU180
+ 875 0024 08BD     		pop	{r3, pc}
+ 876              	.L58:
+ 286:Core/Src/main.c ****   }
+ 877              		.loc 1 286 5 is_stmt 1 view .LVU181
+ 878 0026 FFF7FEFF 		bl	Error_Handler
+ 879              	.LVL47:
+ 880              	.L60:
+ 881 002a 00BF     		.align	2
+ 882              	.L59:
+ 883 002c 00000000 		.word	.LANCHOR1
+ 884 0030 00440040 		.word	1073759232
+ 885              		.cfi_endproc
+ 886              	.LFE140:
+ 888              		.section	.text.SystemClock_Config,"ax",%progbits
+ 889              		.align	1
+ 890              		.global	SystemClock_Config
+ 891              		.syntax unified
+ 892              		.thumb
+ 893              		.thumb_func
+ 894              		.fpu fpv4-sp-d16
+ 896              	SystemClock_Config:
+ 897              	.LFB138:
+ 188:Core/Src/main.c ****   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+ 898              		.loc 1 188 1 view -0
+ 899              		.cfi_startproc
+ 900              		@ args = 0, pretend = 0, frame = 80
+ 901              		@ frame_needed = 0, uses_anonymous_args = 0
+ 902 0000 00B5     		push	{lr}
+ 903              	.LCFI29:
+ 904              		.cfi_def_cfa_offset 4
+ 905              		.cfi_offset 14, -4
+ 906 0002 95B0     		sub	sp, sp, #84
+ 907              	.LCFI30:
+ 908              		.cfi_def_cfa_offset 88
+ 189:Core/Src/main.c ****   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+ 909              		.loc 1 189 3 view .LVU183
+ 189:Core/Src/main.c ****   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+ 910              		.loc 1 189 22 is_stmt 0 view .LVU184
+ 911 0004 3022     		movs	r2, #48
+ 912 0006 0021     		movs	r1, #0
+ 913 0008 08A8     		add	r0, sp, #32
+ 914 000a FFF7FEFF 		bl	memset
+ 915              	.LVL48:
+ 190:Core/Src/main.c **** 
+ 916              		.loc 1 190 3 is_stmt 1 view .LVU185
+ 190:Core/Src/main.c **** 
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 43
+
+
+ 917              		.loc 1 190 22 is_stmt 0 view .LVU186
+ 918 000e 0023     		movs	r3, #0
+ 919 0010 0393     		str	r3, [sp, #12]
+ 920 0012 0493     		str	r3, [sp, #16]
+ 921 0014 0593     		str	r3, [sp, #20]
+ 922 0016 0693     		str	r3, [sp, #24]
+ 923 0018 0793     		str	r3, [sp, #28]
+ 194:Core/Src/main.c ****   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+ 924              		.loc 1 194 3 is_stmt 1 view .LVU187
+ 925              	.LBB12:
+ 194:Core/Src/main.c ****   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+ 926              		.loc 1 194 3 view .LVU188
+ 927 001a 0193     		str	r3, [sp, #4]
+ 194:Core/Src/main.c ****   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+ 928              		.loc 1 194 3 view .LVU189
+ 929 001c 1E4A     		ldr	r2, .L67
+ 930 001e 116C     		ldr	r1, [r2, #64]
+ 931 0020 41F08051 		orr	r1, r1, #268435456
+ 932 0024 1164     		str	r1, [r2, #64]
+ 194:Core/Src/main.c ****   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+ 933              		.loc 1 194 3 view .LVU190
+ 934 0026 126C     		ldr	r2, [r2, #64]
+ 935 0028 02F08052 		and	r2, r2, #268435456
+ 936 002c 0192     		str	r2, [sp, #4]
+ 194:Core/Src/main.c ****   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+ 937              		.loc 1 194 3 view .LVU191
+ 938 002e 019A     		ldr	r2, [sp, #4]
+ 939              	.LBE12:
+ 194:Core/Src/main.c ****   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+ 940              		.loc 1 194 3 view .LVU192
+ 195:Core/Src/main.c **** 
+ 941              		.loc 1 195 3 view .LVU193
+ 942              	.LBB13:
+ 195:Core/Src/main.c **** 
+ 943              		.loc 1 195 3 view .LVU194
+ 944 0030 0293     		str	r3, [sp, #8]
+ 195:Core/Src/main.c **** 
+ 945              		.loc 1 195 3 view .LVU195
+ 946 0032 1A4B     		ldr	r3, .L67+4
+ 947 0034 1A68     		ldr	r2, [r3]
+ 948 0036 42F48042 		orr	r2, r2, #16384
+ 949 003a 1A60     		str	r2, [r3]
+ 195:Core/Src/main.c **** 
+ 950              		.loc 1 195 3 view .LVU196
+ 951 003c 1B68     		ldr	r3, [r3]
+ 952 003e 03F48043 		and	r3, r3, #16384
+ 953 0042 0293     		str	r3, [sp, #8]
+ 195:Core/Src/main.c **** 
+ 954              		.loc 1 195 3 view .LVU197
+ 955 0044 029B     		ldr	r3, [sp, #8]
+ 956              	.LBE13:
+ 195:Core/Src/main.c **** 
+ 957              		.loc 1 195 3 view .LVU198
+ 200:Core/Src/main.c ****   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+ 958              		.loc 1 200 3 view .LVU199
+ 200:Core/Src/main.c ****   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+ 959              		.loc 1 200 36 is_stmt 0 view .LVU200
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 44
+
+
+ 960 0046 0123     		movs	r3, #1
+ 961 0048 0893     		str	r3, [sp, #32]
+ 201:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+ 962              		.loc 1 201 3 is_stmt 1 view .LVU201
+ 201:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+ 963              		.loc 1 201 30 is_stmt 0 view .LVU202
+ 964 004a 4FF48033 		mov	r3, #65536
+ 965 004e 0993     		str	r3, [sp, #36]
+ 202:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+ 966              		.loc 1 202 3 is_stmt 1 view .LVU203
+ 202:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+ 967              		.loc 1 202 34 is_stmt 0 view .LVU204
+ 968 0050 0223     		movs	r3, #2
+ 969 0052 0E93     		str	r3, [sp, #56]
+ 203:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLM = 4;
+ 970              		.loc 1 203 3 is_stmt 1 view .LVU205
+ 203:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLM = 4;
+ 971              		.loc 1 203 35 is_stmt 0 view .LVU206
+ 972 0054 4FF48003 		mov	r3, #4194304
+ 973 0058 0F93     		str	r3, [sp, #60]
+ 204:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLN = 144;
+ 974              		.loc 1 204 3 is_stmt 1 view .LVU207
+ 204:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLN = 144;
+ 975              		.loc 1 204 30 is_stmt 0 view .LVU208
+ 976 005a 0423     		movs	r3, #4
+ 977 005c 1093     		str	r3, [sp, #64]
+ 205:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+ 978              		.loc 1 205 3 is_stmt 1 view .LVU209
+ 205:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+ 979              		.loc 1 205 30 is_stmt 0 view .LVU210
+ 980 005e 9022     		movs	r2, #144
+ 981 0060 1192     		str	r2, [sp, #68]
+ 206:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLQ = 4;
+ 982              		.loc 1 206 3 is_stmt 1 view .LVU211
+ 206:Core/Src/main.c ****   RCC_OscInitStruct.PLL.PLLQ = 4;
+ 983              		.loc 1 206 30 is_stmt 0 view .LVU212
+ 984 0062 1293     		str	r3, [sp, #72]
+ 207:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+ 985              		.loc 1 207 3 is_stmt 1 view .LVU213
+ 207:Core/Src/main.c ****   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+ 986              		.loc 1 207 30 is_stmt 0 view .LVU214
+ 987 0064 1393     		str	r3, [sp, #76]
+ 208:Core/Src/main.c ****   {
+ 988              		.loc 1 208 3 is_stmt 1 view .LVU215
+ 208:Core/Src/main.c ****   {
+ 989              		.loc 1 208 7 is_stmt 0 view .LVU216
+ 990 0066 08A8     		add	r0, sp, #32
+ 991 0068 FFF7FEFF 		bl	HAL_RCC_OscConfig
+ 992              	.LVL49:
+ 208:Core/Src/main.c ****   {
+ 993              		.loc 1 208 6 view .LVU217
+ 994 006c 80B9     		cbnz	r0, .L65
+ 215:Core/Src/main.c ****                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+ 995              		.loc 1 215 3 is_stmt 1 view .LVU218
+ 215:Core/Src/main.c ****                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+ 996              		.loc 1 215 31 is_stmt 0 view .LVU219
+ 997 006e 0F23     		movs	r3, #15
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 45
+
+
+ 998 0070 0393     		str	r3, [sp, #12]
+ 217:Core/Src/main.c ****   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+ 999              		.loc 1 217 3 is_stmt 1 view .LVU220
+ 217:Core/Src/main.c ****   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+ 1000              		.loc 1 217 34 is_stmt 0 view .LVU221
+ 1001 0072 0221     		movs	r1, #2
+ 1002 0074 0491     		str	r1, [sp, #16]
+ 218:Core/Src/main.c ****   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+ 1003              		.loc 1 218 3 is_stmt 1 view .LVU222
+ 218:Core/Src/main.c ****   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+ 1004              		.loc 1 218 35 is_stmt 0 view .LVU223
+ 1005 0076 0023     		movs	r3, #0
+ 1006 0078 0593     		str	r3, [sp, #20]
+ 219:Core/Src/main.c ****   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+ 1007              		.loc 1 219 3 is_stmt 1 view .LVU224
+ 219:Core/Src/main.c ****   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+ 1008              		.loc 1 219 36 is_stmt 0 view .LVU225
+ 1009 007a 4FF48052 		mov	r2, #4096
+ 1010 007e 0692     		str	r2, [sp, #24]
+ 220:Core/Src/main.c **** 
+ 1011              		.loc 1 220 3 is_stmt 1 view .LVU226
+ 220:Core/Src/main.c **** 
+ 1012              		.loc 1 220 36 is_stmt 0 view .LVU227
+ 1013 0080 0793     		str	r3, [sp, #28]
+ 222:Core/Src/main.c ****   {
+ 1014              		.loc 1 222 3 is_stmt 1 view .LVU228
+ 222:Core/Src/main.c ****   {
+ 1015              		.loc 1 222 7 is_stmt 0 view .LVU229
+ 1016 0082 03A8     		add	r0, sp, #12
+ 1017 0084 FFF7FEFF 		bl	HAL_RCC_ClockConfig
+ 1018              	.LVL50:
+ 222:Core/Src/main.c ****   {
+ 1019              		.loc 1 222 6 view .LVU230
+ 1020 0088 20B9     		cbnz	r0, .L66
+ 226:Core/Src/main.c **** 
+ 1021              		.loc 1 226 1 view .LVU231
+ 1022 008a 15B0     		add	sp, sp, #84
+ 1023              	.LCFI31:
+ 1024              		.cfi_remember_state
+ 1025              		.cfi_def_cfa_offset 4
+ 1026              		@ sp needed
+ 1027 008c 5DF804FB 		ldr	pc, [sp], #4
+ 1028              	.L65:
+ 1029              	.LCFI32:
+ 1030              		.cfi_restore_state
+ 210:Core/Src/main.c ****   }
+ 1031              		.loc 1 210 5 is_stmt 1 view .LVU232
+ 1032 0090 FFF7FEFF 		bl	Error_Handler
+ 1033              	.LVL51:
+ 1034              	.L66:
+ 224:Core/Src/main.c ****   }
+ 1035              		.loc 1 224 5 view .LVU233
+ 1036 0094 FFF7FEFF 		bl	Error_Handler
+ 1037              	.LVL52:
+ 1038              	.L68:
+ 1039              		.align	2
+ 1040              	.L67:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 46
+
+
+ 1041 0098 00380240 		.word	1073887232
+ 1042 009c 00700040 		.word	1073770496
+ 1043              		.cfi_endproc
+ 1044              	.LFE138:
+ 1046              		.section	.rodata.main.str1.4,"aMS",%progbits,1
+ 1047              		.align	2
+ 1048              	.LC1:
+ 1049 0000 48454C4C 		.ascii	"HELLO WORLD!!!\015\012\000"
+ 1049      4F20574F 
+ 1049      524C4421 
+ 1049      21210D0A 
+ 1049      00
+ 1050 0011 000000   		.align	2
+ 1051              	.LC2:
+ 1052 0014 436F7265 		.ascii	"Core/Src/main.c\000"
+ 1052      2F537263 
+ 1052      2F6D6169 
+ 1052      6E2E6300 
+ 1053              		.align	2
+ 1054              	.LC3:
+ 1055 0024 74657374 		.ascii	"test_add\000"
+ 1055      5F616464 
+ 1055      00
+ 1056 002d 000000   		.align	2
+ 1057              	.LC4:
+ 1058 0030 69203D20 		.ascii	"i = %d\015\012\000"
+ 1058      25640D0A 
+ 1058      00
+ 1059 0039 000000   		.align	2
+ 1060              	.LC5:
+ 1061 003c 31323334 		.ascii	"1234567890\015\012\000"
+ 1061      35363738 
+ 1061      39300D0A 
+ 1061      00
+ 1062              		.section	.text.main,"ax",%progbits
+ 1063              		.align	1
+ 1064              		.global	main
+ 1065              		.syntax unified
+ 1066              		.thumb
+ 1067              		.thumb_func
+ 1068              		.fpu fpv4-sp-d16
+ 1070              	main:
+ 1071              	.LFB137:
+  89:Core/Src/main.c **** 
+ 1072              		.loc 1 89 1 view -0
+ 1073              		.cfi_startproc
+ 1074              		@ args = 0, pretend = 0, frame = 552
+ 1075              		@ frame_needed = 0, uses_anonymous_args = 0
+ 1076 0000 70B5     		push	{r4, r5, r6, lr}
+ 1077              	.LCFI33:
+ 1078              		.cfi_def_cfa_offset 16
+ 1079              		.cfi_offset 4, -16
+ 1080              		.cfi_offset 5, -12
+ 1081              		.cfi_offset 6, -8
+ 1082              		.cfi_offset 14, -4
+ 1083 0002 ADF50C7D 		sub	sp, sp, #560
+ 1084              	.LCFI34:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 47
+
+
+ 1085              		.cfi_def_cfa_offset 576
+  98:Core/Src/main.c **** 
+ 1086              		.loc 1 98 3 view .LVU235
+ 1087 0006 FFF7FEFF 		bl	HAL_Init
+ 1088              	.LVL53:
+ 105:Core/Src/main.c **** 
+ 1089              		.loc 1 105 3 view .LVU236
+ 1090 000a FFF7FEFF 		bl	SystemClock_Config
+ 1091              	.LVL54:
+ 112:Core/Src/main.c ****   MX_USART1_UART_Init();
+ 1092              		.loc 1 112 3 view .LVU237
+ 1093 000e FFF7FEFF 		bl	MX_GPIO_Init
+ 1094              	.LVL55:
+ 113:Core/Src/main.c ****   MX_USART2_UART_Init();
+ 1095              		.loc 1 113 3 view .LVU238
+ 1096 0012 FFF7FEFF 		bl	MX_USART1_UART_Init
+ 1097              	.LVL56:
+ 114:Core/Src/main.c ****   /* USER CODE BEGIN 2 */
+ 1098              		.loc 1 114 3 view .LVU239
+ 1099 0016 FFF7FEFF 		bl	MX_USART2_UART_Init
+ 1100              	.LVL57:
+ 116:Core/Src/main.c ****   HAL_UART_Receive_IT(&huart1, data_rx, 1);
+ 1101              		.loc 1 116 3 view .LVU240
+ 1102 001a 3148     		ldr	r0, .L78
+ 1103 001c FFF7FEFF 		bl	debug_printf
+ 1104              	.LVL58:
+ 117:Core/Src/main.c ****   UNITY_BEGIN();
+ 1105              		.loc 1 117 3 view .LVU241
+ 1106 0020 0122     		movs	r2, #1
+ 1107 0022 3049     		ldr	r1, .L78+4
+ 1108 0024 3048     		ldr	r0, .L78+8
+ 1109 0026 FFF7FEFF 		bl	HAL_UART_Receive_IT
+ 1110              	.LVL59:
+ 118:Core/Src/main.c ****   RUN_TEST(test_add);
+ 1111              		.loc 1 118 3 view .LVU242
+ 1112 002a 3048     		ldr	r0, .L78+12
+ 1113 002c FFF7FEFF 		bl	UnityBegin
+ 1114              	.LVL60:
+ 119:Core/Src/main.c ****   UNITY_END();
+ 1115              		.loc 1 119 3 view .LVU243
+ 1116 0030 7722     		movs	r2, #119
+ 1117 0032 2F49     		ldr	r1, .L78+16
+ 1118 0034 2F48     		ldr	r0, .L78+20
+ 1119 0036 FFF7FEFF 		bl	UnityDefaultTestRun
+ 1120              	.LVL61:
+ 120:Core/Src/main.c ****   minihdlc_init(send_char, frame_received);
+ 1121              		.loc 1 120 3 view .LVU244
+ 1122 003a FFF7FEFF 		bl	UnityEnd
+ 1123              	.LVL62:
+ 121:Core/Src/main.c ****   char string_buffer[256];
+ 1124              		.loc 1 121 3 view .LVU245
+ 1125 003e 2E49     		ldr	r1, .L78+24
+ 1126 0040 2E48     		ldr	r0, .L78+28
+ 1127 0042 FFF7FEFF 		bl	minihdlc_init
+ 1128              	.LVL63:
+ 122:Core/Src/main.c ****   for (int i = 0; i < 10; i++)
+ 1129              		.loc 1 122 3 view .LVU246
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 48
+
+
+ 123:Core/Src/main.c ****   {
+ 1130              		.loc 1 123 3 view .LVU247
+ 1131              	.LBB14:
+ 123:Core/Src/main.c ****   {
+ 1132              		.loc 1 123 8 view .LVU248
+ 123:Core/Src/main.c ****   {
+ 1133              		.loc 1 123 12 is_stmt 0 view .LVU249
+ 1134 0046 0024     		movs	r4, #0
+ 123:Core/Src/main.c ****   {
+ 1135              		.loc 1 123 3 view .LVU250
+ 1136 0048 0EE0     		b	.L70
+ 1137              	.LVL64:
+ 1138              	.L71:
+ 125:Core/Src/main.c ****       minihdlc_send_frame((const uint8_t *)string_buffer, strlen(string_buffer));
+ 1139              		.loc 1 125 7 is_stmt 1 discriminator 3 view .LVU251
+ 1140 004a 2346     		mov	r3, r4
+ 1141 004c 2C4A     		ldr	r2, .L78+32
+ 1142 004e 4FF48071 		mov	r1, #256
+ 1143 0052 4CA8     		add	r0, sp, #304
+ 1144 0054 FFF7FEFF 		bl	snprintf
+ 1145              	.LVL65:
+ 126:Core/Src/main.c ****   }
+ 1146              		.loc 1 126 7 discriminator 3 view .LVU252
+ 126:Core/Src/main.c ****   }
+ 1147              		.loc 1 126 59 is_stmt 0 discriminator 3 view .LVU253
+ 1148 0058 4CA8     		add	r0, sp, #304
+ 1149 005a FFF7FEFF 		bl	strlen
+ 1150              	.LVL66:
+ 126:Core/Src/main.c ****   }
+ 1151              		.loc 1 126 7 discriminator 3 view .LVU254
+ 1152 005e C1B2     		uxtb	r1, r0
+ 1153 0060 4CA8     		add	r0, sp, #304
+ 1154 0062 FFF7FEFF 		bl	minihdlc_send_frame
+ 1155              	.LVL67:
+ 123:Core/Src/main.c ****   {
+ 1156              		.loc 1 123 27 is_stmt 1 discriminator 3 view .LVU255
+ 123:Core/Src/main.c ****   {
+ 1157              		.loc 1 123 28 is_stmt 0 discriminator 3 view .LVU256
+ 1158 0066 0134     		adds	r4, r4, #1
+ 1159              	.LVL68:
+ 1160              	.L70:
+ 123:Core/Src/main.c ****   {
+ 1161              		.loc 1 123 19 is_stmt 1 discriminator 1 view .LVU257
+ 123:Core/Src/main.c ****   {
+ 1162              		.loc 1 123 3 is_stmt 0 discriminator 1 view .LVU258
+ 1163 0068 092C     		cmp	r4, #9
+ 1164 006a EEDD     		ble	.L71
+ 1165              	.LBE14:
+ 132:Core/Src/main.c ****   yahdlc_set_state(&state);
+ 1166              		.loc 1 132 3 is_stmt 1 view .LVU259
+ 133:Core/Src/main.c **** 
+ 1167              		.loc 1 133 3 view .LVU260
+ 1168 006c 47A8     		add	r0, sp, #284
+ 1169 006e FFF7FEFF 		bl	yahdlc_set_state
+ 1170              	.LVL69:
+ 135:Core/Src/main.c ****   control.frame = YAHDLC_FRAME_DATA;
+ 1171              		.loc 1 135 3 view .LVU261
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 49
+
+
+ 136:Core/Src/main.c ****   control.seq_no = 0;
+ 1172              		.loc 1 136 3 view .LVU262
+ 136:Core/Src/main.c ****   control.seq_no = 0;
+ 1173              		.loc 1 136 17 is_stmt 0 view .LVU263
+ 1174 0072 0024     		movs	r4, #0
+ 1175              	.LVL70:
+ 136:Core/Src/main.c ****   control.seq_no = 0;
+ 1176              		.loc 1 136 17 view .LVU264
+ 1177 0074 8DF81841 		strb	r4, [sp, #280]
+ 137:Core/Src/main.c **** 
+ 1178              		.loc 1 137 3 is_stmt 1 view .LVU265
+ 137:Core/Src/main.c **** 
+ 1179              		.loc 1 137 18 is_stmt 0 view .LVU266
+ 1180 0078 9DF81931 		ldrb	r3, [sp, #281]	@ zero_extendqisi2
+ 1181 007c 64F30203 		bfi	r3, r4, #0, #3
+ 1182 0080 8DF81931 		strb	r3, [sp, #281]
+ 139:Core/Src/main.c ****   uint8_t output_frame[256];
+ 1183              		.loc 1 139 3 is_stmt 1 view .LVU267
+ 139:Core/Src/main.c ****   uint8_t output_frame[256];
+ 1184              		.loc 1 139 11 is_stmt 0 view .LVU268
+ 1185 0084 1F4B     		ldr	r3, .L78+36
+ 1186 0086 42AD     		add	r5, sp, #264
+ 1187 0088 0FCB     		ldm	r3, {r0, r1, r2, r3}
+ 1188 008a 07C5     		stmia	r5!, {r0, r1, r2}
+ 1189 008c 2B70     		strb	r3, [r5]
+ 140:Core/Src/main.c ****   int frame_len;
+ 1190              		.loc 1 140 3 is_stmt 1 view .LVU269
+ 141:Core/Src/main.c **** 
+ 1191              		.loc 1 141 3 view .LVU270
+ 143:Core/Src/main.c ****   for(int i=0; i<frame_len; i++)
+ 1192              		.loc 1 143 3 view .LVU271
+ 143:Core/Src/main.c ****   for(int i=0; i<frame_len; i++)
+ 1193              		.loc 1 143 15 is_stmt 0 view .LVU272
+ 1194 008e 4FF48073 		mov	r3, #256
+ 1195 0092 0093     		str	r3, [sp]
+ 1196 0094 02AB     		add	r3, sp, #8
+ 1197 0096 0D22     		movs	r2, #13
+ 1198 0098 42A9     		add	r1, sp, #264
+ 1199 009a 46A8     		add	r0, sp, #280
+ 1200 009c FFF7FEFF 		bl	yahdlc_frame_data
+ 1201              	.LVL71:
+ 1202 00a0 0546     		mov	r5, r0
+ 1203              	.LVL72:
+ 144:Core/Src/main.c ****   {
+ 1204              		.loc 1 144 3 is_stmt 1 view .LVU273
+ 1205              	.LBB15:
+ 144:Core/Src/main.c ****   {
+ 1206              		.loc 1 144 7 view .LVU274
+ 1207              	.L72:
+ 144:Core/Src/main.c ****   {
+ 1208              		.loc 1 144 16 discriminator 1 view .LVU275
+ 144:Core/Src/main.c ****   {
+ 1209              		.loc 1 144 3 is_stmt 0 discriminator 1 view .LVU276
+ 1210 00a2 AC42     		cmp	r4, r5
+ 1211 00a4 08DA     		bge	.L76
+ 146:Core/Src/main.c ****     uart_sendchar(output_frame[i]);
+ 1212              		.loc 1 146 5 is_stmt 1 discriminator 3 view .LVU277
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 50
+
+
+ 146:Core/Src/main.c ****     uart_sendchar(output_frame[i]);
+ 1213              		.loc 1 146 32 is_stmt 0 discriminator 3 view .LVU278
+ 1214 00a6 02AE     		add	r6, sp, #8
+ 146:Core/Src/main.c ****     uart_sendchar(output_frame[i]);
+ 1215              		.loc 1 146 5 discriminator 3 view .LVU279
+ 1216 00a8 305D     		ldrb	r0, [r6, r4]	@ zero_extendqisi2
+ 1217 00aa FFF7FEFF 		bl	debug_sendchar
+ 1218              	.LVL73:
+ 147:Core/Src/main.c ****   }
+ 1219              		.loc 1 147 5 is_stmt 1 discriminator 3 view .LVU280
+ 1220 00ae 305D     		ldrb	r0, [r6, r4]	@ zero_extendqisi2
+ 1221 00b0 FFF7FEFF 		bl	uart_sendchar
+ 1222              	.LVL74:
+ 144:Core/Src/main.c ****   {
+ 1223              		.loc 1 144 29 discriminator 3 view .LVU281
+ 144:Core/Src/main.c ****   {
+ 1224              		.loc 1 144 30 is_stmt 0 discriminator 3 view .LVU282
+ 1225 00b4 0134     		adds	r4, r4, #1
+ 1226              	.LVL75:
+ 144:Core/Src/main.c ****   {
+ 1227              		.loc 1 144 30 discriminator 3 view .LVU283
+ 1228 00b6 F4E7     		b	.L72
+ 1229              	.LVL76:
+ 1230              	.L76:
+ 144:Core/Src/main.c ****   {
+ 1231              		.loc 1 144 30 discriminator 3 view .LVU284
+ 1232              	.LBE15:
+ 168:Core/Src/main.c ****   {
+ 1233              		.loc 1 168 3 is_stmt 1 view .LVU285
+ 171:Core/Src/main.c ****     HAL_Delay(1000);
+ 1234              		.loc 1 171 5 view .LVU286
+ 1235 00b8 4021     		movs	r1, #64
+ 1236 00ba 1348     		ldr	r0, .L78+40
+ 1237 00bc FFF7FEFF 		bl	HAL_GPIO_TogglePin
+ 1238              	.LVL77:
+ 172:Core/Src/main.c ****     for(int i=0; i<frame_len; i++)
+ 1239              		.loc 1 172 5 view .LVU287
+ 1240 00c0 4FF47A70 		mov	r0, #1000
+ 1241 00c4 FFF7FEFF 		bl	HAL_Delay
+ 1242              	.LVL78:
+ 173:Core/Src/main.c ****     {
+ 1243              		.loc 1 173 5 view .LVU288
+ 1244              	.LBB16:
+ 173:Core/Src/main.c ****     {
+ 1245              		.loc 1 173 9 view .LVU289
+ 173:Core/Src/main.c ****     {
+ 1246              		.loc 1 173 13 is_stmt 0 view .LVU290
+ 1247 00c8 0024     		movs	r4, #0
+ 1248              	.LVL79:
+ 1249              	.L74:
+ 173:Core/Src/main.c ****     {
+ 1250              		.loc 1 173 18 is_stmt 1 discriminator 1 view .LVU291
+ 173:Core/Src/main.c ****     {
+ 1251              		.loc 1 173 5 is_stmt 0 discriminator 1 view .LVU292
+ 1252 00ca AC42     		cmp	r4, r5
+ 1253 00cc F4DA     		bge	.L76
+ 175:Core/Src/main.c ****       uart_sendchar(output_frame[i]);
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 51
+
+
+ 1254              		.loc 1 175 7 is_stmt 1 discriminator 3 view .LVU293
+ 175:Core/Src/main.c ****       uart_sendchar(output_frame[i]);
+ 1255              		.loc 1 175 34 is_stmt 0 discriminator 3 view .LVU294
+ 1256 00ce 02AE     		add	r6, sp, #8
+ 175:Core/Src/main.c ****       uart_sendchar(output_frame[i]);
+ 1257              		.loc 1 175 7 discriminator 3 view .LVU295
+ 1258 00d0 305D     		ldrb	r0, [r6, r4]	@ zero_extendqisi2
+ 1259 00d2 FFF7FEFF 		bl	debug_sendchar
+ 1260              	.LVL80:
+ 176:Core/Src/main.c ****     }
+ 1261              		.loc 1 176 7 is_stmt 1 discriminator 3 view .LVU296
+ 1262 00d6 305D     		ldrb	r0, [r6, r4]	@ zero_extendqisi2
+ 1263 00d8 FFF7FEFF 		bl	uart_sendchar
+ 1264              	.LVL81:
+ 173:Core/Src/main.c ****     {
+ 1265              		.loc 1 173 31 discriminator 3 view .LVU297
+ 173:Core/Src/main.c ****     {
+ 1266              		.loc 1 173 32 is_stmt 0 discriminator 3 view .LVU298
+ 1267 00dc 0134     		adds	r4, r4, #1
+ 1268              	.LVL82:
+ 173:Core/Src/main.c ****     {
+ 1269              		.loc 1 173 32 discriminator 3 view .LVU299
+ 1270 00de F4E7     		b	.L74
+ 1271              	.L79:
+ 1272              		.align	2
+ 1273              	.L78:
+ 1274 00e0 00000000 		.word	.LC1
+ 1275 00e4 00000000 		.word	.LANCHOR2
+ 1276 00e8 00000000 		.word	.LANCHOR0
+ 1277 00ec 14000000 		.word	.LC2
+ 1278 00f0 24000000 		.word	.LC3
+ 1279 00f4 00000000 		.word	test_add
+ 1280 00f8 00000000 		.word	frame_received
+ 1281 00fc 00000000 		.word	send_char
+ 1282 0100 30000000 		.word	.LC4
+ 1283 0104 3C000000 		.word	.LC5
+ 1284 0108 00000240 		.word	1073872896
+ 1285              	.LBE16:
+ 1286              		.cfi_endproc
+ 1287              	.LFE137:
+ 1289              		.global	t
+ 1290              		.global	buf_rx
+ 1291              		.global	data_rx
+ 1292              		.global	huart2
+ 1293              		.global	huart1
+ 1294              		.section	.bss.buf_rx,"aw",%nobits
+ 1295              		.align	2
+ 1298              	buf_rx:
+ 1299 0000 00000000 		.space	20
+ 1299      00000000 
+ 1299      00000000 
+ 1299      00000000 
+ 1299      00000000 
+ 1300              		.section	.bss.data_rx,"aw",%nobits
+ 1301              		.align	2
+ 1302              		.set	.LANCHOR2,. + 0
+ 1305              	data_rx:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 52
+
+
+ 1306 0000 0000     		.space	2
+ 1307              		.section	.bss.huart1,"aw",%nobits
+ 1308              		.align	2
+ 1309              		.set	.LANCHOR0,. + 0
+ 1312              	huart1:
+ 1313 0000 00000000 		.space	72
+ 1313      00000000 
+ 1313      00000000 
+ 1313      00000000 
+ 1313      00000000 
+ 1314              		.section	.bss.huart2,"aw",%nobits
+ 1315              		.align	2
+ 1316              		.set	.LANCHOR1,. + 0
+ 1319              	huart2:
+ 1320 0000 00000000 		.space	72
+ 1320      00000000 
+ 1320      00000000 
+ 1320      00000000 
+ 1320      00000000 
+ 1321              		.section	.bss.t,"aw",%nobits
+ 1324              	t:
+ 1325 0000 00       		.space	1
+ 1326              		.text
+ 1327              	.Letext0:
+ 1328              		.file 3 "c:\\gnu-arm-embedded-toolchain\\gcc-arm-none-eabi-10-2020-q4-major\\arm-none-eabi\\includ
+ 1329              		.file 4 "c:\\gnu-arm-embedded-toolchain\\gcc-arm-none-eabi-10-2020-q4-major\\arm-none-eabi\\includ
+ 1330              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h"
+ 1331              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 1332              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h"
+ 1333              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h"
+ 1334              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 1335              		.file 10 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 1336              		.file 11 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h"
+ 1337              		.file 12 "c:\\gnu-arm-embedded-toolchain\\gcc-arm-none-eabi-10-2020-q4-major\\lib\\gcc\\arm-none-e
+ 1338              		.file 13 "c:\\gnu-arm-embedded-toolchain\\gcc-arm-none-eabi-10-2020-q4-major\\arm-none-eabi\\inclu
+ 1339              		.file 14 "Core/test/unity_internals.h"
+ 1340              		.file 15 "Core/test/yahdlc.h"
+ 1341              		.file 16 "Core/test/minihdlc.h"
+ 1342              		.file 17 "c:\\gnu-arm-embedded-toolchain\\gcc-arm-none-eabi-10-2020-q4-major\\arm-none-eabi\\inclu
+ 1343              		.file 18 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 1344              		.file 19 "<built-in>"
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 53
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:18     .text.MX_GPIO_Init:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:25     .text.MX_GPIO_Init:00000000 MX_GPIO_Init
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:117    .text.MX_GPIO_Init:00000060 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:123    .text.uart_printf:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:130    .text.uart_printf:00000000 uart_printf
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:219    .text.uart_printf:00000040 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:224    .text.uart_sendchar:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:231    .text.uart_sendchar:00000000 uart_sendchar
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:267    .text.uart_sendchar:0000001c $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:272    .text.send_char:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:279    .text.send_char:00000000 send_char
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:301    .text.debug_printf:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:308    .text.debug_printf:00000000 debug_printf
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:397    .text.debug_printf:00000040 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:402    .text.debug_sendchar:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:409    .text.debug_sendchar:00000000 debug_sendchar
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:445    .text.debug_sendchar:0000001c $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:450    .rodata.frame_received.str1.4:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:454    .text.frame_received:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:461    .text.frame_received:00000000 frame_received
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:517    .text.frame_received:00000020 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:522    .text.add:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:529    .text.add:00000000 add
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:547    .text.test_add:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:554    .text.test_add:00000000 test_add
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:632    .text.setUp:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:639    .text.setUp:00000000 setUp
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:652    .text.tearDown:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:659    .text.tearDown:00000000 tearDown
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:672    .text.HAL_UART_RxCpltCallback:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:679    .text.HAL_UART_RxCpltCallback:00000000 HAL_UART_RxCpltCallback
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:710    .text.HAL_UART_RxCpltCallback:00000018 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:716    .text.Error_Handler:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:723    .text.Error_Handler:00000000 Error_Handler
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:755    .text.MX_USART1_UART_Init:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:761    .text.MX_USART1_UART_Init:00000000 MX_USART1_UART_Init
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:816    .text.MX_USART1_UART_Init:0000002c $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:822    .text.MX_USART2_UART_Init:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:828    .text.MX_USART2_UART_Init:00000000 MX_USART2_UART_Init
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:883    .text.MX_USART2_UART_Init:0000002c $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:889    .text.SystemClock_Config:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:896    .text.SystemClock_Config:00000000 SystemClock_Config
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1041   .text.SystemClock_Config:00000098 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1047   .rodata.main.str1.4:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1063   .text.main:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1070   .text.main:00000000 main
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1274   .text.main:000000e0 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1324   .bss.t:00000000 t
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1298   .bss.buf_rx:00000000 buf_rx
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1305   .bss.data_rx:00000000 data_rx
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1319   .bss.huart2:00000000 huart2
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1312   .bss.huart1:00000000 huart1
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1295   .bss.buf_rx:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1301   .bss.data_rx:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1308   .bss.huart1:00000000 $d
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s 			page 54
+
+
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1315   .bss.huart2:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccjxsSSJ.s:1325   .bss.t:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_WritePin
+HAL_GPIO_Init
+vsprintf
+HAL_UART_Transmit
+UnityAssertEqualNumber
+minihdlc_char_receiver
+HAL_UART_Receive_IT
+HAL_UART_Init
+memset
+HAL_RCC_OscConfig
+HAL_RCC_ClockConfig
+HAL_Init
+UnityBegin
+UnityDefaultTestRun
+UnityEnd
+minihdlc_init
+snprintf
+strlen
+minihdlc_send_frame
+yahdlc_set_state
+yahdlc_frame_data
+HAL_GPIO_TogglePin
+HAL_Delay

@@ -1,0 +1,1546 @@
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"yahdlc.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.yahdlc_set_state,"ax",%progbits
+  18              		.align	1
+  19              		.global	yahdlc_set_state
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	yahdlc_set_state:
+  27              	.LVL0:
+  28              	.LFB0:
+  29              		.file 1 "Core/test/yahdlc.c"
+   1:Core/test/yahdlc.c **** #include "yahdlc.h"
+   2:Core/test/yahdlc.c **** 
+   3:Core/test/yahdlc.c **** // HDLC Control field bit positions
+   4:Core/test/yahdlc.c **** #define YAHDLC_CONTROL_S_OR_U_FRAME_BIT 0
+   5:Core/test/yahdlc.c **** #define YAHDLC_CONTROL_SEND_SEQ_NO_BIT 1
+   6:Core/test/yahdlc.c **** #define YAHDLC_CONTROL_S_FRAME_TYPE_BIT 2
+   7:Core/test/yahdlc.c **** #define YAHDLC_CONTROL_POLL_BIT 4
+   8:Core/test/yahdlc.c **** #define YAHDLC_CONTROL_RECV_SEQ_NO_BIT 5
+   9:Core/test/yahdlc.c **** 
+  10:Core/test/yahdlc.c **** // HDLC Control type definitions
+  11:Core/test/yahdlc.c **** #define YAHDLC_CONTROL_TYPE_RECEIVE_READY 0
+  12:Core/test/yahdlc.c **** #define YAHDLC_CONTROL_TYPE_RECEIVE_NOT_READY 1
+  13:Core/test/yahdlc.c **** #define YAHDLC_CONTROL_TYPE_REJECT 2
+  14:Core/test/yahdlc.c **** #define YAHDLC_CONTROL_TYPE_SELECTIVE_REJECT 3
+  15:Core/test/yahdlc.c **** 
+  16:Core/test/yahdlc.c **** static yahdlc_state_t yahdlc_state = {
+  17:Core/test/yahdlc.c ****   .control_escape = 0,
+  18:Core/test/yahdlc.c ****   .fcs = FCS_INIT_VALUE,
+  19:Core/test/yahdlc.c ****   .start_index = -1,
+  20:Core/test/yahdlc.c ****   .end_index = -1,
+  21:Core/test/yahdlc.c ****   .src_index = 0,
+  22:Core/test/yahdlc.c ****   .dest_index = 0,
+  23:Core/test/yahdlc.c **** };
+  24:Core/test/yahdlc.c **** 
+  25:Core/test/yahdlc.c **** int yahdlc_set_state(yahdlc_state_t *state) {
+  30              		.loc 1 25 45 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 2
+
+
+  34              		@ link register save eliminated.
+  26:Core/test/yahdlc.c ****   if (!state) {
+  35              		.loc 1 26 3 view .LVU1
+  36              		.loc 1 26 6 is_stmt 0 view .LVU2
+  37 0000 60B1     		cbz	r0, .L3
+  25:Core/test/yahdlc.c ****   if (!state) {
+  38              		.loc 1 25 45 view .LVU3
+  39 0002 10B4     		push	{r4}
+  40              	.LCFI0:
+  41              		.cfi_def_cfa_offset 4
+  42              		.cfi_offset 4, -4
+  43 0004 8446     		mov	ip, r0
+  27:Core/test/yahdlc.c ****     return -EINVAL;
+  28:Core/test/yahdlc.c ****   }
+  29:Core/test/yahdlc.c **** 
+  30:Core/test/yahdlc.c ****   yahdlc_state = *state;
+  44              		.loc 1 30 3 is_stmt 1 view .LVU4
+  45              		.loc 1 30 16 is_stmt 0 view .LVU5
+  46 0006 074C     		ldr	r4, .L8
+  47 0008 BCE80F00 		ldmia	ip!, {r0, r1, r2, r3}
+  48              	.LVL1:
+  49              		.loc 1 30 16 view .LVU6
+  50 000c 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+  51 000e DCF80030 		ldr	r3, [ip]
+  52 0012 2360     		str	r3, [r4]
+  31:Core/test/yahdlc.c ****   return 0;
+  53              		.loc 1 31 3 is_stmt 1 view .LVU7
+  54              		.loc 1 31 10 is_stmt 0 view .LVU8
+  55 0014 0020     		movs	r0, #0
+  32:Core/test/yahdlc.c **** }
+  56              		.loc 1 32 1 view .LVU9
+  57 0016 5DF8044B 		ldr	r4, [sp], #4
+  58              	.LCFI1:
+  59              		.cfi_restore 4
+  60              		.cfi_def_cfa_offset 0
+  61 001a 7047     		bx	lr
+  62              	.LVL2:
+  63              	.L3:
+  27:Core/test/yahdlc.c ****     return -EINVAL;
+  64              		.loc 1 27 12 view .LVU10
+  65 001c 6FF01500 		mvn	r0, #21
+  66              	.LVL3:
+  67              		.loc 1 32 1 view .LVU11
+  68 0020 7047     		bx	lr
+  69              	.L9:
+  70 0022 00BF     		.align	2
+  71              	.L8:
+  72 0024 00000000 		.word	.LANCHOR0
+  73              		.cfi_endproc
+  74              	.LFE0:
+  76              		.section	.text.yahdlc_get_state,"ax",%progbits
+  77              		.align	1
+  78              		.global	yahdlc_get_state
+  79              		.syntax unified
+  80              		.thumb
+  81              		.thumb_func
+  82              		.fpu fpv4-sp-d16
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 3
+
+
+  84              	yahdlc_get_state:
+  85              	.LVL4:
+  86              	.LFB1:
+  33:Core/test/yahdlc.c **** 
+  34:Core/test/yahdlc.c **** 
+  35:Core/test/yahdlc.c **** int yahdlc_get_state(yahdlc_state_t *state) {
+  87              		.loc 1 35 45 is_stmt 1 view -0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 0
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91              		@ link register save eliminated.
+  36:Core/test/yahdlc.c ****   if (!state) {
+  92              		.loc 1 36 3 view .LVU13
+  93              		.loc 1 36 6 is_stmt 0 view .LVU14
+  94 0000 60B1     		cbz	r0, .L12
+  35:Core/test/yahdlc.c ****   if (!state) {
+  95              		.loc 1 35 45 view .LVU15
+  96 0002 10B4     		push	{r4}
+  97              	.LCFI2:
+  98              		.cfi_def_cfa_offset 4
+  99              		.cfi_offset 4, -4
+ 100 0004 8446     		mov	ip, r0
+  37:Core/test/yahdlc.c ****     return -EINVAL;
+  38:Core/test/yahdlc.c ****   }
+  39:Core/test/yahdlc.c **** 
+  40:Core/test/yahdlc.c ****   *state = yahdlc_state;
+ 101              		.loc 1 40 3 is_stmt 1 view .LVU16
+ 102              		.loc 1 40 10 is_stmt 0 view .LVU17
+ 103 0006 074C     		ldr	r4, .L17
+ 104 0008 0FCC     		ldmia	r4!, {r0, r1, r2, r3}
+ 105              	.LVL5:
+ 106              		.loc 1 40 10 view .LVU18
+ 107 000a ACE80F00 		stmia	ip!, {r0, r1, r2, r3}
+ 108              	.LVL6:
+ 109              		.loc 1 40 10 view .LVU19
+ 110 000e 2368     		ldr	r3, [r4]
+ 111 0010 CCF80030 		str	r3, [ip]
+  41:Core/test/yahdlc.c ****   return 0;
+ 112              		.loc 1 41 3 is_stmt 1 view .LVU20
+ 113              		.loc 1 41 10 is_stmt 0 view .LVU21
+ 114 0014 0020     		movs	r0, #0
+  42:Core/test/yahdlc.c **** }
+ 115              		.loc 1 42 1 view .LVU22
+ 116 0016 5DF8044B 		ldr	r4, [sp], #4
+ 117              	.LCFI3:
+ 118              		.cfi_restore 4
+ 119              		.cfi_def_cfa_offset 0
+ 120 001a 7047     		bx	lr
+ 121              	.LVL7:
+ 122              	.L12:
+  37:Core/test/yahdlc.c ****     return -EINVAL;
+ 123              		.loc 1 37 12 view .LVU23
+ 124 001c 6FF01500 		mvn	r0, #21
+ 125              	.LVL8:
+ 126              		.loc 1 42 1 view .LVU24
+ 127 0020 7047     		bx	lr
+ 128              	.L18:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 4
+
+
+ 129 0022 00BF     		.align	2
+ 130              	.L17:
+ 131 0024 00000000 		.word	.LANCHOR0
+ 132              		.cfi_endproc
+ 133              	.LFE1:
+ 135              		.section	.text.yahdlc_escape_value,"ax",%progbits
+ 136              		.align	1
+ 137              		.global	yahdlc_escape_value
+ 138              		.syntax unified
+ 139              		.thumb
+ 140              		.thumb_func
+ 141              		.fpu fpv4-sp-d16
+ 143              	yahdlc_escape_value:
+ 144              	.LVL9:
+ 145              	.LFB2:
+  43:Core/test/yahdlc.c **** 
+  44:Core/test/yahdlc.c **** void yahdlc_escape_value(char value, char *dest, int *dest_index) {
+ 146              		.loc 1 44 67 is_stmt 1 view -0
+ 147              		.cfi_startproc
+ 148              		@ args = 0, pretend = 0, frame = 0
+ 149              		@ frame_needed = 0, uses_anonymous_args = 0
+ 150              		@ link register save eliminated.
+ 151              		.loc 1 44 67 is_stmt 0 view .LVU26
+ 152 0000 10B4     		push	{r4}
+ 153              	.LCFI4:
+ 154              		.cfi_def_cfa_offset 4
+ 155              		.cfi_offset 4, -4
+  45:Core/test/yahdlc.c ****   // Check and escape the value if needed
+  46:Core/test/yahdlc.c ****   if ((value == YAHDLC_FLAG_SEQUENCE) || (value == YAHDLC_CONTROL_ESCAPE)) {
+ 156              		.loc 1 46 3 is_stmt 1 view .LVU27
+ 157              		.loc 1 46 39 is_stmt 0 view .LVU28
+ 158 0002 A0F17D03 		sub	r3, r0, #125
+ 159 0006 DBB2     		uxtb	r3, r3
+ 160              		.loc 1 46 6 view .LVU29
+ 161 0008 012B     		cmp	r3, #1
+ 162 000a 06D9     		bls	.L22
+ 163              	.L20:
+  47:Core/test/yahdlc.c ****     dest[(*dest_index)++] = YAHDLC_CONTROL_ESCAPE;
+  48:Core/test/yahdlc.c ****     value ^= 0x20;
+  49:Core/test/yahdlc.c ****   }
+  50:Core/test/yahdlc.c **** 
+  51:Core/test/yahdlc.c ****   // Add the value to the destination buffer and increment destination index
+  52:Core/test/yahdlc.c ****   dest[(*dest_index)++] = value;
+ 164              		.loc 1 52 3 is_stmt 1 view .LVU30
+ 165              		.loc 1 52 9 is_stmt 0 view .LVU31
+ 166 000c 1368     		ldr	r3, [r2]
+ 167              		.loc 1 52 21 view .LVU32
+ 168 000e 5C1C     		adds	r4, r3, #1
+ 169 0010 1460     		str	r4, [r2]
+ 170              		.loc 1 52 25 view .LVU33
+ 171 0012 C854     		strb	r0, [r1, r3]
+  53:Core/test/yahdlc.c **** }
+ 172              		.loc 1 53 1 view .LVU34
+ 173 0014 5DF8044B 		ldr	r4, [sp], #4
+ 174              	.LCFI5:
+ 175              		.cfi_remember_state
+ 176              		.cfi_restore 4
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 5
+
+
+ 177              		.cfi_def_cfa_offset 0
+ 178 0018 7047     		bx	lr
+ 179              	.L22:
+ 180              	.LCFI6:
+ 181              		.cfi_restore_state
+  47:Core/test/yahdlc.c ****     dest[(*dest_index)++] = YAHDLC_CONTROL_ESCAPE;
+ 182              		.loc 1 47 5 is_stmt 1 view .LVU35
+  47:Core/test/yahdlc.c ****     dest[(*dest_index)++] = YAHDLC_CONTROL_ESCAPE;
+ 183              		.loc 1 47 11 is_stmt 0 view .LVU36
+ 184 001a 1368     		ldr	r3, [r2]
+  47:Core/test/yahdlc.c ****     dest[(*dest_index)++] = YAHDLC_CONTROL_ESCAPE;
+ 185              		.loc 1 47 23 view .LVU37
+ 186 001c 5C1C     		adds	r4, r3, #1
+ 187 001e 1460     		str	r4, [r2]
+  47:Core/test/yahdlc.c ****     dest[(*dest_index)++] = YAHDLC_CONTROL_ESCAPE;
+ 188              		.loc 1 47 27 view .LVU38
+ 189 0020 7D24     		movs	r4, #125
+ 190 0022 CC54     		strb	r4, [r1, r3]
+  48:Core/test/yahdlc.c ****   }
+ 191              		.loc 1 48 5 is_stmt 1 view .LVU39
+  48:Core/test/yahdlc.c ****   }
+ 192              		.loc 1 48 11 is_stmt 0 view .LVU40
+ 193 0024 80F02000 		eor	r0, r0, #32
+ 194              	.LVL10:
+  48:Core/test/yahdlc.c ****   }
+ 195              		.loc 1 48 11 view .LVU41
+ 196 0028 F0E7     		b	.L20
+ 197              		.cfi_endproc
+ 198              	.LFE2:
+ 200              		.section	.text.yahdlc_get_control_type,"ax",%progbits
+ 201              		.align	1
+ 202              		.global	yahdlc_get_control_type
+ 203              		.syntax unified
+ 204              		.thumb
+ 205              		.thumb_func
+ 206              		.fpu fpv4-sp-d16
+ 208              	yahdlc_get_control_type:
+ 209              	.LVL11:
+ 210              	.LFB3:
+  54:Core/test/yahdlc.c **** 
+  55:Core/test/yahdlc.c **** yahdlc_control_t yahdlc_get_control_type(unsigned char control) {
+ 211              		.loc 1 55 65 is_stmt 1 view -0
+ 212              		.cfi_startproc
+ 213              		@ args = 0, pretend = 0, frame = 8
+ 214              		@ frame_needed = 0, uses_anonymous_args = 0
+ 215              		@ link register save eliminated.
+ 216              		.loc 1 55 65 is_stmt 0 view .LVU43
+ 217 0000 82B0     		sub	sp, sp, #8
+ 218              	.LCFI7:
+ 219              		.cfi_def_cfa_offset 8
+  56:Core/test/yahdlc.c ****   yahdlc_control_t value;
+ 220              		.loc 1 56 3 is_stmt 1 view .LVU44
+  57:Core/test/yahdlc.c **** 
+  58:Core/test/yahdlc.c ****   // Check if the frame is a S-frame (or U-frame)
+  59:Core/test/yahdlc.c ****   if (control & (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT)) {
+ 221              		.loc 1 59 3 view .LVU45
+ 222              		.loc 1 59 6 is_stmt 0 view .LVU46
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 6
+
+
+ 223 0002 10F0010F 		tst	r0, #1
+ 224 0006 1FD0     		beq	.L24
+  60:Core/test/yahdlc.c ****     // Check if S-frame type is a Receive Ready (ACK)
+  61:Core/test/yahdlc.c ****     if (((control >> YAHDLC_CONTROL_S_FRAME_TYPE_BIT) & 0x3)
+ 225              		.loc 1 61 5 is_stmt 1 view .LVU47
+ 226              		.loc 1 61 8 is_stmt 0 view .LVU48
+ 227 0008 10F00C0F 		tst	r0, #12
+ 228 000c 18D1     		bne	.L25
+  62:Core/test/yahdlc.c ****         == YAHDLC_CONTROL_TYPE_RECEIVE_READY) {
+  63:Core/test/yahdlc.c ****       value.frame = YAHDLC_FRAME_ACK;
+ 229              		.loc 1 63 7 is_stmt 1 view .LVU49
+ 230              		.loc 1 63 19 is_stmt 0 view .LVU50
+ 231 000e 0123     		movs	r3, #1
+ 232 0010 8DF80030 		strb	r3, [sp]
+ 233              	.L26:
+  64:Core/test/yahdlc.c ****     } else {
+  65:Core/test/yahdlc.c ****       // Assume it is an NACK since Receive Not Ready, Selective Reject and U-frames are not suppor
+  66:Core/test/yahdlc.c ****       value.frame = YAHDLC_FRAME_NACK;
+  67:Core/test/yahdlc.c ****     }
+  68:Core/test/yahdlc.c **** 
+  69:Core/test/yahdlc.c ****     // Add the receive sequence number from the S-frame (or U-frame)
+  70:Core/test/yahdlc.c ****     value.seq_no = (control >> YAHDLC_CONTROL_RECV_SEQ_NO_BIT);
+ 234              		.loc 1 70 5 is_stmt 1 view .LVU51
+ 235              		.loc 1 70 29 is_stmt 0 view .LVU52
+ 236 0014 4009     		lsrs	r0, r0, #5
+ 237              	.LVL12:
+ 238              		.loc 1 70 18 view .LVU53
+ 239 0016 9DF80130 		ldrb	r3, [sp, #1]	@ zero_extendqisi2
+ 240 001a 60F30203 		bfi	r3, r0, #0, #3
+ 241 001e 8DF80130 		strb	r3, [sp, #1]
+ 242              	.L27:
+  71:Core/test/yahdlc.c ****   } else {
+  72:Core/test/yahdlc.c ****     // It must be an I-frame so add the send sequence number (receive sequence number is not used)
+  73:Core/test/yahdlc.c ****     value.frame = YAHDLC_FRAME_DATA;
+  74:Core/test/yahdlc.c ****     value.seq_no = (control >> YAHDLC_CONTROL_SEND_SEQ_NO_BIT);
+  75:Core/test/yahdlc.c ****   }
+  76:Core/test/yahdlc.c **** 
+  77:Core/test/yahdlc.c ****   return value;
+ 243              		.loc 1 77 3 is_stmt 1 view .LVU54
+ 244              		.loc 1 77 10 is_stmt 0 view .LVU55
+ 245 0022 BDF80030 		ldrh	r3, [sp]
+ 246 0026 ADF80430 		strh	r3, [sp, #4]	@ movhi
+ 247 002a 0020     		movs	r0, #0
+ 248 002c 9DF80430 		ldrb	r3, [sp, #4]	@ zero_extendqisi2
+ 249 0030 63F30700 		bfi	r0, r3, #0, #8
+ 250 0034 9DF80530 		ldrb	r3, [sp, #5]	@ zero_extendqisi2
+ 251 0038 63F30F20 		bfi	r0, r3, #8, #8
+  78:Core/test/yahdlc.c **** }
+ 252              		.loc 1 78 1 view .LVU56
+ 253 003c 02B0     		add	sp, sp, #8
+ 254              	.LCFI8:
+ 255              		.cfi_remember_state
+ 256              		.cfi_def_cfa_offset 0
+ 257              		@ sp needed
+ 258 003e 7047     		bx	lr
+ 259              	.LVL13:
+ 260              	.L25:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 7
+
+
+ 261              	.LCFI9:
+ 262              		.cfi_restore_state
+  66:Core/test/yahdlc.c ****     }
+ 263              		.loc 1 66 7 is_stmt 1 view .LVU57
+  66:Core/test/yahdlc.c ****     }
+ 264              		.loc 1 66 19 is_stmt 0 view .LVU58
+ 265 0040 0223     		movs	r3, #2
+ 266 0042 8DF80030 		strb	r3, [sp]
+ 267 0046 E5E7     		b	.L26
+ 268              	.L24:
+  73:Core/test/yahdlc.c ****     value.seq_no = (control >> YAHDLC_CONTROL_SEND_SEQ_NO_BIT);
+ 269              		.loc 1 73 5 is_stmt 1 view .LVU59
+  73:Core/test/yahdlc.c ****     value.seq_no = (control >> YAHDLC_CONTROL_SEND_SEQ_NO_BIT);
+ 270              		.loc 1 73 17 is_stmt 0 view .LVU60
+ 271 0048 0023     		movs	r3, #0
+ 272 004a 8DF80030 		strb	r3, [sp]
+  74:Core/test/yahdlc.c ****   }
+ 273              		.loc 1 74 5 is_stmt 1 view .LVU61
+  74:Core/test/yahdlc.c ****   }
+ 274              		.loc 1 74 29 is_stmt 0 view .LVU62
+ 275 004e C0F34200 		ubfx	r0, r0, #1, #3
+ 276              	.LVL14:
+  74:Core/test/yahdlc.c ****   }
+ 277              		.loc 1 74 18 view .LVU63
+ 278 0052 9DF80130 		ldrb	r3, [sp, #1]	@ zero_extendqisi2
+ 279 0056 60F30203 		bfi	r3, r0, #0, #3
+ 280 005a 8DF80130 		strb	r3, [sp, #1]
+ 281 005e E0E7     		b	.L27
+ 282              		.cfi_endproc
+ 283              	.LFE3:
+ 285              		.section	.text.yahdlc_frame_control_type,"ax",%progbits
+ 286              		.align	1
+ 287              		.global	yahdlc_frame_control_type
+ 288              		.syntax unified
+ 289              		.thumb
+ 290              		.thumb_func
+ 291              		.fpu fpv4-sp-d16
+ 293              	yahdlc_frame_control_type:
+ 294              	.LVL15:
+ 295              	.LFB4:
+  79:Core/test/yahdlc.c **** 
+  80:Core/test/yahdlc.c **** unsigned char yahdlc_frame_control_type(yahdlc_control_t *control) {
+ 296              		.loc 1 80 68 is_stmt 1 view -0
+ 297              		.cfi_startproc
+ 298              		@ args = 0, pretend = 0, frame = 0
+ 299              		@ frame_needed = 0, uses_anonymous_args = 0
+ 300              		@ link register save eliminated.
+  81:Core/test/yahdlc.c ****   unsigned char value = 0;
+ 301              		.loc 1 81 3 view .LVU65
+  82:Core/test/yahdlc.c **** 
+  83:Core/test/yahdlc.c ****   // For details see: https://en.wikipedia.org/wiki/High-Level_Data_Link_Control
+  84:Core/test/yahdlc.c ****   switch (control->frame) {
+ 302              		.loc 1 84 3 view .LVU66
+ 303              		.loc 1 84 18 is_stmt 0 view .LVU67
+ 304 0000 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 305              		.loc 1 84 3 view .LVU68
+ 306 0002 012B     		cmp	r3, #1
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 8
+
+
+ 307 0004 0BD0     		beq	.L30
+ 308 0006 022B     		cmp	r3, #2
+ 309 0008 10D0     		beq	.L31
+ 310 000a 0BB1     		cbz	r3, .L34
+ 311 000c 0020     		movs	r0, #0
+ 312              	.LVL16:
+  85:Core/test/yahdlc.c ****     case YAHDLC_FRAME_DATA:
+  86:Core/test/yahdlc.c ****       // Create the HDLC I-frame control byte with Poll bit set
+  87:Core/test/yahdlc.c ****       value |= (control->seq_no << YAHDLC_CONTROL_SEND_SEQ_NO_BIT);
+  88:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_POLL_BIT);
+  89:Core/test/yahdlc.c ****       break;
+  90:Core/test/yahdlc.c ****     case YAHDLC_FRAME_ACK:
+  91:Core/test/yahdlc.c ****       // Create the HDLC Receive Ready S-frame control byte with Poll bit cleared
+  92:Core/test/yahdlc.c ****       value |= (control->seq_no << YAHDLC_CONTROL_RECV_SEQ_NO_BIT);
+  93:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT);
+  94:Core/test/yahdlc.c ****       break;
+  95:Core/test/yahdlc.c ****     case YAHDLC_FRAME_NACK:
+  96:Core/test/yahdlc.c ****       // Create the HDLC Receive Ready S-frame control byte with Poll bit cleared
+  97:Core/test/yahdlc.c ****       value |= (control->seq_no << YAHDLC_CONTROL_RECV_SEQ_NO_BIT);
+  98:Core/test/yahdlc.c ****       value |= (YAHDLC_CONTROL_TYPE_REJECT << YAHDLC_CONTROL_S_FRAME_TYPE_BIT);
+  99:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT);
+ 100:Core/test/yahdlc.c ****       break;
+ 101:Core/test/yahdlc.c ****   }
+ 102:Core/test/yahdlc.c **** 
+ 103:Core/test/yahdlc.c ****   return value;
+ 313              		.loc 1 103 3 is_stmt 1 view .LVU69
+ 104:Core/test/yahdlc.c **** }
+ 314              		.loc 1 104 1 is_stmt 0 view .LVU70
+ 315 000e 7047     		bx	lr
+ 316              	.LVL17:
+ 317              	.L34:
+  87:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_POLL_BIT);
+ 318              		.loc 1 87 7 is_stmt 1 view .LVU71
+  87:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_POLL_BIT);
+ 319              		.loc 1 87 24 is_stmt 0 view .LVU72
+ 320 0010 4078     		ldrb	r0, [r0, #1]	@ zero_extendqisi2
+ 321              	.LVL18:
+  87:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_POLL_BIT);
+ 322              		.loc 1 87 24 view .LVU73
+ 323 0012 00F00700 		and	r0, r0, #7
+  87:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_POLL_BIT);
+ 324              		.loc 1 87 13 view .LVU74
+ 325 0016 4000     		lsls	r0, r0, #1
+ 326              	.LVL19:
+  88:Core/test/yahdlc.c ****       break;
+ 327              		.loc 1 88 7 is_stmt 1 view .LVU75
+  88:Core/test/yahdlc.c ****       break;
+ 328              		.loc 1 88 13 is_stmt 0 view .LVU76
+ 329 0018 40F01000 		orr	r0, r0, #16
+ 330              	.LVL20:
+  89:Core/test/yahdlc.c ****     case YAHDLC_FRAME_ACK:
+ 331              		.loc 1 89 7 is_stmt 1 view .LVU77
+ 332 001c 7047     		bx	lr
+ 333              	.LVL21:
+ 334              	.L30:
+  92:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT);
+ 335              		.loc 1 92 7 view .LVU78
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 9
+
+
+  92:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT);
+ 336              		.loc 1 92 24 is_stmt 0 view .LVU79
+ 337 001e 4078     		ldrb	r0, [r0, #1]	@ zero_extendqisi2
+ 338              	.LVL22:
+  92:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT);
+ 339              		.loc 1 92 24 view .LVU80
+ 340 0020 00F00700 		and	r0, r0, #7
+  92:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT);
+ 341              		.loc 1 92 13 view .LVU81
+ 342 0024 4001     		lsls	r0, r0, #5
+ 343              	.LVL23:
+  93:Core/test/yahdlc.c ****       break;
+ 344              		.loc 1 93 7 is_stmt 1 view .LVU82
+  93:Core/test/yahdlc.c ****       break;
+ 345              		.loc 1 93 13 is_stmt 0 view .LVU83
+ 346 0026 40F00100 		orr	r0, r0, #1
+ 347              	.LVL24:
+  94:Core/test/yahdlc.c ****     case YAHDLC_FRAME_NACK:
+ 348              		.loc 1 94 7 is_stmt 1 view .LVU84
+ 349 002a 7047     		bx	lr
+ 350              	.LVL25:
+ 351              	.L31:
+  97:Core/test/yahdlc.c ****       value |= (YAHDLC_CONTROL_TYPE_REJECT << YAHDLC_CONTROL_S_FRAME_TYPE_BIT);
+ 352              		.loc 1 97 7 view .LVU85
+  97:Core/test/yahdlc.c ****       value |= (YAHDLC_CONTROL_TYPE_REJECT << YAHDLC_CONTROL_S_FRAME_TYPE_BIT);
+ 353              		.loc 1 97 24 is_stmt 0 view .LVU86
+ 354 002c 4078     		ldrb	r0, [r0, #1]	@ zero_extendqisi2
+ 355              	.LVL26:
+  97:Core/test/yahdlc.c ****       value |= (YAHDLC_CONTROL_TYPE_REJECT << YAHDLC_CONTROL_S_FRAME_TYPE_BIT);
+ 356              		.loc 1 97 24 view .LVU87
+ 357 002e 00F00700 		and	r0, r0, #7
+  97:Core/test/yahdlc.c ****       value |= (YAHDLC_CONTROL_TYPE_REJECT << YAHDLC_CONTROL_S_FRAME_TYPE_BIT);
+ 358              		.loc 1 97 13 view .LVU88
+ 359 0032 4001     		lsls	r0, r0, #5
+ 360              	.LVL27:
+  98:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT);
+ 361              		.loc 1 98 7 is_stmt 1 view .LVU89
+  99:Core/test/yahdlc.c ****       break;
+ 362              		.loc 1 99 7 view .LVU90
+  99:Core/test/yahdlc.c ****       break;
+ 363              		.loc 1 99 13 is_stmt 0 view .LVU91
+ 364 0034 40F00900 		orr	r0, r0, #9
+ 365              	.LVL28:
+ 100:Core/test/yahdlc.c ****   }
+ 366              		.loc 1 100 7 is_stmt 1 view .LVU92
+ 367 0038 7047     		bx	lr
+ 368              		.cfi_endproc
+ 369              	.LFE4:
+ 371              		.section	.text.yahdlc_get_data_reset_with_state,"ax",%progbits
+ 372              		.align	1
+ 373              		.global	yahdlc_get_data_reset_with_state
+ 374              		.syntax unified
+ 375              		.thumb
+ 376              		.thumb_func
+ 377              		.fpu fpv4-sp-d16
+ 379              	yahdlc_get_data_reset_with_state:
+ 380              	.LVL29:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 10
+
+
+ 381              	.LFB6:
+ 105:Core/test/yahdlc.c **** 
+ 106:Core/test/yahdlc.c **** void yahdlc_get_data_reset() {
+ 107:Core/test/yahdlc.c ****   yahdlc_get_data_reset_with_state(&yahdlc_state);
+ 108:Core/test/yahdlc.c **** }
+ 109:Core/test/yahdlc.c **** 
+ 110:Core/test/yahdlc.c **** void yahdlc_get_data_reset_with_state(yahdlc_state_t *state) {
+ 382              		.loc 1 110 62 view -0
+ 383              		.cfi_startproc
+ 384              		@ args = 0, pretend = 0, frame = 0
+ 385              		@ frame_needed = 0, uses_anonymous_args = 0
+ 386              		@ link register save eliminated.
+ 111:Core/test/yahdlc.c ****   state->fcs = FCS_INIT_VALUE;
+ 387              		.loc 1 111 3 view .LVU94
+ 388              		.loc 1 111 14 is_stmt 0 view .LVU95
+ 389 0000 4FF6FF73 		movw	r3, #65535
+ 390 0004 4380     		strh	r3, [r0, #2]	@ movhi
+ 112:Core/test/yahdlc.c ****   state->start_index = state->end_index = -1;
+ 391              		.loc 1 112 3 is_stmt 1 view .LVU96
+ 392              		.loc 1 112 41 is_stmt 0 view .LVU97
+ 393 0006 4FF0FF33 		mov	r3, #-1
+ 394 000a 8360     		str	r3, [r0, #8]
+ 395              		.loc 1 112 22 view .LVU98
+ 396 000c 4360     		str	r3, [r0, #4]
+ 113:Core/test/yahdlc.c ****   state->src_index = state->dest_index = 0;
+ 397              		.loc 1 113 3 is_stmt 1 view .LVU99
+ 398              		.loc 1 113 40 is_stmt 0 view .LVU100
+ 399 000e 0023     		movs	r3, #0
+ 400 0010 0361     		str	r3, [r0, #16]
+ 401              		.loc 1 113 20 view .LVU101
+ 402 0012 C360     		str	r3, [r0, #12]
+ 114:Core/test/yahdlc.c ****   state->control_escape = 0;
+ 403              		.loc 1 114 3 is_stmt 1 view .LVU102
+ 404              		.loc 1 114 25 is_stmt 0 view .LVU103
+ 405 0014 0370     		strb	r3, [r0]
+ 115:Core/test/yahdlc.c **** }
+ 406              		.loc 1 115 1 view .LVU104
+ 407 0016 7047     		bx	lr
+ 408              		.cfi_endproc
+ 409              	.LFE6:
+ 411              		.section	.text.yahdlc_get_data_reset,"ax",%progbits
+ 412              		.align	1
+ 413              		.global	yahdlc_get_data_reset
+ 414              		.syntax unified
+ 415              		.thumb
+ 416              		.thumb_func
+ 417              		.fpu fpv4-sp-d16
+ 419              	yahdlc_get_data_reset:
+ 420              	.LFB5:
+ 106:Core/test/yahdlc.c ****   yahdlc_get_data_reset_with_state(&yahdlc_state);
+ 421              		.loc 1 106 30 is_stmt 1 view -0
+ 422              		.cfi_startproc
+ 423              		@ args = 0, pretend = 0, frame = 0
+ 424              		@ frame_needed = 0, uses_anonymous_args = 0
+ 425 0000 08B5     		push	{r3, lr}
+ 426              	.LCFI10:
+ 427              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 11
+
+
+ 428              		.cfi_offset 3, -8
+ 429              		.cfi_offset 14, -4
+ 107:Core/test/yahdlc.c **** }
+ 430              		.loc 1 107 3 view .LVU106
+ 431 0002 0248     		ldr	r0, .L38
+ 432 0004 FFF7FEFF 		bl	yahdlc_get_data_reset_with_state
+ 433              	.LVL30:
+ 108:Core/test/yahdlc.c **** 
+ 434              		.loc 1 108 1 is_stmt 0 view .LVU107
+ 435 0008 08BD     		pop	{r3, pc}
+ 436              	.L39:
+ 437 000a 00BF     		.align	2
+ 438              	.L38:
+ 439 000c 00000000 		.word	.LANCHOR0
+ 440              		.cfi_endproc
+ 441              	.LFE5:
+ 443              		.section	.text.yahdlc_get_data_with_state,"ax",%progbits
+ 444              		.align	1
+ 445              		.global	yahdlc_get_data_with_state
+ 446              		.syntax unified
+ 447              		.thumb
+ 448              		.thumb_func
+ 449              		.fpu fpv4-sp-d16
+ 451              	yahdlc_get_data_with_state:
+ 452              	.LVL31:
+ 453              	.LFB8:
+ 116:Core/test/yahdlc.c **** 
+ 117:Core/test/yahdlc.c **** int yahdlc_get_data(yahdlc_control_t *control, const char *src,
+ 118:Core/test/yahdlc.c ****                     unsigned int src_len, char *dest, unsigned int *dest_len) {
+ 119:Core/test/yahdlc.c ****   return yahdlc_get_data_with_state(&yahdlc_state, control, src, src_len, dest, dest_len);
+ 120:Core/test/yahdlc.c **** }
+ 121:Core/test/yahdlc.c **** 
+ 122:Core/test/yahdlc.c **** int yahdlc_get_data_with_state(yahdlc_state_t *state, yahdlc_control_t *control, const char *src,
+ 123:Core/test/yahdlc.c ****                     unsigned int src_len, char *dest, unsigned int *dest_len) {
+ 454              		.loc 1 123 79 is_stmt 1 view -0
+ 455              		.cfi_startproc
+ 456              		@ args = 8, pretend = 0, frame = 0
+ 457              		@ frame_needed = 0, uses_anonymous_args = 0
+ 458              		.loc 1 123 79 is_stmt 0 view .LVU109
+ 459 0000 2DE9F84F 		push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 460              	.LCFI11:
+ 461              		.cfi_def_cfa_offset 40
+ 462              		.cfi_offset 3, -40
+ 463              		.cfi_offset 4, -36
+ 464              		.cfi_offset 5, -32
+ 465              		.cfi_offset 6, -28
+ 466              		.cfi_offset 7, -24
+ 467              		.cfi_offset 8, -20
+ 468              		.cfi_offset 9, -16
+ 469              		.cfi_offset 10, -12
+ 470              		.cfi_offset 11, -8
+ 471              		.cfi_offset 14, -4
+ 472 0004 DDF828A0 		ldr	r10, [sp, #40]
+ 473 0008 DDF82C90 		ldr	r9, [sp, #44]
+ 124:Core/test/yahdlc.c ****   int ret;
+ 474              		.loc 1 124 3 is_stmt 1 view .LVU110
+ 125:Core/test/yahdlc.c ****   char value;
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 12
+
+
+ 475              		.loc 1 125 3 view .LVU111
+ 126:Core/test/yahdlc.c ****   unsigned int i;
+ 476              		.loc 1 126 3 view .LVU112
+ 127:Core/test/yahdlc.c **** 
+ 128:Core/test/yahdlc.c ****   // Make sure that all parameters are valid
+ 129:Core/test/yahdlc.c ****   if (!state || !control || !src || !dest || !dest_len) {
+ 477              		.loc 1 129 3 view .LVU113
+ 478              		.loc 1 129 6 is_stmt 0 view .LVU114
+ 479 000c 0028     		cmp	r0, #0
+ 480 000e 00F08A80 		beq	.L59
+ 481 0012 8846     		mov	r8, r1
+ 482 0014 1646     		mov	r6, r2
+ 483 0016 1F46     		mov	r7, r3
+ 484 0018 0446     		mov	r4, r0
+ 485              		.loc 1 129 14 discriminator 1 view .LVU115
+ 486 001a 0029     		cmp	r1, #0
+ 487 001c 00F08680 		beq	.L60
+ 488              		.loc 1 129 26 discriminator 2 view .LVU116
+ 489 0020 002A     		cmp	r2, #0
+ 490 0022 00F08680 		beq	.L61
+ 491              		.loc 1 129 34 discriminator 3 view .LVU117
+ 492 0026 BAF1000F 		cmp	r10, #0
+ 493 002a 00F08580 		beq	.L62
+ 494              		.loc 1 129 43 discriminator 4 view .LVU118
+ 495 002e B9F1000F 		cmp	r9, #0
+ 496 0032 00F08480 		beq	.L63
+ 130:Core/test/yahdlc.c ****     return -EINVAL;
+ 131:Core/test/yahdlc.c ****   }
+ 132:Core/test/yahdlc.c **** 
+ 133:Core/test/yahdlc.c ****   // Run through the data bytes
+ 134:Core/test/yahdlc.c ****   for (i = 0; i < src_len; i++) {
+ 497              		.loc 1 134 10 view .LVU119
+ 498 0036 0025     		movs	r5, #0
+ 499 0038 06E0     		b	.L42
+ 500              	.LVL32:
+ 501              	.L66:
+ 135:Core/test/yahdlc.c ****     // First find the start flag sequence
+ 136:Core/test/yahdlc.c ****     if (state->start_index < 0) {
+ 137:Core/test/yahdlc.c ****       if (src[i] == YAHDLC_FLAG_SEQUENCE) {
+ 502              		.loc 1 137 7 is_stmt 1 view .LVU120
+ 503              		.loc 1 137 14 is_stmt 0 view .LVU121
+ 504 003a 735D     		ldrb	r3, [r6, r5]	@ zero_extendqisi2
+ 505              		.loc 1 137 10 view .LVU122
+ 506 003c 7E2B     		cmp	r3, #126
+ 507 003e 2BD0     		beq	.L65
+ 508              	.L44:
+ 138:Core/test/yahdlc.c ****         // Check if an additional flag sequence byte is present
+ 139:Core/test/yahdlc.c ****         if ((i < (src_len - 1)) && (src[i + 1] == YAHDLC_FLAG_SEQUENCE)) {
+ 140:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
+ 141:Core/test/yahdlc.c ****           continue;
+ 142:Core/test/yahdlc.c ****         }
+ 143:Core/test/yahdlc.c **** 
+ 144:Core/test/yahdlc.c ****         state->start_index = state->src_index;
+ 145:Core/test/yahdlc.c ****       }
+ 146:Core/test/yahdlc.c ****     } else {
+ 147:Core/test/yahdlc.c ****       // Check for end flag sequence
+ 148:Core/test/yahdlc.c ****       if (src[i] == YAHDLC_FLAG_SEQUENCE) {
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 13
+
+
+ 149:Core/test/yahdlc.c ****         // Check if an additional flag sequence byte is present or earlier received
+ 150:Core/test/yahdlc.c ****         if (((i < (src_len - 1)) && (src[i + 1] == YAHDLC_FLAG_SEQUENCE))
+ 151:Core/test/yahdlc.c ****             || ((state->start_index + 1) == state->src_index)) {
+ 152:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
+ 153:Core/test/yahdlc.c ****           continue;
+ 154:Core/test/yahdlc.c ****         }
+ 155:Core/test/yahdlc.c **** 
+ 156:Core/test/yahdlc.c ****         state->end_index = state->src_index;
+ 157:Core/test/yahdlc.c ****         break;
+ 158:Core/test/yahdlc.c ****       } else if (src[i] == YAHDLC_CONTROL_ESCAPE) {
+ 159:Core/test/yahdlc.c ****         state->control_escape = 1;
+ 160:Core/test/yahdlc.c ****       } else {
+ 161:Core/test/yahdlc.c ****         // Update the value based on any control escape received
+ 162:Core/test/yahdlc.c ****         if (state->control_escape) {
+ 163:Core/test/yahdlc.c ****           state->control_escape = 0;
+ 164:Core/test/yahdlc.c ****           value = src[i] ^ 0x20;
+ 165:Core/test/yahdlc.c ****         } else {
+ 166:Core/test/yahdlc.c ****           value = src[i];
+ 167:Core/test/yahdlc.c ****         }
+ 168:Core/test/yahdlc.c **** 
+ 169:Core/test/yahdlc.c ****         // Now update the FCS value
+ 170:Core/test/yahdlc.c ****         state->fcs = calc_fcs(state->fcs, value);
+ 171:Core/test/yahdlc.c **** 
+ 172:Core/test/yahdlc.c ****         if (state->src_index == state->start_index + 2) {
+ 173:Core/test/yahdlc.c ****           // Control field is the second byte after the start flag sequence
+ 174:Core/test/yahdlc.c ****           *control = yahdlc_get_control_type(value);
+ 175:Core/test/yahdlc.c ****         } else if (state->src_index > (state->start_index + 2)) {
+ 176:Core/test/yahdlc.c ****           // Start adding the data values after the Control field to the buffer
+ 177:Core/test/yahdlc.c ****           dest[state->dest_index++] = value;
+ 178:Core/test/yahdlc.c ****         }
+ 179:Core/test/yahdlc.c ****       }
+ 180:Core/test/yahdlc.c ****     }
+ 181:Core/test/yahdlc.c ****     state->src_index++;
+ 509              		.loc 1 181 5 is_stmt 1 view .LVU123
+ 510              		.loc 1 181 10 is_stmt 0 view .LVU124
+ 511 0040 E068     		ldr	r0, [r4, #12]
+ 512              		.loc 1 181 21 view .LVU125
+ 513 0042 0130     		adds	r0, r0, #1
+ 514 0044 E060     		str	r0, [r4, #12]
+ 515              	.L46:
+ 134:Core/test/yahdlc.c ****     // First find the start flag sequence
+ 516              		.loc 1 134 28 is_stmt 1 discriminator 2 view .LVU126
+ 134:Core/test/yahdlc.c ****     // First find the start flag sequence
+ 517              		.loc 1 134 29 is_stmt 0 discriminator 2 view .LVU127
+ 518 0046 0135     		adds	r5, r5, #1
+ 519              	.LVL33:
+ 520              	.L42:
+ 134:Core/test/yahdlc.c ****     // First find the start flag sequence
+ 521              		.loc 1 134 15 is_stmt 1 discriminator 1 view .LVU128
+ 134:Core/test/yahdlc.c ****     // First find the start flag sequence
+ 522              		.loc 1 134 3 is_stmt 0 discriminator 1 view .LVU129
+ 523 0048 BD42     		cmp	r5, r7
+ 524 004a 3BD2     		bcs	.L49
+ 136:Core/test/yahdlc.c ****       if (src[i] == YAHDLC_FLAG_SEQUENCE) {
+ 525              		.loc 1 136 5 is_stmt 1 view .LVU130
+ 136:Core/test/yahdlc.c ****       if (src[i] == YAHDLC_FLAG_SEQUENCE) {
+ 526              		.loc 1 136 14 is_stmt 0 view .LVU131
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 14
+
+
+ 527 004c 6368     		ldr	r3, [r4, #4]
+ 136:Core/test/yahdlc.c ****       if (src[i] == YAHDLC_FLAG_SEQUENCE) {
+ 528              		.loc 1 136 8 view .LVU132
+ 529 004e 002B     		cmp	r3, #0
+ 530 0050 F3DB     		blt	.L66
+ 148:Core/test/yahdlc.c ****         // Check if an additional flag sequence byte is present or earlier received
+ 531              		.loc 1 148 7 is_stmt 1 view .LVU133
+ 148:Core/test/yahdlc.c ****         // Check if an additional flag sequence byte is present or earlier received
+ 532              		.loc 1 148 14 is_stmt 0 view .LVU134
+ 533 0052 7219     		adds	r2, r6, r5
+ 534 0054 16F805B0 		ldrb	fp, [r6, r5]	@ zero_extendqisi2
+ 148:Core/test/yahdlc.c ****         // Check if an additional flag sequence byte is present or earlier received
+ 535              		.loc 1 148 10 view .LVU135
+ 536 0058 BBF17E0F 		cmp	fp, #126
+ 537 005c 26D0     		beq	.L67
+ 158:Core/test/yahdlc.c ****         state->control_escape = 1;
+ 538              		.loc 1 158 14 is_stmt 1 view .LVU136
+ 158:Core/test/yahdlc.c ****         state->control_escape = 1;
+ 539              		.loc 1 158 17 is_stmt 0 view .LVU137
+ 540 005e BBF17D0F 		cmp	fp, #125
+ 541 0062 47D0     		beq	.L68
+ 162:Core/test/yahdlc.c ****           state->control_escape = 0;
+ 542              		.loc 1 162 9 is_stmt 1 view .LVU138
+ 162:Core/test/yahdlc.c ****           state->control_escape = 0;
+ 543              		.loc 1 162 18 is_stmt 0 view .LVU139
+ 544 0064 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
+ 162:Core/test/yahdlc.c ****           state->control_escape = 0;
+ 545              		.loc 1 162 12 view .LVU140
+ 546 0066 2BB1     		cbz	r3, .L51
+ 163:Core/test/yahdlc.c ****           value = src[i] ^ 0x20;
+ 547              		.loc 1 163 11 is_stmt 1 view .LVU141
+ 163:Core/test/yahdlc.c ****           value = src[i] ^ 0x20;
+ 548              		.loc 1 163 33 is_stmt 0 view .LVU142
+ 549 0068 0023     		movs	r3, #0
+ 550 006a 2370     		strb	r3, [r4]
+ 164:Core/test/yahdlc.c ****         } else {
+ 551              		.loc 1 164 11 is_stmt 1 view .LVU143
+ 164:Core/test/yahdlc.c ****         } else {
+ 552              		.loc 1 164 22 is_stmt 0 view .LVU144
+ 553 006c 92F800B0 		ldrb	fp, [r2]	@ zero_extendqisi2
+ 164:Core/test/yahdlc.c ****         } else {
+ 554              		.loc 1 164 17 view .LVU145
+ 555 0070 8BF0200B 		eor	fp, fp, #32
+ 556              	.LVL34:
+ 557              	.L51:
+ 170:Core/test/yahdlc.c **** 
+ 558              		.loc 1 170 9 is_stmt 1 view .LVU146
+ 170:Core/test/yahdlc.c **** 
+ 559              		.loc 1 170 22 is_stmt 0 view .LVU147
+ 560 0074 5946     		mov	r1, fp
+ 561 0076 6088     		ldrh	r0, [r4, #2]
+ 562 0078 FFF7FEFF 		bl	calc_fcs
+ 563              	.LVL35:
+ 170:Core/test/yahdlc.c **** 
+ 564              		.loc 1 170 20 view .LVU148
+ 565 007c 6080     		strh	r0, [r4, #2]	@ movhi
+ 172:Core/test/yahdlc.c ****           // Control field is the second byte after the start flag sequence
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 15
+
+
+ 566              		.loc 1 172 9 is_stmt 1 view .LVU149
+ 172:Core/test/yahdlc.c ****           // Control field is the second byte after the start flag sequence
+ 567              		.loc 1 172 18 is_stmt 0 view .LVU150
+ 568 007e E268     		ldr	r2, [r4, #12]
+ 172:Core/test/yahdlc.c ****           // Control field is the second byte after the start flag sequence
+ 569              		.loc 1 172 38 view .LVU151
+ 570 0080 6368     		ldr	r3, [r4, #4]
+ 172:Core/test/yahdlc.c ****           // Control field is the second byte after the start flag sequence
+ 571              		.loc 1 172 52 view .LVU152
+ 572 0082 0233     		adds	r3, r3, #2
+ 172:Core/test/yahdlc.c ****           // Control field is the second byte after the start flag sequence
+ 573              		.loc 1 172 12 view .LVU153
+ 574 0084 9A42     		cmp	r2, r3
+ 575 0086 38D0     		beq	.L69
+ 175:Core/test/yahdlc.c ****           // Start adding the data values after the Control field to the buffer
+ 576              		.loc 1 175 16 is_stmt 1 view .LVU154
+ 175:Core/test/yahdlc.c ****           // Start adding the data values after the Control field to the buffer
+ 577              		.loc 1 175 19 is_stmt 0 view .LVU155
+ 578 0088 9A42     		cmp	r2, r3
+ 579 008a D9DD     		ble	.L44
+ 177:Core/test/yahdlc.c ****         }
+ 580              		.loc 1 177 11 is_stmt 1 view .LVU156
+ 177:Core/test/yahdlc.c ****         }
+ 581              		.loc 1 177 21 is_stmt 0 view .LVU157
+ 582 008c 2369     		ldr	r3, [r4, #16]
+ 177:Core/test/yahdlc.c ****         }
+ 583              		.loc 1 177 33 view .LVU158
+ 584 008e 5A1C     		adds	r2, r3, #1
+ 585 0090 2261     		str	r2, [r4, #16]
+ 177:Core/test/yahdlc.c ****         }
+ 586              		.loc 1 177 37 view .LVU159
+ 587 0092 0AF803B0 		strb	fp, [r10, r3]
+ 588 0096 D3E7     		b	.L44
+ 589              	.LVL36:
+ 590              	.L65:
+ 139:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
+ 591              		.loc 1 139 9 is_stmt 1 view .LVU160
+ 139:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
+ 592              		.loc 1 139 27 is_stmt 0 view .LVU161
+ 593 0098 7B1E     		subs	r3, r7, #1
+ 139:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
+ 594              		.loc 1 139 12 view .LVU162
+ 595 009a AB42     		cmp	r3, r5
+ 596 009c 03D9     		bls	.L45
+ 139:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
+ 597              		.loc 1 139 40 discriminator 1 view .LVU163
+ 598 009e 7319     		adds	r3, r6, r5
+ 599 00a0 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 139:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
+ 600              		.loc 1 139 33 discriminator 1 view .LVU164
+ 601 00a2 7E2B     		cmp	r3, #126
+ 602 00a4 CFD0     		beq	.L46
+ 603              	.L45:
+ 144:Core/test/yahdlc.c ****       }
+ 604              		.loc 1 144 9 is_stmt 1 view .LVU165
+ 144:Core/test/yahdlc.c ****       }
+ 605              		.loc 1 144 35 is_stmt 0 view .LVU166
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 16
+
+
+ 606 00a6 E368     		ldr	r3, [r4, #12]
+ 144:Core/test/yahdlc.c ****       }
+ 607              		.loc 1 144 28 view .LVU167
+ 608 00a8 6360     		str	r3, [r4, #4]
+ 609 00aa C9E7     		b	.L44
+ 610              	.L67:
+ 150:Core/test/yahdlc.c ****             || ((state->start_index + 1) == state->src_index)) {
+ 611              		.loc 1 150 9 is_stmt 1 view .LVU168
+ 150:Core/test/yahdlc.c ****             || ((state->start_index + 1) == state->src_index)) {
+ 612              		.loc 1 150 28 is_stmt 0 view .LVU169
+ 613 00ac 7A1E     		subs	r2, r7, #1
+ 150:Core/test/yahdlc.c ****             || ((state->start_index + 1) == state->src_index)) {
+ 614              		.loc 1 150 12 view .LVU170
+ 615 00ae AA42     		cmp	r2, r5
+ 616 00b0 03D9     		bls	.L48
+ 150:Core/test/yahdlc.c ****             || ((state->start_index + 1) == state->src_index)) {
+ 617              		.loc 1 150 41 discriminator 1 view .LVU171
+ 618 00b2 7219     		adds	r2, r6, r5
+ 619 00b4 5278     		ldrb	r2, [r2, #1]	@ zero_extendqisi2
+ 150:Core/test/yahdlc.c ****             || ((state->start_index + 1) == state->src_index)) {
+ 620              		.loc 1 150 34 discriminator 1 view .LVU172
+ 621 00b6 7E2A     		cmp	r2, #126
+ 622 00b8 C5D0     		beq	.L46
+ 623              	.L48:
+ 151:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
+ 624              		.loc 1 151 37 view .LVU173
+ 625 00ba 0133     		adds	r3, r3, #1
+ 151:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
+ 626              		.loc 1 151 50 view .LVU174
+ 627 00bc E268     		ldr	r2, [r4, #12]
+ 151:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
+ 628              		.loc 1 151 13 view .LVU175
+ 629 00be 9342     		cmp	r3, r2
+ 630 00c0 C1D0     		beq	.L46
+ 156:Core/test/yahdlc.c ****         break;
+ 631              		.loc 1 156 9 is_stmt 1 view .LVU176
+ 156:Core/test/yahdlc.c ****         break;
+ 632              		.loc 1 156 26 is_stmt 0 view .LVU177
+ 633 00c2 A260     		str	r2, [r4, #8]
+ 157:Core/test/yahdlc.c ****       } else if (src[i] == YAHDLC_CONTROL_ESCAPE) {
+ 634              		.loc 1 157 9 is_stmt 1 view .LVU178
+ 635              	.L49:
+ 182:Core/test/yahdlc.c ****   }
+ 183:Core/test/yahdlc.c **** 
+ 184:Core/test/yahdlc.c ****   // Check for invalid frame (no start or end flag sequence)
+ 185:Core/test/yahdlc.c ****   if ((state->start_index < 0) || (state->end_index < 0)) {
+ 636              		.loc 1 185 3 view .LVU179
+ 637              		.loc 1 185 13 is_stmt 0 view .LVU180
+ 638 00c4 6368     		ldr	r3, [r4, #4]
+ 639              		.loc 1 185 6 view .LVU181
+ 640 00c6 002B     		cmp	r3, #0
+ 641 00c8 22DB     		blt	.L54
+ 642              		.loc 1 185 41 discriminator 1 view .LVU182
+ 643 00ca A268     		ldr	r2, [r4, #8]
+ 644              		.loc 1 185 32 discriminator 1 view .LVU183
+ 645 00cc 002A     		cmp	r2, #0
+ 646 00ce 1FDB     		blt	.L54
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 17
+
+
+ 186:Core/test/yahdlc.c ****     // Return no message and make sure destination length is 0
+ 187:Core/test/yahdlc.c ****     *dest_len = 0;
+ 188:Core/test/yahdlc.c ****     ret = -ENOMSG;
+ 189:Core/test/yahdlc.c ****   } else {
+ 190:Core/test/yahdlc.c ****     // A frame is at least 4 bytes in size and has a valid FCS value
+ 191:Core/test/yahdlc.c ****     if ((state->end_index < (state->start_index + 4))
+ 647              		.loc 1 191 5 is_stmt 1 view .LVU184
+ 648              		.loc 1 191 27 is_stmt 0 view .LVU185
+ 649 00d0 0333     		adds	r3, r3, #3
+ 650              		.loc 1 191 8 view .LVU186
+ 651 00d2 9A42     		cmp	r2, r3
+ 652 00d4 04DD     		ble	.L56
+ 192:Core/test/yahdlc.c ****         || (state->fcs != FCS_GOOD_VALUE)) {
+ 653              		.loc 1 192 18 view .LVU187
+ 654 00d6 6288     		ldrh	r2, [r4, #2]
+ 655              		.loc 1 192 9 view .LVU188
+ 656 00d8 4FF2B803 		movw	r3, #61624
+ 657 00dc 9A42     		cmp	r2, r3
+ 658 00de 1DD0     		beq	.L57
+ 659              	.L56:
+ 193:Core/test/yahdlc.c ****       // Return FCS error and indicate that data up to end flag sequence in buffer should be discar
+ 194:Core/test/yahdlc.c ****       *dest_len = i;
+ 660              		.loc 1 194 7 is_stmt 1 view .LVU189
+ 661              		.loc 1 194 17 is_stmt 0 view .LVU190
+ 662 00e0 C9F80050 		str	r5, [r9]
+ 195:Core/test/yahdlc.c ****       ret = -EIO;
+ 663              		.loc 1 195 7 is_stmt 1 view .LVU191
+ 664              	.LVL37:
+ 665              		.loc 1 195 11 is_stmt 0 view .LVU192
+ 666 00e4 6FF00405 		mvn	r5, #4
+ 667              	.LVL38:
+ 668              	.L58:
+ 196:Core/test/yahdlc.c ****     } else {
+ 197:Core/test/yahdlc.c ****       // Return success and indicate that data up to end flag sequence in buffer should be discarde
+ 198:Core/test/yahdlc.c ****       *dest_len = state->dest_index - sizeof(state->fcs);
+ 199:Core/test/yahdlc.c ****       ret = i;
+ 200:Core/test/yahdlc.c ****     }
+ 201:Core/test/yahdlc.c **** 
+ 202:Core/test/yahdlc.c ****     // Reset values for next frame
+ 203:Core/test/yahdlc.c ****     yahdlc_get_data_reset_with_state(state);
+ 669              		.loc 1 203 5 is_stmt 1 view .LVU193
+ 670 00e8 2046     		mov	r0, r4
+ 671 00ea FFF7FEFF 		bl	yahdlc_get_data_reset_with_state
+ 672              	.LVL39:
+ 673              	.L40:
+ 204:Core/test/yahdlc.c ****   }
+ 205:Core/test/yahdlc.c **** 
+ 206:Core/test/yahdlc.c ****   return ret;
+ 207:Core/test/yahdlc.c **** }
+ 674              		.loc 1 207 1 is_stmt 0 view .LVU194
+ 675 00ee 2846     		mov	r0, r5
+ 676 00f0 BDE8F88F 		pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 677              	.LVL40:
+ 678              	.L68:
+ 159:Core/test/yahdlc.c ****       } else {
+ 679              		.loc 1 159 9 is_stmt 1 view .LVU195
+ 159:Core/test/yahdlc.c ****       } else {
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 18
+
+
+ 680              		.loc 1 159 31 is_stmt 0 view .LVU196
+ 681 00f4 0123     		movs	r3, #1
+ 682 00f6 2370     		strb	r3, [r4]
+ 683 00f8 A2E7     		b	.L44
+ 684              	.LVL41:
+ 685              	.L69:
+ 174:Core/test/yahdlc.c ****         } else if (state->src_index > (state->start_index + 2)) {
+ 686              		.loc 1 174 11 is_stmt 1 view .LVU197
+ 174:Core/test/yahdlc.c ****         } else if (state->src_index > (state->start_index + 2)) {
+ 687              		.loc 1 174 22 is_stmt 0 view .LVU198
+ 688 00fa 5846     		mov	r0, fp
+ 689 00fc FFF7FEFF 		bl	yahdlc_get_control_type
+ 690              	.LVL42:
+ 691 0100 00B2     		sxth	r0, r0
+ 692 0102 88F80000 		strb	r0, [r8]
+ 693 0106 C0F30720 		ubfx	r0, r0, #8, #8
+ 694 010a 88F80100 		strb	r0, [r8, #1]
+ 695 010e 97E7     		b	.L44
+ 696              	.LVL43:
+ 697              	.L54:
+ 187:Core/test/yahdlc.c ****     ret = -ENOMSG;
+ 698              		.loc 1 187 5 is_stmt 1 view .LVU199
+ 187:Core/test/yahdlc.c ****     ret = -ENOMSG;
+ 699              		.loc 1 187 15 is_stmt 0 view .LVU200
+ 700 0110 0023     		movs	r3, #0
+ 701 0112 C9F80030 		str	r3, [r9]
+ 188:Core/test/yahdlc.c ****   } else {
+ 702              		.loc 1 188 5 is_stmt 1 view .LVU201
+ 703              	.LVL44:
+ 188:Core/test/yahdlc.c ****   } else {
+ 704              		.loc 1 188 9 is_stmt 0 view .LVU202
+ 705 0116 6FF02205 		mvn	r5, #34
+ 706              	.LVL45:
+ 188:Core/test/yahdlc.c ****   } else {
+ 707              		.loc 1 188 9 view .LVU203
+ 708 011a E8E7     		b	.L40
+ 709              	.LVL46:
+ 710              	.L57:
+ 198:Core/test/yahdlc.c ****       ret = i;
+ 711              		.loc 1 198 7 is_stmt 1 view .LVU204
+ 198:Core/test/yahdlc.c ****       ret = i;
+ 712              		.loc 1 198 24 is_stmt 0 view .LVU205
+ 713 011c 2369     		ldr	r3, [r4, #16]
+ 198:Core/test/yahdlc.c ****       ret = i;
+ 714              		.loc 1 198 37 view .LVU206
+ 715 011e 023B     		subs	r3, r3, #2
+ 198:Core/test/yahdlc.c ****       ret = i;
+ 716              		.loc 1 198 17 view .LVU207
+ 717 0120 C9F80030 		str	r3, [r9]
+ 199:Core/test/yahdlc.c ****     }
+ 718              		.loc 1 199 7 is_stmt 1 view .LVU208
+ 719              	.LVL47:
+ 199:Core/test/yahdlc.c ****     }
+ 720              		.loc 1 199 7 is_stmt 0 view .LVU209
+ 721 0124 E0E7     		b	.L58
+ 722              	.LVL48:
+ 723              	.L59:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 19
+
+
+ 130:Core/test/yahdlc.c ****   }
+ 724              		.loc 1 130 12 view .LVU210
+ 725 0126 6FF01505 		mvn	r5, #21
+ 726 012a E0E7     		b	.L40
+ 727              	.L60:
+ 130:Core/test/yahdlc.c ****   }
+ 728              		.loc 1 130 12 view .LVU211
+ 729 012c 6FF01505 		mvn	r5, #21
+ 730 0130 DDE7     		b	.L40
+ 731              	.L61:
+ 732 0132 6FF01505 		mvn	r5, #21
+ 733 0136 DAE7     		b	.L40
+ 734              	.L62:
+ 735 0138 6FF01505 		mvn	r5, #21
+ 736 013c D7E7     		b	.L40
+ 737              	.L63:
+ 738 013e 6FF01505 		mvn	r5, #21
+ 739 0142 D4E7     		b	.L40
+ 740              		.cfi_endproc
+ 741              	.LFE8:
+ 743              		.section	.text.yahdlc_get_data,"ax",%progbits
+ 744              		.align	1
+ 745              		.global	yahdlc_get_data
+ 746              		.syntax unified
+ 747              		.thumb
+ 748              		.thumb_func
+ 749              		.fpu fpv4-sp-d16
+ 751              	yahdlc_get_data:
+ 752              	.LVL49:
+ 753              	.LFB7:
+ 118:Core/test/yahdlc.c ****   return yahdlc_get_data_with_state(&yahdlc_state, control, src, src_len, dest, dest_len);
+ 754              		.loc 1 118 79 is_stmt 1 view -0
+ 755              		.cfi_startproc
+ 756              		@ args = 4, pretend = 0, frame = 0
+ 757              		@ frame_needed = 0, uses_anonymous_args = 0
+ 118:Core/test/yahdlc.c ****   return yahdlc_get_data_with_state(&yahdlc_state, control, src, src_len, dest, dest_len);
+ 758              		.loc 1 118 79 is_stmt 0 view .LVU213
+ 759 0000 10B5     		push	{r4, lr}
+ 760              	.LCFI12:
+ 761              		.cfi_def_cfa_offset 8
+ 762              		.cfi_offset 4, -8
+ 763              		.cfi_offset 14, -4
+ 764 0002 82B0     		sub	sp, sp, #8
+ 765              	.LCFI13:
+ 766              		.cfi_def_cfa_offset 16
+ 119:Core/test/yahdlc.c **** }
+ 767              		.loc 1 119 3 is_stmt 1 view .LVU214
+ 119:Core/test/yahdlc.c **** }
+ 768              		.loc 1 119 10 is_stmt 0 view .LVU215
+ 769 0004 049C     		ldr	r4, [sp, #16]
+ 770 0006 0194     		str	r4, [sp, #4]
+ 771 0008 0093     		str	r3, [sp]
+ 772 000a 1346     		mov	r3, r2
+ 773              	.LVL50:
+ 119:Core/test/yahdlc.c **** }
+ 774              		.loc 1 119 10 view .LVU216
+ 775 000c 0A46     		mov	r2, r1
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 20
+
+
+ 776              	.LVL51:
+ 119:Core/test/yahdlc.c **** }
+ 777              		.loc 1 119 10 view .LVU217
+ 778 000e 0146     		mov	r1, r0
+ 779              	.LVL52:
+ 119:Core/test/yahdlc.c **** }
+ 780              		.loc 1 119 10 view .LVU218
+ 781 0010 0248     		ldr	r0, .L72
+ 782              	.LVL53:
+ 119:Core/test/yahdlc.c **** }
+ 783              		.loc 1 119 10 view .LVU219
+ 784 0012 FFF7FEFF 		bl	yahdlc_get_data_with_state
+ 785              	.LVL54:
+ 120:Core/test/yahdlc.c **** 
+ 786              		.loc 1 120 1 view .LVU220
+ 787 0016 02B0     		add	sp, sp, #8
+ 788              	.LCFI14:
+ 789              		.cfi_def_cfa_offset 8
+ 790              		@ sp needed
+ 791 0018 10BD     		pop	{r4, pc}
+ 792              	.LVL55:
+ 793              	.L73:
+ 120:Core/test/yahdlc.c **** 
+ 794              		.loc 1 120 1 view .LVU221
+ 795 001a 00BF     		.align	2
+ 796              	.L72:
+ 797 001c 00000000 		.word	.LANCHOR0
+ 798              		.cfi_endproc
+ 799              	.LFE7:
+ 801              		.section	.text.yahdlc_frame_data,"ax",%progbits
+ 802              		.align	1
+ 803              		.global	yahdlc_frame_data
+ 804              		.syntax unified
+ 805              		.thumb
+ 806              		.thumb_func
+ 807              		.fpu fpv4-sp-d16
+ 809              	yahdlc_frame_data:
+ 810              	.LVL56:
+ 811              	.LFB9:
+ 208:Core/test/yahdlc.c **** 
+ 209:Core/test/yahdlc.c **** int yahdlc_frame_data(yahdlc_control_t *control, const char *src,
+ 210:Core/test/yahdlc.c ****                       unsigned int src_len, char *dest, unsigned int *dest_len) {
+ 812              		.loc 1 210 81 is_stmt 1 view -0
+ 813              		.cfi_startproc
+ 814              		@ args = 4, pretend = 0, frame = 8
+ 815              		@ frame_needed = 0, uses_anonymous_args = 0
+ 816              		.loc 1 210 81 is_stmt 0 view .LVU223
+ 817 0000 2DE9F047 		push	{r4, r5, r6, r7, r8, r9, r10, lr}
+ 818              	.LCFI15:
+ 819              		.cfi_def_cfa_offset 32
+ 820              		.cfi_offset 4, -32
+ 821              		.cfi_offset 5, -28
+ 822              		.cfi_offset 6, -24
+ 823              		.cfi_offset 7, -20
+ 824              		.cfi_offset 8, -16
+ 825              		.cfi_offset 9, -12
+ 826              		.cfi_offset 10, -8
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 21
+
+
+ 827              		.cfi_offset 14, -4
+ 828 0004 82B0     		sub	sp, sp, #8
+ 829              	.LCFI16:
+ 830              		.cfi_def_cfa_offset 40
+ 831 0006 1E46     		mov	r6, r3
+ 832 0008 0A9F     		ldr	r7, [sp, #40]
+ 211:Core/test/yahdlc.c ****   unsigned int i;
+ 833              		.loc 1 211 3 is_stmt 1 view .LVU224
+ 212:Core/test/yahdlc.c ****   int dest_index = 0;
+ 834              		.loc 1 212 3 view .LVU225
+ 835              		.loc 1 212 7 is_stmt 0 view .LVU226
+ 836 000a 0023     		movs	r3, #0
+ 837              	.LVL57:
+ 838              		.loc 1 212 7 view .LVU227
+ 839 000c 0193     		str	r3, [sp, #4]
+ 213:Core/test/yahdlc.c ****   unsigned char value = 0;
+ 840              		.loc 1 213 3 is_stmt 1 view .LVU228
+ 841              	.LVL58:
+ 214:Core/test/yahdlc.c ****   FCS_SIZE fcs = FCS_INIT_VALUE;
+ 842              		.loc 1 214 3 view .LVU229
+ 215:Core/test/yahdlc.c **** 
+ 216:Core/test/yahdlc.c ****   // Make sure that all parameters are valid
+ 217:Core/test/yahdlc.c ****   if (!control || (!src && (src_len > 0)) || !dest || !dest_len) {
+ 843              		.loc 1 217 3 view .LVU230
+ 844              		.loc 1 217 6 is_stmt 0 view .LVU231
+ 845 000e 0028     		cmp	r0, #0
+ 846 0010 56D0     		beq	.L82
+ 847 0012 8846     		mov	r8, r1
+ 848 0014 9146     		mov	r9, r2
+ 849 0016 8246     		mov	r10, r0
+ 850              		.loc 1 217 16 discriminator 1 view .LVU232
+ 851 0018 39B3     		cbz	r1, .L88
+ 852              	.L76:
+ 853              		.loc 1 217 43 discriminator 4 view .LVU233
+ 854 001a 002E     		cmp	r6, #0
+ 855 001c 53D0     		beq	.L84
+ 856              		.loc 1 217 52 discriminator 5 view .LVU234
+ 857 001e 002F     		cmp	r7, #0
+ 858 0020 54D0     		beq	.L85
+ 218:Core/test/yahdlc.c ****     return -EINVAL;
+ 219:Core/test/yahdlc.c ****   }
+ 220:Core/test/yahdlc.c **** 
+ 221:Core/test/yahdlc.c ****   // Start by adding the start flag sequence
+ 222:Core/test/yahdlc.c ****   dest[dest_index++] = YAHDLC_FLAG_SEQUENCE;
+ 859              		.loc 1 222 3 is_stmt 1 view .LVU235
+ 860              		.loc 1 222 18 is_stmt 0 view .LVU236
+ 861 0022 0123     		movs	r3, #1
+ 862 0024 0193     		str	r3, [sp, #4]
+ 863              		.loc 1 222 22 view .LVU237
+ 864 0026 7E23     		movs	r3, #126
+ 865 0028 3370     		strb	r3, [r6]
+ 223:Core/test/yahdlc.c **** 
+ 224:Core/test/yahdlc.c ****   // Add the all-station address from HDLC (broadcast)
+ 225:Core/test/yahdlc.c ****   fcs = calc_fcs(fcs, YAHDLC_ALL_STATION_ADDR);
+ 866              		.loc 1 225 3 is_stmt 1 view .LVU238
+ 867              		.loc 1 225 9 is_stmt 0 view .LVU239
+ 868 002a FF21     		movs	r1, #255
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 22
+
+
+ 869              	.LVL59:
+ 870              		.loc 1 225 9 view .LVU240
+ 871 002c 4FF6FF70 		movw	r0, #65535
+ 872              	.LVL60:
+ 873              		.loc 1 225 9 view .LVU241
+ 874 0030 FFF7FEFF 		bl	calc_fcs
+ 875              	.LVL61:
+ 876              		.loc 1 225 9 view .LVU242
+ 877 0034 0446     		mov	r4, r0
+ 878              	.LVL62:
+ 226:Core/test/yahdlc.c ****   yahdlc_escape_value(YAHDLC_ALL_STATION_ADDR, dest, &dest_index);
+ 879              		.loc 1 226 3 is_stmt 1 view .LVU243
+ 880 0036 01AA     		add	r2, sp, #4
+ 881 0038 3146     		mov	r1, r6
+ 882 003a FF20     		movs	r0, #255
+ 883 003c FFF7FEFF 		bl	yahdlc_escape_value
+ 884              	.LVL63:
+ 227:Core/test/yahdlc.c **** 
+ 228:Core/test/yahdlc.c ****   // Add the framed control field value
+ 229:Core/test/yahdlc.c ****   value = yahdlc_frame_control_type(control);
+ 885              		.loc 1 229 3 view .LVU244
+ 886              		.loc 1 229 11 is_stmt 0 view .LVU245
+ 887 0040 5046     		mov	r0, r10
+ 888 0042 FFF7FEFF 		bl	yahdlc_frame_control_type
+ 889              	.LVL64:
+ 890 0046 0546     		mov	r5, r0
+ 891              	.LVL65:
+ 230:Core/test/yahdlc.c ****   fcs = calc_fcs(fcs, value);
+ 892              		.loc 1 230 3 is_stmt 1 view .LVU246
+ 893              		.loc 1 230 9 is_stmt 0 view .LVU247
+ 894 0048 0146     		mov	r1, r0
+ 895 004a 2046     		mov	r0, r4
+ 896              	.LVL66:
+ 897              		.loc 1 230 9 view .LVU248
+ 898 004c FFF7FEFF 		bl	calc_fcs
+ 899              	.LVL67:
+ 900 0050 0446     		mov	r4, r0
+ 901              	.LVL68:
+ 231:Core/test/yahdlc.c ****   yahdlc_escape_value(value, dest, &dest_index);
+ 902              		.loc 1 231 3 is_stmt 1 view .LVU249
+ 903 0052 01AA     		add	r2, sp, #4
+ 904 0054 3146     		mov	r1, r6
+ 905 0056 2846     		mov	r0, r5
+ 906 0058 FFF7FEFF 		bl	yahdlc_escape_value
+ 907              	.LVL69:
+ 232:Core/test/yahdlc.c **** 
+ 233:Core/test/yahdlc.c ****   // Only DATA frames should contain data
+ 234:Core/test/yahdlc.c ****   if (control->frame == YAHDLC_FRAME_DATA) {
+ 908              		.loc 1 234 3 view .LVU250
+ 909              		.loc 1 234 14 is_stmt 0 view .LVU251
+ 910 005c 9AF80030 		ldrb	r3, [r10]	@ zero_extendqisi2
+ 911              		.loc 1 234 6 view .LVU252
+ 912 0060 C3B1     		cbz	r3, .L86
+ 913              	.L78:
+ 235:Core/test/yahdlc.c ****     // Calculate FCS and escape data
+ 236:Core/test/yahdlc.c ****     for (i = 0; i < src_len; i++) {
+ 237:Core/test/yahdlc.c ****       fcs = calc_fcs(fcs, src[i]);
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 23
+
+
+ 238:Core/test/yahdlc.c ****       yahdlc_escape_value(src[i], dest, &dest_index);
+ 239:Core/test/yahdlc.c ****     }
+ 240:Core/test/yahdlc.c ****   }
+ 241:Core/test/yahdlc.c **** 
+ 242:Core/test/yahdlc.c ****   // Invert the FCS value accordingly to the specification
+ 243:Core/test/yahdlc.c ****   fcs ^= FCS_INVERT_MASK;
+ 914              		.loc 1 243 3 is_stmt 1 view .LVU253
+ 915              		.loc 1 243 7 is_stmt 0 view .LVU254
+ 916 0062 E443     		mvns	r4, r4
+ 917              	.LVL70:
+ 918              		.loc 1 243 7 view .LVU255
+ 919 0064 A4B2     		uxth	r4, r4
+ 920              	.LVL71:
+ 244:Core/test/yahdlc.c **** 
+ 245:Core/test/yahdlc.c ****   // Run through the FCS bytes and escape the values
+ 246:Core/test/yahdlc.c ****   for (i = 0; i < sizeof(fcs); i++) {
+ 921              		.loc 1 246 3 is_stmt 1 view .LVU256
+ 922              		.loc 1 246 10 is_stmt 0 view .LVU257
+ 923 0066 0025     		movs	r5, #0
+ 924              		.loc 1 246 3 view .LVU258
+ 925 0068 1FE0     		b	.L80
+ 926              	.LVL72:
+ 927              	.L88:
+ 217:Core/test/yahdlc.c ****     return -EINVAL;
+ 928              		.loc 1 217 25 discriminator 2 view .LVU259
+ 929 006a 002A     		cmp	r2, #0
+ 930 006c D5D0     		beq	.L76
+ 218:Core/test/yahdlc.c ****   }
+ 931              		.loc 1 218 12 view .LVU260
+ 932 006e 6FF01500 		mvn	r0, #21
+ 933              	.LVL73:
+ 218:Core/test/yahdlc.c ****   }
+ 934              		.loc 1 218 12 view .LVU261
+ 935 0072 22E0     		b	.L74
+ 936              	.LVL74:
+ 937              	.L79:
+ 237:Core/test/yahdlc.c ****       yahdlc_escape_value(src[i], dest, &dest_index);
+ 938              		.loc 1 237 7 is_stmt 1 discriminator 3 view .LVU262
+ 237:Core/test/yahdlc.c ****       yahdlc_escape_value(src[i], dest, &dest_index);
+ 939              		.loc 1 237 13 is_stmt 0 discriminator 3 view .LVU263
+ 940 0074 18F80510 		ldrb	r1, [r8, r5]	@ zero_extendqisi2
+ 941 0078 2046     		mov	r0, r4
+ 942 007a FFF7FEFF 		bl	calc_fcs
+ 943              	.LVL75:
+ 944 007e 0446     		mov	r4, r0
+ 945              	.LVL76:
+ 238:Core/test/yahdlc.c ****     }
+ 946              		.loc 1 238 7 is_stmt 1 discriminator 3 view .LVU264
+ 947 0080 01AA     		add	r2, sp, #4
+ 948 0082 3146     		mov	r1, r6
+ 949 0084 18F80500 		ldrb	r0, [r8, r5]	@ zero_extendqisi2
+ 950 0088 FFF7FEFF 		bl	yahdlc_escape_value
+ 951              	.LVL77:
+ 236:Core/test/yahdlc.c ****       fcs = calc_fcs(fcs, src[i]);
+ 952              		.loc 1 236 30 discriminator 3 view .LVU265
+ 236:Core/test/yahdlc.c ****       fcs = calc_fcs(fcs, src[i]);
+ 953              		.loc 1 236 31 is_stmt 0 discriminator 3 view .LVU266
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 24
+
+
+ 954 008c 0135     		adds	r5, r5, #1
+ 955              	.LVL78:
+ 956              	.L77:
+ 236:Core/test/yahdlc.c ****       fcs = calc_fcs(fcs, src[i]);
+ 957              		.loc 1 236 17 is_stmt 1 discriminator 1 view .LVU267
+ 236:Core/test/yahdlc.c ****       fcs = calc_fcs(fcs, src[i]);
+ 958              		.loc 1 236 5 is_stmt 0 discriminator 1 view .LVU268
+ 959 008e 4D45     		cmp	r5, r9
+ 960 0090 F0D3     		bcc	.L79
+ 236:Core/test/yahdlc.c ****       fcs = calc_fcs(fcs, src[i]);
+ 961              		.loc 1 236 5 discriminator 1 view .LVU269
+ 962 0092 E6E7     		b	.L78
+ 963              	.LVL79:
+ 964              	.L86:
+ 236:Core/test/yahdlc.c ****       fcs = calc_fcs(fcs, src[i]);
+ 965              		.loc 1 236 12 view .LVU270
+ 966 0094 0025     		movs	r5, #0
+ 967 0096 FAE7     		b	.L77
+ 968              	.LVL80:
+ 969              	.L81:
+ 247:Core/test/yahdlc.c ****     value = ((fcs >> (8 * i)) & 0xFF);
+ 970              		.loc 1 247 5 is_stmt 1 discriminator 3 view .LVU271
+ 971              		.loc 1 247 25 is_stmt 0 discriminator 3 view .LVU272
+ 972 0098 E800     		lsls	r0, r5, #3
+ 973              		.loc 1 247 19 discriminator 3 view .LVU273
+ 974 009a 44FA00F0 		asr	r0, r4, r0
+ 975              	.LVL81:
+ 248:Core/test/yahdlc.c ****     yahdlc_escape_value(value, dest, &dest_index);
+ 976              		.loc 1 248 5 is_stmt 1 discriminator 3 view .LVU274
+ 977 009e 01AA     		add	r2, sp, #4
+ 978 00a0 3146     		mov	r1, r6
+ 979 00a2 C0B2     		uxtb	r0, r0
+ 980              		.loc 1 248 5 is_stmt 0 discriminator 3 view .LVU275
+ 981 00a4 FFF7FEFF 		bl	yahdlc_escape_value
+ 982              	.LVL82:
+ 246:Core/test/yahdlc.c ****     value = ((fcs >> (8 * i)) & 0xFF);
+ 983              		.loc 1 246 32 is_stmt 1 discriminator 3 view .LVU276
+ 246:Core/test/yahdlc.c ****     value = ((fcs >> (8 * i)) & 0xFF);
+ 984              		.loc 1 246 33 is_stmt 0 discriminator 3 view .LVU277
+ 985 00a8 0135     		adds	r5, r5, #1
+ 986              	.LVL83:
+ 987              	.L80:
+ 246:Core/test/yahdlc.c ****     value = ((fcs >> (8 * i)) & 0xFF);
+ 988              		.loc 1 246 15 is_stmt 1 discriminator 1 view .LVU278
+ 246:Core/test/yahdlc.c ****     value = ((fcs >> (8 * i)) & 0xFF);
+ 989              		.loc 1 246 3 is_stmt 0 discriminator 1 view .LVU279
+ 990 00aa 012D     		cmp	r5, #1
+ 991 00ac F4D9     		bls	.L81
+ 249:Core/test/yahdlc.c ****   }
+ 250:Core/test/yahdlc.c **** 
+ 251:Core/test/yahdlc.c ****   // Add end flag sequence and update length of frame
+ 252:Core/test/yahdlc.c ****   dest[dest_index++] = YAHDLC_FLAG_SEQUENCE;
+ 992              		.loc 1 252 3 is_stmt 1 view .LVU280
+ 993              		.loc 1 252 18 is_stmt 0 view .LVU281
+ 994 00ae 019B     		ldr	r3, [sp, #4]
+ 995 00b0 581C     		adds	r0, r3, #1
+ 996 00b2 0190     		str	r0, [sp, #4]
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 25
+
+
+ 997              		.loc 1 252 22 view .LVU282
+ 998 00b4 7E22     		movs	r2, #126
+ 999 00b6 F254     		strb	r2, [r6, r3]
+ 253:Core/test/yahdlc.c ****   *dest_len = dest_index;
+ 1000              		.loc 1 253 3 is_stmt 1 view .LVU283
+ 1001              		.loc 1 253 13 is_stmt 0 view .LVU284
+ 1002 00b8 3860     		str	r0, [r7]
+ 254:Core/test/yahdlc.c **** 
+ 255:Core/test/yahdlc.c ****   return dest_index;
+ 1003              		.loc 1 255 3 is_stmt 1 view .LVU285
+ 1004              	.LVL84:
+ 1005              	.L74:
+ 256:Core/test/yahdlc.c **** }
+ 1006              		.loc 1 256 1 is_stmt 0 view .LVU286
+ 1007 00ba 02B0     		add	sp, sp, #8
+ 1008              	.LCFI17:
+ 1009              		.cfi_remember_state
+ 1010              		.cfi_def_cfa_offset 32
+ 1011              		@ sp needed
+ 1012 00bc BDE8F087 		pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+ 1013              	.LVL85:
+ 1014              	.L82:
+ 1015              	.LCFI18:
+ 1016              		.cfi_restore_state
+ 218:Core/test/yahdlc.c ****   }
+ 1017              		.loc 1 218 12 view .LVU287
+ 1018 00c0 6FF01500 		mvn	r0, #21
+ 1019              	.LVL86:
+ 218:Core/test/yahdlc.c ****   }
+ 1020              		.loc 1 218 12 view .LVU288
+ 1021 00c4 F9E7     		b	.L74
+ 1022              	.LVL87:
+ 1023              	.L84:
+ 218:Core/test/yahdlc.c ****   }
+ 1024              		.loc 1 218 12 view .LVU289
+ 1025 00c6 6FF01500 		mvn	r0, #21
+ 1026              	.LVL88:
+ 218:Core/test/yahdlc.c ****   }
+ 1027              		.loc 1 218 12 view .LVU290
+ 1028 00ca F6E7     		b	.L74
+ 1029              	.LVL89:
+ 1030              	.L85:
+ 218:Core/test/yahdlc.c ****   }
+ 1031              		.loc 1 218 12 view .LVU291
+ 1032 00cc 6FF01500 		mvn	r0, #21
+ 1033              	.LVL90:
+ 218:Core/test/yahdlc.c ****   }
+ 1034              		.loc 1 218 12 view .LVU292
+ 1035 00d0 F3E7     		b	.L74
+ 1036              		.cfi_endproc
+ 1037              	.LFE9:
+ 1039              		.section	.data.yahdlc_state,"aw"
+ 1040              		.align	2
+ 1041              		.set	.LANCHOR0,. + 0
+ 1044              	yahdlc_state:
+ 1045 0000 00       		.byte	0
+ 1046 0001 00       		.space	1
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 26
+
+
+ 1047 0002 FFFF     		.short	-1
+ 1048 0004 FFFFFFFF 		.word	-1
+ 1049 0008 FFFFFFFF 		.word	-1
+ 1050 000c 00000000 		.word	0
+ 1051 0010 00000000 		.word	0
+ 1052              		.text
+ 1053              	.Letext0:
+ 1054              		.file 2 "Core/test/yahdlc.h"
+ 1055              		.file 3 "Core/test/fcs.h"
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s 			page 27
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 yahdlc.c
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:18     .text.yahdlc_set_state:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:26     .text.yahdlc_set_state:00000000 yahdlc_set_state
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:72     .text.yahdlc_set_state:00000024 $d
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:77     .text.yahdlc_get_state:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:84     .text.yahdlc_get_state:00000000 yahdlc_get_state
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:131    .text.yahdlc_get_state:00000024 $d
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:136    .text.yahdlc_escape_value:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:143    .text.yahdlc_escape_value:00000000 yahdlc_escape_value
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:201    .text.yahdlc_get_control_type:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:208    .text.yahdlc_get_control_type:00000000 yahdlc_get_control_type
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:286    .text.yahdlc_frame_control_type:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:293    .text.yahdlc_frame_control_type:00000000 yahdlc_frame_control_type
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:372    .text.yahdlc_get_data_reset_with_state:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:379    .text.yahdlc_get_data_reset_with_state:00000000 yahdlc_get_data_reset_with_state
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:412    .text.yahdlc_get_data_reset:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:419    .text.yahdlc_get_data_reset:00000000 yahdlc_get_data_reset
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:439    .text.yahdlc_get_data_reset:0000000c $d
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:444    .text.yahdlc_get_data_with_state:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:451    .text.yahdlc_get_data_with_state:00000000 yahdlc_get_data_with_state
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:744    .text.yahdlc_get_data:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:751    .text.yahdlc_get_data:00000000 yahdlc_get_data
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:797    .text.yahdlc_get_data:0000001c $d
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:802    .text.yahdlc_frame_data:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:809    .text.yahdlc_frame_data:00000000 yahdlc_frame_data
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:1040   .data.yahdlc_state:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccrtBYd5.s:1044   .data.yahdlc_state:00000000 yahdlc_state
+
+UNDEFINED SYMBOLS
+calc_fcs
