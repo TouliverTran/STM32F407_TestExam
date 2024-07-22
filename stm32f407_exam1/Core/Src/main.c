@@ -127,11 +127,11 @@ int main(void)
   control.frame = YAHDLC_FRAME_DATA;
   control.seq_no = 0;
 
-  uint8_t input_data[] = "654321\r\n";
+  uint8_t input_data[] = "1234567\r\n";
   uint8_t output_frame[256];
   int frame_len;
 
-  yahdlc_frame_data(&control, input_data, sizeof(input_data), output_frame, &frame_len);
+  yahdlc_frame_data(&control, input_data, sizeof(input_data)-1, output_frame, &frame_len);
   for(int i=0; i<frame_len; i++)
   {
     debug_sendchar(output_frame[i]);
@@ -150,10 +150,10 @@ int main(void)
     {
       HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
       delaytimer = 1000;
-      for(int i=0; i<frame_len; i++)
-      {
-        uart_sendchar(output_frame[i]);
-      }
+      // for(int i=0; i<frame_len; i++)
+      // {
+      //   uart_sendchar(output_frame[i]);
+      // }
     }
 
     ProcessDataFromUART();
@@ -401,22 +401,42 @@ void ProcessDataFromUART(void)
 
   ret = yahdlc_get_data(&state, buf_rx, t, received_data, &received_len);
   if (ret == 0) {
-      debug_printf("Received data: %s\n", received_data);
+      debug_printf("Received data: \n");
       for(int i=0; i<t; i++)
       {
         debug_sendchar(received_data[i]);
       }
+      yahdlc_control_t control;
+      control.frame = YAHDLC_FRAME_ACK;
+      control.seq_no = 0;
+      // Generate the ACK frame
+      char frame[256];
+      unsigned int frame_len;
+      yahdlc_frame_data(&control, NULL, 0, frame, &frame_len);
+      for (unsigned int i = 0; i < frame_len; i++) {
+        uart_sendchar(frame[i]);
+      }
   } else {
       debug_printf("Error decoding frame %d\r\n", ret);
-      debug_printf("t = %d buf_rx:\r\n", t);
-      for(int i=0; i<t; i++)
-      {
-        debug_printf("0x%02x, ", buf_rx[i]);
-      }
-      debug_printf("\r\nreceived_len = %d received_data:\r\n", received_len);
-      for(int i=0; i<received_len; i++)
-      {
-        debug_printf("0x%02x, ", received_data[i]);
+      // debug_printf("t = %d buf_rx:\r\n", t);
+      // for(int i=0; i<t; i++)
+      // {
+      //   debug_printf("0x%02x, ", buf_rx[i]);
+      // }
+      // debug_printf("\r\nreceived_len = %d received_data:\r\n", received_len);
+      // for(int i=0; i<received_len; i++)
+      // {
+      //   debug_printf("0x%02x, ", received_data[i]);
+      // }
+      yahdlc_control_t control;
+      control.frame = YAHDLC_FRAME_NACK;
+      control.seq_no = 0;
+      // Generate the ACK frame
+      char frame[256];
+      unsigned int frame_len;
+      yahdlc_frame_data(&control, NULL, 0, frame, &frame_len);
+      for (unsigned int i = 0; i < frame_len; i++) {
+        uart_sendchar(frame[i]);
       }
   }
 	/* Xoa bo dem nhan */

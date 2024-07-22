@@ -63,7 +63,7 @@ try:
         # Send HDLC frame
         # -------------------------------------------------- #
         print("[*] Sending data frame...")
-        ser.write(frame_data("123456\r\n", FRAME_DATA, 0))
+        ser.write(frame_data("123~4567\r\n"))
 
         # -------------------------------------------------- #
         # Wait for (N)ACK
