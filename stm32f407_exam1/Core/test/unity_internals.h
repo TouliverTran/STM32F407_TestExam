@@ -308,7 +308,7 @@ typedef UNITY_FLOAT_TYPE UNITY_FLOAT;
   /* Default to using putchar, which is defined in stdio.h */
   #include <stdio.h>
   #include "main.h"
-  #define UNITY_OUTPUT_CHAR(a) (void)uart_sendchar(a)
+  #define UNITY_OUTPUT_CHAR(a) (void)debug_sendchar(a)
 #else
   /* If defined as something else, make sure we declare it here so it's ready for use */
   #ifdef UNITY_OUTPUT_CHAR_HEADER_DECLARATION

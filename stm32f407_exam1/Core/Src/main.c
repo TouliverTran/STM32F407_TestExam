@@ -120,11 +120,6 @@ int main(void)
   RUN_TEST(test_add);
   UNITY_END();
   char string_buffer[256];
-  for (int i = 0; i < 10; i++)
-  {
-      snprintf(string_buffer, sizeof(string_buffer), "i = %d\r\n", i);
-      minihdlc_send_frame((const uint8_t *)string_buffer, strlen(string_buffer));
-  }
 
   yahdlc_set_state(&state);
 
@@ -132,7 +127,7 @@ int main(void)
   control.frame = YAHDLC_FRAME_DATA;
   control.seq_no = 0;
 
-  uint8_t input_data[] = "123456\r\n";
+  uint8_t input_data[] = "654321\r\n";
   uint8_t output_frame[256];
   int frame_len;
 

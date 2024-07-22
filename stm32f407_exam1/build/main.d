@@ -23,8 +23,7 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h Core/test/unity.h \
- Core/test/unity_internals.h Core/test/minihdlc.h Core/test/yahdlc.h \
- Core/test/fcs.h
+ Core/test/unity_internals.h Core/test/yahdlc.h Core/test/fcs.h
 Core/Inc/main.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 Core/Inc/stm32f4xx_hal_conf.h:
@@ -54,6 +53,5 @@ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 Core/test/unity.h:
 Core/test/unity_internals.h:
-Core/test/minihdlc.h:
 Core/test/yahdlc.h:
 Core/test/fcs.h:
