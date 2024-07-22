@@ -63,7 +63,7 @@ try:
         # Send HDLC frame
         # -------------------------------------------------- #
         print("[*] Sending data frame...")
-        ser.write(frame_data("test", FRAME_DATA, 0))
+        ser.write(frame_data("123456\r\n", FRAME_DATA, 0))
 
         # -------------------------------------------------- #
         # Wait for (N)ACK
@@ -74,7 +74,6 @@ try:
                 # 200 µs.
                 sleep(200 / 1000000.0)
                 data, ftype, seq_no = get_data(ser.read(ser.in_waiting))
-                signal.alarm(0)
                 break
             except MessageError:
                 # No HDLC frame detected.

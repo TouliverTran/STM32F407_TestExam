@@ -154,6 +154,15 @@ int yahdlc_get_data_with_state(yahdlc_state_t *state, yahdlc_control_t *control,
         }
 
         state->end_index = state->src_index;
+
+        // If we have a frame with a size that equals the src_len (source buffer size),
+        // then 'i' ends up being one less than the frame size,
+        // and we therefore report a wrong frame size in the return value.
+        // Therefore, add 1 to return the correct frame size.
+        if (state->end_index + 1 == src_len)
+        {
+          i++;
+        }
         break;
       } else if (src[i] == YAHDLC_CONTROL_ESCAPE) {
         state->control_escape = 1;
@@ -252,5 +261,5 @@ int yahdlc_frame_data(yahdlc_control_t *control, const char *src,
   dest[dest_index++] = YAHDLC_FLAG_SEQUENCE;
   *dest_len = dest_index;
 
-  return dest_index;
+  return 0;
 }

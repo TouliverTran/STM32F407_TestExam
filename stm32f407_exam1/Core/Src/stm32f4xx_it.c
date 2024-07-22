@@ -57,7 +57,9 @@
 /* External variables --------------------------------------------------------*/
 extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
-
+extern uint16_t timeoutReceive;
+extern uint16_t delaytimer;
+extern uint8_t newReceive;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -187,7 +189,17 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
+  if(timeoutReceive > 0)
+	{
+		timeoutReceive--;
+		if(timeoutReceive == 0)
+			newReceive = 1;
+	}
 
+  if(delaytimer > 0)
+  {
+    delaytimer--;
+  }
   /* USER CODE END SysTick_IRQn 1 */
 }
 

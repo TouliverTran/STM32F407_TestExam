@@ -27,7 +27,6 @@
 #include <assert.h>
 
 #include "unity.h"
-#include "minihdlc.h"
 #include "yahdlc.h"
 /* USER CODE END Includes */
 
@@ -51,7 +50,9 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+extern uint16_t timeoutReceive = 70;
+extern uint16_t delaytimer = 1000;
+extern uint8_t newReceive = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,19 +67,19 @@ int add(int a, int b);
 void test_add(void);
 void setUp();
 void tearDown();
-void send_char(uint8_t data);
-void frame_received(const uint8_t *frame_buffer, uint16_t frame_length);
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 extern int debug_printf(const char *fmt, ...);
 extern void debug_sendchar(const char pdata);
+void ProcessDataFromUART(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 uint8_t data_rx[2];
-uint8_t buf_rx[20];
-uint8_t t = 0;
+uint8_t buf_rx[256];
+uint16_t t = 0;
+yahdlc_state_t state;
 /* USER CODE END 0 */
 
 /**
@@ -118,7 +119,6 @@ int main(void)
   UNITY_BEGIN();
   RUN_TEST(test_add);
   UNITY_END();
-  minihdlc_init(send_char, frame_received);
   char string_buffer[256];
   for (int i = 0; i < 10; i++)
   {
@@ -126,39 +126,22 @@ int main(void)
       minihdlc_send_frame((const uint8_t *)string_buffer, strlen(string_buffer));
   }
 
-
-
-
-  yahdlc_state_t state;
   yahdlc_set_state(&state);
 
   yahdlc_control_t control;
   control.frame = YAHDLC_FRAME_DATA;
   control.seq_no = 0;
 
-  uint8_t input_data[] = "1234567890\r\n";
+  uint8_t input_data[] = "123456\r\n";
   uint8_t output_frame[256];
   int frame_len;
 
-  frame_len = yahdlc_frame_data(&control, input_data, sizeof(input_data), output_frame, sizeof(output_frame));
+  yahdlc_frame_data(&control, input_data, sizeof(input_data), output_frame, &frame_len);
   for(int i=0; i<frame_len; i++)
   {
     debug_sendchar(output_frame[i]);
     uart_sendchar(output_frame[i]);
   }
-
-
-  // int ret;
-  // uint8_t received_data[256];
-  // int received_len;
-
-  // ret = yahdlc_get_data(&state, output_frame, frame_len, received_data, &received_len);
-  // if (ret == 0) {
-  //     debug_printf("Received data: %s\n", received_data);
-  // } else {
-  //     debug_printf("Error decoding frame\n");
-  // }
-
 
 
   /* USER CODE END 2 */
@@ -168,13 +151,17 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
-    HAL_Delay(1000);
-    for(int i=0; i<frame_len; i++)
+    if(delaytimer == 0)
     {
-      debug_sendchar(output_frame[i]);
-      uart_sendchar(output_frame[i]);
+      HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_6);
+      delaytimer = 1000;
+      for(int i=0; i<frame_len; i++)
+      {
+        uart_sendchar(output_frame[i]);
+      }
     }
+
+    ProcessDataFromUART();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -383,6 +370,7 @@ void test_add(void){
     for(int i=0; i<9; i++){
         for(int j=0; j<9; j++){
             TEST_ASSERT_EQUAL_INT((i+j), add(i,j));
+            TEST_ASSERT_EQUAL_INT((i+j+1), add(i,j));
         }
     }
 }
@@ -394,28 +382,53 @@ void tearDown(){
 
 }
 
-void send_char(uint8_t data)
-{
-    uart_sendchar(data);
-}
-
-void frame_received(const uint8_t *frame_buffer, uint16_t frame_length)
-{
-  debug_printf("\r\nReceived frame: ");
-  for (uint16_t i = 0; i < frame_length; i++)
-  {
-      debug_sendchar(frame_buffer[i]);
-  }
-}
-
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-  minihdlc_char_receiver(data_rx[0]);
+  timeoutReceive = 70;
   // debug_sendchar(data_rx[0]);
-  // memcpy(buf_rx+t, data_rx, 1);
-  // if (++t >= 20) t = 0;
+  memcpy(buf_rx+t, data_rx, 1);
+  if (++t >= 256) t = 0;
   HAL_UART_Receive_IT(&huart1, data_rx, 1);
 }
+
+void ProcessDataFromUART(void)
+{
+	/* Neu khong co du lieu thi khong xu ly */
+	if(newReceive == 0)
+		return;
+	
+	/* Xoa co bao co du lieu */
+	newReceive = 0;
+	/* Xu ly lenh */
+  int ret;
+  uint8_t received_data[256] = {0};
+  int received_len = t;
+
+  ret = yahdlc_get_data(&state, buf_rx, t, received_data, &received_len);
+  if (ret == 0) {
+      debug_printf("Received data: %s\n", received_data);
+      for(int i=0; i<t; i++)
+      {
+        debug_sendchar(received_data[i]);
+      }
+  } else {
+      debug_printf("Error decoding frame %d\r\n", ret);
+      debug_printf("t = %d buf_rx:\r\n", t);
+      for(int i=0; i<t; i++)
+      {
+        debug_printf("0x%02x, ", buf_rx[i]);
+      }
+      debug_printf("\r\nreceived_len = %d received_data:\r\n", received_len);
+      for(int i=0; i<received_len; i++)
+      {
+        debug_printf("0x%02x, ", received_data[i]);
+      }
+  }
+	/* Xoa bo dem nhan */
+	t = 0;
+	memset(buf_rx, 0, 256);
+}
+
 /* USER CODE END 4 */
 
 /**

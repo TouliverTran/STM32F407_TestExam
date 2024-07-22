@@ -56,7 +56,8 @@ try:
             try:
                 # 200 µs
                 sleep(200 / 1000000.0)
-                data, ftype, seq_no = get_data(ser.read(ser.in_waiting))
+                data, ftype, seq_no = get_data(ser.read(ser.in_waiting))   
+                print(f'data: {data} - ftype: {ftype} - seq_no: {seq_no}')
                 break
             except MessageError:
                 # No HDLC frame detected.
