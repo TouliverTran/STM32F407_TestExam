@@ -12,7 +12,6 @@
 #define YAHDLC_CONTROL_TYPE_RECEIVE_NOT_READY 1
 #define YAHDLC_CONTROL_TYPE_REJECT 2
 #define YAHDLC_CONTROL_TYPE_SELECTIVE_REJECT 3
-
 static yahdlc_state_t yahdlc_state = {
   .control_escape = 0,
   .fcs = FCS_INIT_VALUE,
@@ -121,7 +120,7 @@ int yahdlc_get_data(yahdlc_control_t *control, const char *src,
 
 int yahdlc_get_data_with_state(yahdlc_state_t *state, yahdlc_control_t *control, const char *src,
                     unsigned int src_len, char *dest, unsigned int *dest_len) {
-  int ret;
+  int ret = 0;
   char value;
   unsigned int i;
 
@@ -205,7 +204,7 @@ int yahdlc_get_data_with_state(yahdlc_state_t *state, yahdlc_control_t *control,
     } else {
       // Return success and indicate that data up to end flag sequence in buffer should be discarded
       *dest_len = state->dest_index - sizeof(state->fcs);
-      ret = i;
+      // ret = i;
     }
 
     // Reset values for next frame
