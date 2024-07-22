@@ -1,0 +1,21 @@
+The target system is: Generic -  - arm
+The host system is: Windows - 10.0.22631 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/GNU-Arm-Embedded-Toolchain/gcc-arm-none-eabi-10-2020-q4-major/bin/arm-none-eabi-gcc 
+Build flags: ;-mcpu=cortex-m4;-mfpu=fpv4-sp-d16;-mfloat-abi=hard;;-Wall;-Wextra;-Wpedantic;-fdata-sections;-ffunction-sections;-O0;-g3
+Id flags: -c 
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+
+The C compiler identification is GNU, found in "D:/1.my_project/stm32f4/stm32f407_make_exam1/stm32f407_exam1/build-Windows/CMakeFiles/3.25.1/CompilerIdC/CMakeCCompilerId.o"
+
+Checking whether the ASM compiler is GNU using "--version" matched "(GNU assembler)|(GCC)|(Free Software Foundation)":
+arm-none-eabi-gcc (GNU Arm Embedded Toolchain 10-2020-q4-major) 10.2.1 20201103 (release)
+Copyright (C) 2020 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
