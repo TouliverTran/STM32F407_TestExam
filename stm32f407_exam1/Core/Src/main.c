@@ -114,7 +114,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  debug_printf("HELLO WORLD!!!\r\n");
+  // debug_printf("HELLO WORLD!!!\r\n");
   HAL_UART_Receive_IT(&huart1, data_rx, 1);
   UNITY_BEGIN();
   RUN_TEST(test_add);
@@ -134,7 +134,7 @@ int main(void)
   yahdlc_frame_data(&control, input_data, sizeof(input_data)-1, output_frame, &frame_len);
   for(int i=0; i<frame_len; i++)
   {
-    debug_sendchar(output_frame[i]);
+    // debug_sendchar(output_frame[i]);
     uart_sendchar(output_frame[i]);
   }
 
@@ -365,7 +365,7 @@ void test_add(void){
     for(int i=0; i<9; i++){
         for(int j=0; j<9; j++){
             TEST_ASSERT_EQUAL_INT((i+j), add(i,j));
-            TEST_ASSERT_EQUAL_INT((i+j+1), add(i,j));
+            // TEST_ASSERT_EQUAL_INT((i+j+1), add(i,j));
         }
     }
 }
@@ -398,26 +398,26 @@ void ProcessDataFromUART(void)
   int ret;
   uint8_t received_data[256] = {0};
   int received_len = t;
-
-  ret = yahdlc_get_data(&state, buf_rx, t, received_data, &received_len);
+  yahdlc_control_t control;
+  ret = yahdlc_get_data(&control, buf_rx, t, received_data, &received_len);
   if (ret == 0) {
-      debug_printf("Received data: \n");
-      for(int i=0; i<t; i++)
-      {
-        debug_sendchar(received_data[i]);
-      }
-      yahdlc_control_t control;
-      control.frame = YAHDLC_FRAME_ACK;
-      control.seq_no = 0;
-      // Generate the ACK frame
-      char frame[256];
-      unsigned int frame_len;
-      yahdlc_frame_data(&control, NULL, 0, frame, &frame_len);
-      for (unsigned int i = 0; i < frame_len; i++) {
-        uart_sendchar(frame[i]);
-      }
+    debug_printf("\r\ncontrol field: frame = %d, seq_no = %d\r\n", control.frame, control.seq_no);
+    debug_printf("Received data: \r\n");
+    for(int i=0; i<received_len; i++)
+    {
+      debug_sendchar(received_data[i]);
+    }
+    control.frame = YAHDLC_FRAME_ACK;
+    control.seq_no += 1;
+    // Generate the ACK frame
+    char frame[256];
+    unsigned int frame_len;
+    yahdlc_frame_data(&control, NULL, 0, frame, &frame_len);
+    for (unsigned int i = 0; i < frame_len; i++) {
+      // uart_sendchar(frame[i]);
+    }
   } else {
-      debug_printf("Error decoding frame %d\r\n", ret);
+      // debug_printf("Error decoding frame %d\r\n", ret);
       // debug_printf("t = %d buf_rx:\r\n", t);
       // for(int i=0; i<t; i++)
       // {
