@@ -70,7 +70,7 @@ def test_send():
             # Send HDLC frame
             # -------------------------------------------------- #
             print("[*] Sending data frame...")
-            ser.write(frame_data("123~4567\r\n"))
+            ser.write(frame_data("tc_add"))
 
             # -------------------------------------------------- #
             # Wait for (N)ACK

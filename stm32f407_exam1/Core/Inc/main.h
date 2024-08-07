@@ -36,7 +36,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
+extern uint8_t yahdlc_send_frame[256];
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -54,6 +54,8 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
 void uart_sendchar(const char pdata);
+void debug_sendchar(const char pdata);
+void append_char_to_buffer(char *buffer, size_t buffer_size, char c);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

@@ -60,7 +60,9 @@ Core/Src/syscalls.c \
 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c \
 Core/test/unity.c \
 Core/test/fcs.c \
-Core/test/yahdlc.c
+Core/test/yahdlc.c \
+Core/Src/function.c \
+Core/Src/function_test.c 
 
 # ASM sources
 ASM_SOURCES =  \

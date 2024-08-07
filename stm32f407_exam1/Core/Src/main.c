@@ -28,6 +28,8 @@
 
 #include "unity.h"
 #include "yahdlc.h"
+#include "function.h"
+#include "function_test.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,6 +55,9 @@ UART_HandleTypeDef huart2;
 extern uint16_t timeoutReceive = 70;
 extern uint16_t delaytimer = 1000;
 extern uint8_t newReceive = 0;
+
+yahdlc_control_t control ={0};
+uint8_t yahdlc_send_frame[256] = {0};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,14 +68,11 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 int uart_printf(const char *fmt, ...);
 
-int add(int a, int b);
-void test_add(void);
-void setUp();
-void tearDown();
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 extern int debug_printf(const char *fmt, ...);
-extern void debug_sendchar(const char pdata);
+void debug_sendchar(const char pdata);
+void append_char_to_buffer(char *buffer, size_t buffer_size, char c);
 void ProcessDataFromUART(void);
 /* USER CODE END PFP */
 
@@ -116,26 +118,34 @@ int main(void)
   /* USER CODE BEGIN 2 */
   // debug_printf("HELLO WORLD!!!\r\n");
   HAL_UART_Receive_IT(&huart1, data_rx, 1);
-  UNITY_BEGIN();
-  RUN_TEST(test_add);
-  UNITY_END();
+  memset(yahdlc_send_frame, 0, 256);
+  tc_add();
+  debug_printf("%s\n",yahdlc_send_frame);
+  memset(yahdlc_send_frame, 0, 256);
+  tc_subtract();
+  debug_printf("%s\n",yahdlc_send_frame);
+  memset(yahdlc_send_frame, 0, 256);
+  tc_multiply();
+  debug_printf("%s\n",yahdlc_send_frame);
+  memset(yahdlc_send_frame, 0, 256);
+  tc_divide();
+  debug_printf("%s\n",yahdlc_send_frame);
+
   char string_buffer[256];
 
   yahdlc_set_state(&state);
 
-  yahdlc_control_t control;
   control.frame = YAHDLC_FRAME_DATA;
   control.seq_no = 0;
 
   uint8_t input_data[] = "1234567\r\n";
-  uint8_t output_frame[256];
   int frame_len;
 
-  yahdlc_frame_data(&control, input_data, sizeof(input_data)-1, output_frame, &frame_len);
+  yahdlc_frame_data(&control, input_data, sizeof(input_data)-1, yahdlc_send_frame, &frame_len);
   for(int i=0; i<frame_len; i++)
   {
-    // debug_sendchar(output_frame[i]);
-    uart_sendchar(output_frame[i]);
+    // debug_sendchar(yahdlc_send_frame[i]);
+    uart_sendchar(yahdlc_send_frame[i]);
   }
 
 
@@ -152,7 +162,7 @@ int main(void)
       delaytimer = 1000;
       // for(int i=0; i<frame_len; i++)
       // {
-      //   uart_sendchar(output_frame[i]);
+      //   uart_sendchar(yahdlc_send_frame[i]);
       // }
     }
 
@@ -357,24 +367,14 @@ void debug_sendchar(const char pdata)
   // }
 }
 
-int add(int a, int b){
-    return a + b;
-}
-
-void test_add(void){
-    for(int i=0; i<9; i++){
-        for(int j=0; j<9; j++){
-            TEST_ASSERT_EQUAL_INT((i+j), add(i,j));
-            // TEST_ASSERT_EQUAL_INT((i+j+1), add(i,j));
-        }
+void append_char_to_buffer(char *buffer, size_t buffer_size, char c) {
+    size_t len = strlen(buffer);
+    if (len + 1 < buffer_size) {
+        buffer[len] = c;
+        buffer[len + 1] = '\0';
+    } else {
+        return;
     }
-}
-
-void setUp(){
-
-}
-void tearDown(){
-
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
@@ -398,7 +398,6 @@ void ProcessDataFromUART(void)
   int ret;
   uint8_t received_data[256] = {0};
   int received_len = t;
-  yahdlc_control_t control;
   ret = yahdlc_get_data(&control, buf_rx, t, received_data, &received_len);
   if (ret == 0) {
     debug_printf("\r\ncontrol field: frame = %d, seq_no = %d\r\n", control.frame, control.seq_no);
@@ -414,7 +413,26 @@ void ProcessDataFromUART(void)
     unsigned int frame_len;
     yahdlc_frame_data(&control, NULL, 0, frame, &frame_len);
     for (unsigned int i = 0; i < frame_len; i++) {
-      // uart_sendchar(frame[i]);
+      uart_sendchar(frame[i]);
+    }
+
+    // Process receive data buffer
+    if((strstr((char*)received_data, "tc_add")))
+    {
+      memset(yahdlc_send_frame, 0, 256);
+      tc_add();
+      debug_printf("\n======\n%s\n - length = %d\n",yahdlc_send_frame, strlen(yahdlc_send_frame));
+
+
+      control.frame = YAHDLC_FRAME_DATA;
+      control.seq_no += 1;
+      memset(frame, 0, 256);
+      yahdlc_frame_data(&control, yahdlc_send_frame, strlen(yahdlc_send_frame), frame, &frame_len);
+      debug_printf("%s\n - length = %d\n", frame, frame_len);
+
+      for (unsigned int i = 0; i < frame_len; i++) {
+        uart_sendchar(frame[i]);
+      }
     }
   } else {
       // debug_printf("Error decoding frame %d\r\n", ret);
