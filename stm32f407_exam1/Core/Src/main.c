@@ -423,7 +423,7 @@ void ProcessDataFromUART(void)
       tc_add();
       debug_printf("\n======\n%s\n - length = %d\n",yahdlc_send_frame, strlen(yahdlc_send_frame));
 
-
+      HAL_Delay(1000);
       control.frame = YAHDLC_FRAME_DATA;
       control.seq_no += 1;
       memset(frame, 0, 256);

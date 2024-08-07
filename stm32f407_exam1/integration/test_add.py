@@ -42,7 +42,7 @@ timeout = False
 # -------------------------------------------------- #
 SERIAL_PORT = "COM5"
 SERIAL_BAUDRATE = 115200
-SERIAL_TIMEOUT = 0
+SERIAL_TIMEOUT = 5/1000
 
 
 # -------------------------------------------------- #
@@ -60,37 +60,37 @@ def test_send():
     # Set a timer for 1 second
     timer = threading.Timer(1, timeout_handler)
     timer.start()
+    ser = serial.Serial(SERIAL_PORT, SERIAL_BAUDRATE, timeout=SERIAL_TIMEOUT)
     # -------------------------------------------------- #
     # Open serial port
     # -------------------------------------------------- #
     print("[*] Connection...")
 
     try:
-        with serial.Serial(SERIAL_PORT, SERIAL_BAUDRATE, timeout=SERIAL_TIMEOUT) as ser:
-            # -------------------------------------------------- #
-            # Send HDLC frame
-            # -------------------------------------------------- #
-            print("[*] Sending data frame...")
-            ser.write(frame_data("tc_add"))
+        # -------------------------------------------------- #
+        # Send HDLC frame
+        # -------------------------------------------------- #
+        print("[*] Sending data frame...")
+        ser.write(frame_data("tc_add"))
 
-            # -------------------------------------------------- #
-            # Wait for (N)ACK
-            # -------------------------------------------------- #
-            print("[*] Waiting for (N)ACK...")
-            while timeout == False:
-                try:
-                    # 200 µs.
-                    sleep(200 / 1000000.0)
-                    data, ftype, seq_no = get_data(ser.read(ser.in_waiting))
-                    break
-                except MessageError:
-                    # No HDLC frame detected.
-                    pass
-                except FCSError:
-                    sys_exit("[x] Bad FCS")
-                except KeyboardInterrupt:
-                    print("[*] Bye!")
-                    sys_exit(0)
+        # -------------------------------------------------- #
+        # Wait for (N)ACK
+        # -------------------------------------------------- #
+        print("[*] Waiting for (N)ACK...")
+        while timeout == False:
+            try:
+                # 200 µs.
+                sleep(200 / 1000000.0)
+                data, ftype, seq_no = get_data(ser.read(ser.in_waiting))
+                break
+            except MessageError:
+                # No HDLC frame detected.
+                pass
+            except FCSError:
+                sys_exit("[x] Bad FCS")
+            except KeyboardInterrupt:
+                print("[*] Bye!")
+                sys_exit(0)
     except serial.SerialException as err:
         sys_exit(f"[x] Serial connection problem: {err}")
 
@@ -124,58 +124,70 @@ def test_send():
     timer = threading.Timer(5, timeout_handler)
     timer.start()
     try:
-        with serial.Serial(SERIAL_PORT, SERIAL_BAUDRATE, timeout=SERIAL_TIMEOUT) as ser:
-            # -------------------------------------------------- #
-            # Wait for HDLC frame
-            # -------------------------------------------------- #
-            print("[*] Waiting for test result...")
+        # -------------------------------------------------- #
+        # Wait for HDLC frame
+        # -------------------------------------------------- #
+        print("[*] Waiting for test result...")
+        buffer = bytearray()
+        start_record = False
 
-            while timeout == False:
-                try:
-                    # 200 µs
-                    sleep(200 / 1000000.0)
-                    data, ftype, seq_no = get_data(ser.read(ser.in_waiting))   
-                    print(f'\r\ndata: {data} - \r\nftype: {ftype} - \r\nseq_no: {seq_no}')
-                    break
-                except MessageError:
-                    # No HDLC frame detected.
-                    pass
-                except FCSError:
-                    stderr.write("[x] Bad FCS\n")
+        while timeout == False:
+            try:
+                # 200 µs
+                sleep(200 / 1000000.0)
+                buf = ser.read(ser.in_waiting)
+                if 0x7E in buf:
+                    if start_record == True:
+                        buffer.extend(buf)
+                        # print('\r\n=============================================\r\n')
+                        # print(buffer)
+                        # print('\r\n=============================================\r\n')
+                        data, ftype, seq_no = get_data(bytes(buffer))   
+                        print(f'\r\ndata: {data} - \r\nftype: {ftype} - \r\nseq_no: {seq_no}')
+                        break
+                    if start_record == False:
+                        start_record = True
+                        buffer.extend(buf)
+                # break
+            except MessageError:
+                # No HDLC frame detected.
+                pass
+            except FCSError:
+                stderr.write("[x] Bad FCS\n")
 
-                    print("[*] Sending NACK...")
-                    ser.write(frame_data("", FRAME_NACK, seq_no))
-                    sys_exit(0)
-                except KeyboardInterrupt:
-                    print("[*] Bye!")
-                    sys_exit(0)
+                print("[*] Sending NACK...")
+                ser.write(frame_data("", FRAME_NACK, seq_no))
+                sys_exit(0)
+            except KeyboardInterrupt:
+                print("[*] Bye!")
+                sys_exit(0)
 
-            # -------------------------------------------------- #
-            # Handle HDLC frame received
-            # -------------------------------------------------- #
-            if timeout != True:
-                FRAME_ERROR = False
+        # -------------------------------------------------- #
+        # Handle HDLC frame received
+        # -------------------------------------------------- #
+        if timeout != True:
+            FRAME_ERROR = False
 
-                assert ftype == FRAME_DATA
-                if ftype != FRAME_DATA:
-                    stderr.write(f"[x] Bad frame type: {ftype}\n")
-                    FRAME_ERROR = True
-                else:
-                    print("[*] Data frame received")
+            assert ftype == FRAME_DATA
+            if ftype != FRAME_DATA:
+                stderr.write(f"[x] Bad frame type: {ftype}\n")
+                FRAME_ERROR = True
+            else:
+                print("[*] Data frame received")
 
-                assert seq_no == 2
-                if seq_no != 2:
-                    stderr.write(f"[x] Bad sequence number: {seq_no}\n")
-                    FRAME_ERROR = True
-                else:
-                    print("[*] Sequence number OK")
+            assert seq_no == 2
+            if seq_no != 2:
+                stderr.write(f"[x] Bad sequence number: {seq_no}\n")
+                FRAME_ERROR = True
+            else:
+                print("[*] Sequence number OK")
 
-                if FRAME_ERROR is False:
-                    print("[*] Sending ACK ...")
-                    ser.write(frame_data("", FRAME_ACK, seq_no+1))
-                else:
-                    print("[*] Sending NACK ...")
-                    ser.write(frame_data("", FRAME_NACK, seq_no))
+            if FRAME_ERROR is False:
+                print("[*] Sending ACK ...")
+                ser.write(frame_data("", FRAME_ACK, seq_no+1))
+            else:
+                print("[*] Sending NACK ...")
+                ser.write(frame_data("", FRAME_NACK, seq_no))
     except serial.SerialException as err:
         sys_exit(f"[x] Serial connection problem: {err}")
     
