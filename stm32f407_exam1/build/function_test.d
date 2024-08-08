@@ -1,4 +1,5 @@
-build/main.o: Core/Src/main.c Core/Inc/main.h \
+build/function_test.o: Core/Src/function_test.c Core/Inc/function_test.h \
+ Core/test/unity.h Core/test/unity_internals.h Core/Inc/main.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  Core/Inc/stm32f4xx_hal_conf.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -22,9 +23,11 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h \
  Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
- Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h Core/test/unity.h \
- Core/test/unity_internals.h Core/test/yahdlc.h Core/test/fcs.h \
- Core/Inc/function.h Core/Inc/function_test.h
+ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
+ Core/Inc/function.h
+Core/Inc/function_test.h:
+Core/test/unity.h:
+Core/test/unity_internals.h:
 Core/Inc/main.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 Core/Inc/stm32f4xx_hal_conf.h:
@@ -52,9 +55,4 @@ Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h:
 Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
-Core/test/unity.h:
-Core/test/unity_internals.h:
-Core/test/yahdlc.h:
-Core/test/fcs.h:
 Core/Inc/function.h:
-Core/Inc/function_test.h:
