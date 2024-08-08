@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 1
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 1
   49 0012 0723     		movs	r3, #7
   50 0014 0022     		movs	r2, #0
   51 0016 0520     		movs	r0, #5
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 2
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 2
 
 
   52 0018 FFF7FEFF 		bl	UnityAssertEqualNumber
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 1
  103              		.cfi_def_cfa_offset 8
  104              		.cfi_offset 4, -8
  105              		.cfi_offset 14, -4
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 3
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 3
 
 
  106 0002 82B0     		sub	sp, sp, #8
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 1
  157              		.global	test_multiply
  158              		.syntax unified
  159              		.thumb
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 4
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 4
 
 
  160              		.thumb_func
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 1
  210 0046 0022     		movs	r2, #0
  211 0048 0120     		movs	r0, #1
  212 004a FFF7FEFF 		bl	UnityAssertEqualNumber
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 5
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 5
 
 
  213              	.LVL17:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 1
  264 0028 0094     		str	r4, [sp]
  265 002a 1A23     		movs	r3, #26
  266 002c 0022     		movs	r2, #0
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 6
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 6
 
 
  267 002e 4FF0FF30 		mov	r0, #-1
@@ -354,431 +354,353 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 1
  309              		.cfi_startproc
  310              		@ args = 0, pretend = 0, frame = 0
  311              		@ frame_needed = 0, uses_anonymous_args = 0
- 312 0000 30B5     		push	{r4, r5, lr}
+ 312 0000 38B5     		push	{r3, r4, r5, lr}
  313              	.LCFI12:
- 314              		.cfi_def_cfa_offset 12
- 315              		.cfi_offset 4, -12
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 7
+ 314              		.cfi_def_cfa_offset 16
+ 315              		.cfi_offset 3, -16
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 7
 
 
- 316              		.cfi_offset 5, -8
- 317              		.cfi_offset 14, -4
- 318 0002 83B0     		sub	sp, sp, #12
- 319              	.LCFI13:
- 320              		.cfi_def_cfa_offset 24
+ 316              		.cfi_offset 4, -12
+ 317              		.cfi_offset 5, -8
+ 318              		.cfi_offset 14, -4
   31:Core/Src/function_test.c ****     UNITY_BEGIN();
- 321              		.loc 1 31 5 view .LVU21
- 322 0004 0F48     		ldr	r0, .L11
- 323 0006 FFF7FEFF 		bl	UnityBegin
- 324              	.LVL24:
+ 319              		.loc 1 31 5 view .LVU21
+ 320 0002 0948     		ldr	r0, .L11
+ 321 0004 FFF7FEFF 		bl	UnityBegin
+ 322              	.LVL24:
   32:Core/Src/function_test.c ****     RUN_TEST(test_add);
- 325              		.loc 1 32 5 view .LVU22
- 326 000a 0F4D     		ldr	r5, .L11+4
- 327 000c 0F4C     		ldr	r4, .L11+8
- 328 000e 2022     		movs	r2, #32
- 329 0010 2946     		mov	r1, r5
- 330 0012 2046     		mov	r0, r4
- 331 0014 FFF7FEFF 		bl	UnityDefaultTestRun
- 332              	.LVL25:
+ 323              		.loc 1 32 5 view .LVU22
+ 324 0008 084D     		ldr	r5, .L11+4
+ 325 000a 094C     		ldr	r4, .L11+8
+ 326 000c 2022     		movs	r2, #32
+ 327 000e 2946     		mov	r1, r5
+ 328 0010 2046     		mov	r0, r4
+ 329 0012 FFF7FEFF 		bl	UnityDefaultTestRun
+ 330              	.LVL25:
   33:Core/Src/function_test.c ****     RUN_TEST(test_add);
- 333              		.loc 1 33 5 view .LVU23
- 334 0018 2122     		movs	r2, #33
- 335 001a 2946     		mov	r1, r5
- 336 001c 2046     		mov	r0, r4
- 337 001e FFF7FEFF 		bl	UnityDefaultTestRun
- 338              	.LVL26:
-  34:Core/Src/function_test.c ****     TEST_ASSERT_EQUAL_INT(5, add(1,3));
- 339              		.loc 1 34 5 view .LVU24
- 340 0022 0321     		movs	r1, #3
- 341 0024 0120     		movs	r0, #1
- 342 0026 FFF7FEFF 		bl	add
- 343              	.LVL27:
- 344 002a 0146     		mov	r1, r0
- 345 002c 1423     		movs	r3, #20
- 346 002e 0093     		str	r3, [sp]
- 347 0030 2223     		movs	r3, #34
- 348 0032 0022     		movs	r2, #0
- 349 0034 0520     		movs	r0, #5
- 350 0036 FFF7FEFF 		bl	UnityAssertEqualNumber
- 351              	.LVL28:
+ 331              		.loc 1 33 5 view .LVU23
+ 332 0016 2122     		movs	r2, #33
+ 333 0018 2946     		mov	r1, r5
+ 334 001a 2046     		mov	r0, r4
+ 335 001c FFF7FEFF 		bl	UnityDefaultTestRun
+ 336              	.LVL26:
+  34:Core/Src/function_test.c ****     // TEST_ASSERT_EQUAL_INT(5, add(1,3));
   35:Core/Src/function_test.c ****     UNITY_END();
- 352              		.loc 1 35 5 view .LVU25
- 353 003a FFF7FEFF 		bl	UnityEnd
- 354              	.LVL29:
+ 337              		.loc 1 35 5 view .LVU24
+ 338 0020 FFF7FEFF 		bl	UnityEnd
+ 339              	.LVL27:
   36:Core/Src/function_test.c **** 
   37:Core/Src/function_test.c ****     // UNITY_BEGIN();
   38:Core/Src/function_test.c ****     // TEST_ASSERT_EQUAL_INT(5, add(1,3));
   39:Core/Src/function_test.c ****     // UNITY_END();
   40:Core/Src/function_test.c **** }
- 355              		.loc 1 40 1 is_stmt 0 view .LVU26
- 356 003e 03B0     		add	sp, sp, #12
- 357              	.LCFI14:
- 358              		.cfi_def_cfa_offset 12
- 359              		@ sp needed
- 360 0040 30BD     		pop	{r4, r5, pc}
- 361              	.L12:
- 362 0042 00BF     		.align	2
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 8
+ 340              		.loc 1 40 1 is_stmt 0 view .LVU25
+ 341 0024 38BD     		pop	{r3, r4, r5, pc}
+ 342              	.L12:
+ 343 0026 00BF     		.align	2
+ 344              	.L11:
+ 345 0028 00000000 		.word	.LC0
+ 346 002c 1C000000 		.word	.LC1
+ 347 0030 00000000 		.word	test_add
+ 348              		.cfi_endproc
+ 349              	.LFE141:
+ 351              		.section	.rodata.tc_subtract.str1.4,"aMS",%progbits,1
+ 352              		.align	2
+ 353              	.LC2:
+ 354 0000 74657374 		.ascii	"test_subtract\000"
+ 354      5F737562 
+ 354      74726163 
+ 354      7400
+ 355              		.section	.text.tc_subtract,"ax",%progbits
+ 356              		.align	1
+ 357              		.global	tc_subtract
+ 358              		.syntax unified
+ 359              		.thumb
+ 360              		.thumb_func
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 8
 
 
- 363              	.L11:
- 364 0044 00000000 		.word	.LC0
- 365 0048 1C000000 		.word	.LC1
- 366 004c 00000000 		.word	test_add
- 367              		.cfi_endproc
- 368              	.LFE141:
- 370              		.section	.rodata.tc_subtract.str1.4,"aMS",%progbits,1
- 371              		.align	2
- 372              	.LC2:
- 373 0000 74657374 		.ascii	"test_subtract\000"
- 373      5F737562 
- 373      74726163 
- 373      7400
- 374              		.section	.text.tc_subtract,"ax",%progbits
- 375              		.align	1
- 376              		.global	tc_subtract
- 377              		.syntax unified
- 378              		.thumb
- 379              		.thumb_func
- 380              		.fpu fpv4-sp-d16
- 382              	tc_subtract:
- 383              	.LFB142:
+ 361              		.fpu fpv4-sp-d16
+ 363              	tc_subtract:
+ 364              	.LFB142:
   41:Core/Src/function_test.c **** 
   42:Core/Src/function_test.c **** void tc_subtract(void){
- 384              		.loc 1 42 23 is_stmt 1 view -0
- 385              		.cfi_startproc
- 386              		@ args = 0, pretend = 0, frame = 0
- 387              		@ frame_needed = 0, uses_anonymous_args = 0
- 388 0000 10B5     		push	{r4, lr}
- 389              	.LCFI15:
- 390              		.cfi_def_cfa_offset 8
- 391              		.cfi_offset 4, -8
- 392              		.cfi_offset 14, -4
- 393 0002 82B0     		sub	sp, sp, #8
- 394              	.LCFI16:
- 395              		.cfi_def_cfa_offset 16
+ 365              		.loc 1 42 23 is_stmt 1 view -0
+ 366              		.cfi_startproc
+ 367              		@ args = 0, pretend = 0, frame = 0
+ 368              		@ frame_needed = 0, uses_anonymous_args = 0
+ 369 0000 08B5     		push	{r3, lr}
+ 370              	.LCFI13:
+ 371              		.cfi_def_cfa_offset 8
+ 372              		.cfi_offset 3, -8
+ 373              		.cfi_offset 14, -4
   43:Core/Src/function_test.c ****   UNITY_BEGIN();
- 396              		.loc 1 43 3 view .LVU28
- 397 0004 0E4C     		ldr	r4, .L15
- 398 0006 2046     		mov	r0, r4
- 399 0008 FFF7FEFF 		bl	UnityBegin
- 400              	.LVL30:
+ 374              		.loc 1 43 3 view .LVU27
+ 375 0002 0548     		ldr	r0, .L15
+ 376 0004 FFF7FEFF 		bl	UnityBegin
+ 377              	.LVL28:
   44:Core/Src/function_test.c ****   RUN_TEST(test_subtract);
- 401              		.loc 1 44 3 view .LVU29
- 402 000c 2C22     		movs	r2, #44
- 403 000e 0D49     		ldr	r1, .L15+4
- 404 0010 0D48     		ldr	r0, .L15+8
- 405 0012 FFF7FEFF 		bl	UnityDefaultTestRun
- 406              	.LVL31:
+ 378              		.loc 1 44 3 view .LVU28
+ 379 0008 2C22     		movs	r2, #44
+ 380 000a 0449     		ldr	r1, .L15+4
+ 381 000c 0448     		ldr	r0, .L15+8
+ 382 000e FFF7FEFF 		bl	UnityDefaultTestRun
+ 383              	.LVL29:
   45:Core/Src/function_test.c ****   UNITY_END();
- 407              		.loc 1 45 3 view .LVU30
- 408 0016 FFF7FEFF 		bl	UnityEnd
- 409              	.LVL32:
+ 384              		.loc 1 45 3 view .LVU29
+ 385 0012 FFF7FEFF 		bl	UnityEnd
+ 386              	.LVL30:
   46:Core/Src/function_test.c **** 
-  47:Core/Src/function_test.c ****   UNITY_BEGIN();
- 410              		.loc 1 47 3 view .LVU31
- 411 001a 2046     		mov	r0, r4
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 9
-
-
- 412 001c FFF7FEFF 		bl	UnityBegin
- 413              	.LVL33:
-  48:Core/Src/function_test.c ****   TEST_ASSERT_EQUAL_INT(2, subtract(3,2));
- 414              		.loc 1 48 3 view .LVU32
- 415 0020 0221     		movs	r1, #2
- 416 0022 0320     		movs	r0, #3
- 417 0024 FFF7FEFF 		bl	subtract
- 418              	.LVL34:
- 419 0028 0146     		mov	r1, r0
- 420 002a 1423     		movs	r3, #20
- 421 002c 0093     		str	r3, [sp]
- 422 002e 3023     		movs	r3, #48
- 423 0030 0022     		movs	r2, #0
- 424 0032 0220     		movs	r0, #2
- 425 0034 FFF7FEFF 		bl	UnityAssertEqualNumber
- 426              	.LVL35:
-  49:Core/Src/function_test.c ****   UNITY_END();
- 427              		.loc 1 49 3 view .LVU33
- 428 0038 FFF7FEFF 		bl	UnityEnd
- 429              	.LVL36:
+  47:Core/Src/function_test.c ****   // UNITY_BEGIN();
+  48:Core/Src/function_test.c ****   // TEST_ASSERT_EQUAL_INT(2, subtract(3,2));
+  49:Core/Src/function_test.c ****   // UNITY_END();
   50:Core/Src/function_test.c **** }
- 430              		.loc 1 50 1 is_stmt 0 view .LVU34
- 431 003c 02B0     		add	sp, sp, #8
- 432              	.LCFI17:
- 433              		.cfi_def_cfa_offset 8
- 434              		@ sp needed
- 435 003e 10BD     		pop	{r4, pc}
- 436              	.L16:
- 437              		.align	2
- 438              	.L15:
- 439 0040 00000000 		.word	.LC0
- 440 0044 00000000 		.word	.LC2
- 441 0048 00000000 		.word	test_subtract
- 442              		.cfi_endproc
- 443              	.LFE142:
- 445              		.section	.rodata.tc_multiply.str1.4,"aMS",%progbits,1
- 446              		.align	2
- 447              	.LC3:
- 448 0000 74657374 		.ascii	"test_multiply\000"
- 448      5F6D756C 
- 448      7469706C 
- 448      7900
- 449              		.section	.text.tc_multiply,"ax",%progbits
- 450              		.align	1
- 451              		.global	tc_multiply
- 452              		.syntax unified
- 453              		.thumb
- 454              		.thumb_func
- 455              		.fpu fpv4-sp-d16
- 457              	tc_multiply:
- 458              	.LFB143:
+ 387              		.loc 1 50 1 is_stmt 0 view .LVU30
+ 388 0016 08BD     		pop	{r3, pc}
+ 389              	.L16:
+ 390              		.align	2
+ 391              	.L15:
+ 392 0018 00000000 		.word	.LC0
+ 393 001c 00000000 		.word	.LC2
+ 394 0020 00000000 		.word	test_subtract
+ 395              		.cfi_endproc
+ 396              	.LFE142:
+ 398              		.section	.rodata.tc_multiply.str1.4,"aMS",%progbits,1
+ 399              		.align	2
+ 400              	.LC3:
+ 401 0000 74657374 		.ascii	"test_multiply\000"
+ 401      5F6D756C 
+ 401      7469706C 
+ 401      7900
+ 402              		.section	.text.tc_multiply,"ax",%progbits
+ 403              		.align	1
+ 404              		.global	tc_multiply
+ 405              		.syntax unified
+ 406              		.thumb
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 9
+
+
+ 407              		.thumb_func
+ 408              		.fpu fpv4-sp-d16
+ 410              	tc_multiply:
+ 411              	.LFB143:
   51:Core/Src/function_test.c **** 
   52:Core/Src/function_test.c **** void tc_multiply(void){
- 459              		.loc 1 52 23 is_stmt 1 view -0
+ 412              		.loc 1 52 23 is_stmt 1 view -0
+ 413              		.cfi_startproc
+ 414              		@ args = 0, pretend = 0, frame = 0
+ 415              		@ frame_needed = 0, uses_anonymous_args = 0
+ 416 0000 08B5     		push	{r3, lr}
+ 417              	.LCFI14:
+ 418              		.cfi_def_cfa_offset 8
+ 419              		.cfi_offset 3, -8
+ 420              		.cfi_offset 14, -4
+  53:Core/Src/function_test.c ****   UNITY_BEGIN();
+ 421              		.loc 1 53 3 view .LVU32
+ 422 0002 0548     		ldr	r0, .L19
+ 423 0004 FFF7FEFF 		bl	UnityBegin
+ 424              	.LVL31:
+  54:Core/Src/function_test.c ****   RUN_TEST(test_multiply);
+ 425              		.loc 1 54 3 view .LVU33
+ 426 0008 3622     		movs	r2, #54
+ 427 000a 0449     		ldr	r1, .L19+4
+ 428 000c 0448     		ldr	r0, .L19+8
+ 429 000e FFF7FEFF 		bl	UnityDefaultTestRun
+ 430              	.LVL32:
+  55:Core/Src/function_test.c ****   UNITY_END();
+ 431              		.loc 1 55 3 view .LVU34
+ 432 0012 FFF7FEFF 		bl	UnityEnd
+ 433              	.LVL33:
+  56:Core/Src/function_test.c **** 
+  57:Core/Src/function_test.c ****   // UNITY_BEGIN();
+  58:Core/Src/function_test.c ****   // TEST_ASSERT_EQUAL_INT(5, multiply(2,3));
+  59:Core/Src/function_test.c ****   // UNITY_END();
+  60:Core/Src/function_test.c **** }
+ 434              		.loc 1 60 1 is_stmt 0 view .LVU35
+ 435 0016 08BD     		pop	{r3, pc}
+ 436              	.L20:
+ 437              		.align	2
+ 438              	.L19:
+ 439 0018 00000000 		.word	.LC0
+ 440 001c 00000000 		.word	.LC3
+ 441 0020 00000000 		.word	test_multiply
+ 442              		.cfi_endproc
+ 443              	.LFE143:
+ 445              		.section	.rodata.tc_divide.str1.4,"aMS",%progbits,1
+ 446              		.align	2
+ 447              	.LC4:
+ 448 0000 74657374 		.ascii	"test_divide\000"
+ 448      5F646976 
+ 448      69646500 
+ 449              		.section	.text.tc_divide,"ax",%progbits
+ 450              		.align	1
+ 451              		.global	tc_divide
+ 452              		.syntax unified
+ 453              		.thumb
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 10
+
+
+ 454              		.thumb_func
+ 455              		.fpu fpv4-sp-d16
+ 457              	tc_divide:
+ 458              	.LFB144:
+  61:Core/Src/function_test.c **** 
+  62:Core/Src/function_test.c **** void tc_divide(void){
+ 459              		.loc 1 62 21 is_stmt 1 view -0
  460              		.cfi_startproc
  461              		@ args = 0, pretend = 0, frame = 0
  462              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 10
-
-
  463 0000 10B5     		push	{r4, lr}
- 464              	.LCFI18:
+ 464              	.LCFI15:
  465              		.cfi_def_cfa_offset 8
  466              		.cfi_offset 4, -8
  467              		.cfi_offset 14, -4
  468 0002 82B0     		sub	sp, sp, #8
- 469              	.LCFI19:
+ 469              	.LCFI16:
  470              		.cfi_def_cfa_offset 16
-  53:Core/Src/function_test.c ****   UNITY_BEGIN();
- 471              		.loc 1 53 3 view .LVU36
- 472 0004 0E4C     		ldr	r4, .L19
+  63:Core/Src/function_test.c ****   UNITY_BEGIN();
+ 471              		.loc 1 63 3 view .LVU37
+ 472 0004 0E4C     		ldr	r4, .L23
  473 0006 2046     		mov	r0, r4
  474 0008 FFF7FEFF 		bl	UnityBegin
- 475              	.LVL37:
-  54:Core/Src/function_test.c ****   RUN_TEST(test_multiply);
- 476              		.loc 1 54 3 view .LVU37
- 477 000c 3622     		movs	r2, #54
- 478 000e 0D49     		ldr	r1, .L19+4
- 479 0010 0D48     		ldr	r0, .L19+8
+ 475              	.LVL34:
+  64:Core/Src/function_test.c ****   RUN_TEST(test_divide);
+ 476              		.loc 1 64 3 view .LVU38
+ 477 000c 4022     		movs	r2, #64
+ 478 000e 0D49     		ldr	r1, .L23+4
+ 479 0010 0D48     		ldr	r0, .L23+8
  480 0012 FFF7FEFF 		bl	UnityDefaultTestRun
- 481              	.LVL38:
-  55:Core/Src/function_test.c ****   UNITY_END();
- 482              		.loc 1 55 3 view .LVU38
+ 481              	.LVL35:
+  65:Core/Src/function_test.c ****   UNITY_END();
+ 482              		.loc 1 65 3 view .LVU39
  483 0016 FFF7FEFF 		bl	UnityEnd
- 484              	.LVL39:
-  56:Core/Src/function_test.c **** 
-  57:Core/Src/function_test.c ****   UNITY_BEGIN();
- 485              		.loc 1 57 3 view .LVU39
+ 484              	.LVL36:
+  66:Core/Src/function_test.c **** 
+  67:Core/Src/function_test.c ****   UNITY_BEGIN();
+ 485              		.loc 1 67 3 view .LVU40
  486 001a 2046     		mov	r0, r4
  487 001c FFF7FEFF 		bl	UnityBegin
- 488              	.LVL40:
-  58:Core/Src/function_test.c ****   TEST_ASSERT_EQUAL_INT(5, multiply(2,3));
- 489              		.loc 1 58 3 view .LVU40
+ 488              	.LVL37:
+  68:Core/Src/function_test.c ****   TEST_ASSERT_EQUAL_INT(3, divide(6,3));
+ 489              		.loc 1 68 3 view .LVU41
  490 0020 0321     		movs	r1, #3
- 491 0022 0220     		movs	r0, #2
- 492 0024 FFF7FEFF 		bl	multiply
- 493              	.LVL41:
+ 491 0022 0620     		movs	r0, #6
+ 492 0024 FFF7FEFF 		bl	divide
+ 493              	.LVL38:
  494 0028 0146     		mov	r1, r0
  495 002a 1423     		movs	r3, #20
  496 002c 0093     		str	r3, [sp]
- 497 002e 3A23     		movs	r3, #58
+ 497 002e 4423     		movs	r3, #68
  498 0030 0022     		movs	r2, #0
- 499 0032 0520     		movs	r0, #5
+ 499 0032 0320     		movs	r0, #3
  500 0034 FFF7FEFF 		bl	UnityAssertEqualNumber
- 501              	.LVL42:
-  59:Core/Src/function_test.c ****   UNITY_END();
- 502              		.loc 1 59 3 view .LVU41
+ 501              	.LVL39:
+  69:Core/Src/function_test.c ****   UNITY_END();
+ 502              		.loc 1 69 3 view .LVU42
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 11
+
+
  503 0038 FFF7FEFF 		bl	UnityEnd
- 504              	.LVL43:
-  60:Core/Src/function_test.c **** }
- 505              		.loc 1 60 1 is_stmt 0 view .LVU42
+ 504              	.LVL40:
+  70:Core/Src/function_test.c **** }
+ 505              		.loc 1 70 1 is_stmt 0 view .LVU43
  506 003c 02B0     		add	sp, sp, #8
- 507              	.LCFI20:
+ 507              	.LCFI17:
  508              		.cfi_def_cfa_offset 8
  509              		@ sp needed
  510 003e 10BD     		pop	{r4, pc}
- 511              	.L20:
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 11
-
-
+ 511              	.L24:
  512              		.align	2
- 513              	.L19:
+ 513              	.L23:
  514 0040 00000000 		.word	.LC0
- 515 0044 00000000 		.word	.LC3
- 516 0048 00000000 		.word	test_multiply
+ 515 0044 00000000 		.word	.LC4
+ 516 0048 00000000 		.word	test_divide
  517              		.cfi_endproc
- 518              	.LFE143:
- 520              		.section	.rodata.tc_divide.str1.4,"aMS",%progbits,1
- 521              		.align	2
- 522              	.LC4:
- 523 0000 74657374 		.ascii	"test_divide\000"
- 523      5F646976 
- 523      69646500 
- 524              		.section	.text.tc_divide,"ax",%progbits
- 525              		.align	1
- 526              		.global	tc_divide
- 527              		.syntax unified
- 528              		.thumb
- 529              		.thumb_func
- 530              		.fpu fpv4-sp-d16
- 532              	tc_divide:
- 533              	.LFB144:
-  61:Core/Src/function_test.c **** 
-  62:Core/Src/function_test.c **** void tc_divide(void){
- 534              		.loc 1 62 21 is_stmt 1 view -0
- 535              		.cfi_startproc
- 536              		@ args = 0, pretend = 0, frame = 0
- 537              		@ frame_needed = 0, uses_anonymous_args = 0
- 538 0000 10B5     		push	{r4, lr}
- 539              	.LCFI21:
- 540              		.cfi_def_cfa_offset 8
- 541              		.cfi_offset 4, -8
- 542              		.cfi_offset 14, -4
- 543 0002 82B0     		sub	sp, sp, #8
- 544              	.LCFI22:
- 545              		.cfi_def_cfa_offset 16
-  63:Core/Src/function_test.c ****   UNITY_BEGIN();
- 546              		.loc 1 63 3 view .LVU44
- 547 0004 0E4C     		ldr	r4, .L23
- 548 0006 2046     		mov	r0, r4
- 549 0008 FFF7FEFF 		bl	UnityBegin
- 550              	.LVL44:
-  64:Core/Src/function_test.c ****   RUN_TEST(test_divide);
- 551              		.loc 1 64 3 view .LVU45
- 552 000c 4022     		movs	r2, #64
- 553 000e 0D49     		ldr	r1, .L23+4
- 554 0010 0D48     		ldr	r0, .L23+8
- 555 0012 FFF7FEFF 		bl	UnityDefaultTestRun
- 556              	.LVL45:
-  65:Core/Src/function_test.c ****   UNITY_END();
- 557              		.loc 1 65 3 view .LVU46
- 558 0016 FFF7FEFF 		bl	UnityEnd
- 559              	.LVL46:
-  66:Core/Src/function_test.c **** 
-  67:Core/Src/function_test.c ****   UNITY_BEGIN();
- 560              		.loc 1 67 3 view .LVU47
- 561 001a 2046     		mov	r0, r4
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 12
-
-
- 562 001c FFF7FEFF 		bl	UnityBegin
- 563              	.LVL47:
-  68:Core/Src/function_test.c ****   TEST_ASSERT_EQUAL_INT(3, divide(6,3));
- 564              		.loc 1 68 3 view .LVU48
- 565 0020 0321     		movs	r1, #3
- 566 0022 0620     		movs	r0, #6
- 567 0024 FFF7FEFF 		bl	divide
- 568              	.LVL48:
- 569 0028 0146     		mov	r1, r0
- 570 002a 1423     		movs	r3, #20
- 571 002c 0093     		str	r3, [sp]
- 572 002e 4423     		movs	r3, #68
- 573 0030 0022     		movs	r2, #0
- 574 0032 0320     		movs	r0, #3
- 575 0034 FFF7FEFF 		bl	UnityAssertEqualNumber
- 576              	.LVL49:
-  69:Core/Src/function_test.c ****   UNITY_END();
- 577              		.loc 1 69 3 view .LVU49
- 578 0038 FFF7FEFF 		bl	UnityEnd
- 579              	.LVL50:
-  70:Core/Src/function_test.c **** }
- 580              		.loc 1 70 1 is_stmt 0 view .LVU50
- 581 003c 02B0     		add	sp, sp, #8
- 582              	.LCFI23:
- 583              		.cfi_def_cfa_offset 8
- 584              		@ sp needed
- 585 003e 10BD     		pop	{r4, pc}
- 586              	.L24:
- 587              		.align	2
- 588              	.L23:
- 589 0040 00000000 		.word	.LC0
- 590 0044 00000000 		.word	.LC4
- 591 0048 00000000 		.word	test_divide
- 592              		.cfi_endproc
- 593              	.LFE144:
- 595              		.section	.text.setUp,"ax",%progbits
- 596              		.align	1
- 597              		.global	setUp
- 598              		.syntax unified
- 599              		.thumb
- 600              		.thumb_func
- 601              		.fpu fpv4-sp-d16
- 603              	setUp:
- 604              	.LFB145:
+ 518              	.LFE144:
+ 520              		.section	.text.setUp,"ax",%progbits
+ 521              		.align	1
+ 522              		.global	setUp
+ 523              		.syntax unified
+ 524              		.thumb
+ 525              		.thumb_func
+ 526              		.fpu fpv4-sp-d16
+ 528              	setUp:
+ 529              	.LFB145:
   71:Core/Src/function_test.c **** 
   72:Core/Src/function_test.c **** void setUp(){
- 605              		.loc 1 72 13 is_stmt 1 view -0
- 606              		.cfi_startproc
- 607              		@ args = 0, pretend = 0, frame = 0
- 608              		@ frame_needed = 0, uses_anonymous_args = 0
- 609              		@ link register save eliminated.
+ 530              		.loc 1 72 13 is_stmt 1 view -0
+ 531              		.cfi_startproc
+ 532              		@ args = 0, pretend = 0, frame = 0
+ 533              		@ frame_needed = 0, uses_anonymous_args = 0
+ 534              		@ link register save eliminated.
   73:Core/Src/function_test.c **** 
   74:Core/Src/function_test.c **** }
- 610              		.loc 1 74 1 view .LVU52
- 611 0000 7047     		bx	lr
- 612              		.cfi_endproc
- 613              	.LFE145:
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 13
-
-
- 615              		.section	.text.tearDown,"ax",%progbits
- 616              		.align	1
- 617              		.global	tearDown
- 618              		.syntax unified
- 619              		.thumb
- 620              		.thumb_func
- 621              		.fpu fpv4-sp-d16
- 623              	tearDown:
- 624              	.LFB146:
+ 535              		.loc 1 74 1 view .LVU45
+ 536 0000 7047     		bx	lr
+ 537              		.cfi_endproc
+ 538              	.LFE145:
+ 540              		.section	.text.tearDown,"ax",%progbits
+ 541              		.align	1
+ 542              		.global	tearDown
+ 543              		.syntax unified
+ 544              		.thumb
+ 545              		.thumb_func
+ 546              		.fpu fpv4-sp-d16
+ 548              	tearDown:
+ 549              	.LFB146:
   75:Core/Src/function_test.c **** void tearDown(){
- 625              		.loc 1 75 16 view -0
- 626              		.cfi_startproc
- 627              		@ args = 0, pretend = 0, frame = 0
- 628              		@ frame_needed = 0, uses_anonymous_args = 0
- 629              		@ link register save eliminated.
+ 550              		.loc 1 75 16 view -0
+ 551              		.cfi_startproc
+ 552              		@ args = 0, pretend = 0, frame = 0
+ 553              		@ frame_needed = 0, uses_anonymous_args = 0
+ 554              		@ link register save eliminated.
   76:Core/Src/function_test.c **** 
   77:Core/Src/function_test.c **** }...
- 630              		.loc 1 77 1 view .LVU54
- 631 0000 7047     		bx	lr
- 632              		.cfi_endproc
- 633              	.LFE146:
- 635              		.text
- 636              	.Letext0:
- 637              		.file 2 "Core/test/unity_internals.h"
- 638              		.file 3 "Core/Inc/function.h"
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 14
+ 555              		.loc 1 77 1 view .LVU47
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 12
+
+
+ 556 0000 7047     		bx	lr
+ 557              		.cfi_endproc
+ 558              	.LFE146:
+ 560              		.text
+ 561              	.Letext0:
+ 562              		.file 2 "Core/test/unity_internals.h"
+ 563              		.file 3 "Core/Inc/function.h"
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 function_test.c
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:18     .text.test_add:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:26     .text.test_add:00000000 test_add
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:88     .text.test_subtract:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:95     .text.test_subtract:00000000 test_subtract
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:156    .text.test_multiply:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:163    .text.test_multiply:00000000 test_multiply
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:224    .text.test_divide:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:231    .text.test_divide:00000000 test_divide
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:292    .rodata.tc_add.str1.4:00000000 $d
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:299    .text.tc_add:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:306    .text.tc_add:00000000 tc_add
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:364    .text.tc_add:00000044 $d
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:371    .rodata.tc_subtract.str1.4:00000000 $d
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:375    .text.tc_subtract:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:382    .text.tc_subtract:00000000 tc_subtract
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:439    .text.tc_subtract:00000040 $d
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:446    .rodata.tc_multiply.str1.4:00000000 $d
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:450    .text.tc_multiply:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:457    .text.tc_multiply:00000000 tc_multiply
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:514    .text.tc_multiply:00000040 $d
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:521    .rodata.tc_divide.str1.4:00000000 $d
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:525    .text.tc_divide:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:532    .text.tc_divide:00000000 tc_divide
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:589    .text.tc_divide:00000040 $d
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:596    .text.setUp:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:603    .text.setUp:00000000 setUp
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:616    .text.tearDown:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:623    .text.tearDown:00000000 tearDown
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:18     .text.test_add:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:26     .text.test_add:00000000 test_add
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:88     .text.test_subtract:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:95     .text.test_subtract:00000000 test_subtract
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:156    .text.test_multiply:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:163    .text.test_multiply:00000000 test_multiply
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:224    .text.test_divide:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:231    .text.test_divide:00000000 test_divide
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:292    .rodata.tc_add.str1.4:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:299    .text.tc_add:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:306    .text.tc_add:00000000 tc_add
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:345    .text.tc_add:00000028 $d
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:352    .rodata.tc_subtract.str1.4:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:356    .text.tc_subtract:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:363    .text.tc_subtract:00000000 tc_subtract
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:392    .text.tc_subtract:00000018 $d
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:399    .rodata.tc_multiply.str1.4:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:403    .text.tc_multiply:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:410    .text.tc_multiply:00000000 tc_multiply
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:439    .text.tc_multiply:00000018 $d
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:446    .rodata.tc_divide.str1.4:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:450    .text.tc_divide:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:457    .text.tc_divide:00000000 tc_divide
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:514    .text.tc_divide:00000040 $d
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:521    .text.setUp:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:528    .text.setUp:00000000 setUp
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:541    .text.tearDown:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccb9OctI.s:548    .text.tearDown:00000000 tearDown
 
 UNDEFINED SYMBOLS
 add

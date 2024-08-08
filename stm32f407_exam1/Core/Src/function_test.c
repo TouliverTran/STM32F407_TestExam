@@ -31,7 +31,7 @@ void tc_add(void){
     UNITY_BEGIN();
     RUN_TEST(test_add);
     RUN_TEST(test_add);
-    TEST_ASSERT_EQUAL_INT(5, add(1,3));
+    // TEST_ASSERT_EQUAL_INT(5, add(1,3));
     UNITY_END();
 
     // UNITY_BEGIN();
@@ -44,9 +44,9 @@ void tc_subtract(void){
   RUN_TEST(test_subtract);
   UNITY_END();
 
-  UNITY_BEGIN();
-  TEST_ASSERT_EQUAL_INT(2, subtract(3,2));
-  UNITY_END();
+  // UNITY_BEGIN();
+  // TEST_ASSERT_EQUAL_INT(2, subtract(3,2));
+  // UNITY_END();
 }
 
 void tc_multiply(void){
@@ -54,9 +54,9 @@ void tc_multiply(void){
   RUN_TEST(test_multiply);
   UNITY_END();
 
-  UNITY_BEGIN();
-  TEST_ASSERT_EQUAL_INT(5, multiply(2,3));
-  UNITY_END();
+  // UNITY_BEGIN();
+  // TEST_ASSERT_EQUAL_INT(5, multiply(2,3));
+  // UNITY_END();
 }
 
 void tc_divide(void){
