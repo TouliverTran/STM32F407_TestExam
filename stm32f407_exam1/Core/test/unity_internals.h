@@ -308,7 +308,7 @@ typedef UNITY_FLOAT_TYPE UNITY_FLOAT;
   /* Default to using putchar, which is defined in stdio.h */
   #include <stdio.h>
   #include "main.h"
-  #define UNITY_OUTPUT_CHAR(a) (void)append_char_to_buffer(yahdlc_send_frame, 256, a)
+  #define UNITY_OUTPUT_CHAR(a) (void)append_char_to_buffer(yahdlc_send_frame, BUF_SIZE, a)
 #else
   /* If defined as something else, make sure we declare it here so it's ready for use */
   #ifdef UNITY_OUTPUT_CHAR_HEADER_DECLARATION

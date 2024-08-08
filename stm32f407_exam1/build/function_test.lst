@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
   49 0012 0723     		movs	r3, #7
   50 0014 0022     		movs	r2, #0
   51 0016 0520     		movs	r0, #5
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 2
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 2
 
 
   52 0018 FFF7FEFF 		bl	UnityAssertEqualNumber
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
  103              		.cfi_def_cfa_offset 8
  104              		.cfi_offset 4, -8
  105              		.cfi_offset 14, -4
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 3
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 3
 
 
  106 0002 82B0     		sub	sp, sp, #8
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
  157              		.global	test_multiply
  158              		.syntax unified
  159              		.thumb
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 4
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 4
 
 
  160              		.thumb_func
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
  210 0046 0022     		movs	r2, #0
  211 0048 0120     		movs	r0, #1
  212 004a FFF7FEFF 		bl	UnityAssertEqualNumber
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 5
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 5
 
 
  213              	.LVL17:
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
  264 0028 0094     		str	r4, [sp]
  265 002a 1A23     		movs	r3, #26
  266 002c 0022     		movs	r2, #0
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 6
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 6
 
 
  267 002e 4FF0FF30 		mov	r0, #-1
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
  313              	.LCFI12:
  314              		.cfi_def_cfa_offset 12
  315              		.cfi_offset 4, -12
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 7
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 7
 
 
  316              		.cfi_offset 5, -8
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
  360 0040 30BD     		pop	{r4, r5, pc}
  361              	.L12:
  362 0042 00BF     		.align	2
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 8
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 8
 
 
  363              	.L11:
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
   47:Core/Src/function_test.c ****   UNITY_BEGIN();
  410              		.loc 1 47 3 view .LVU31
  411 001a 2046     		mov	r0, r4
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 9
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 9
 
 
  412 001c FFF7FEFF 		bl	UnityBegin
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
  460              		.cfi_startproc
  461              		@ args = 0, pretend = 0, frame = 0
  462              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 10
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 10
 
 
  463 0000 10B5     		push	{r4, lr}
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
  509              		@ sp needed
  510 003e 10BD     		pop	{r4, pc}
  511              	.L20:
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 11
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 11
 
 
  512              		.align	2
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
   67:Core/Src/function_test.c ****   UNITY_BEGIN();
  560              		.loc 1 67 3 view .LVU47
  561 001a 2046     		mov	r0, r4
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 12
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 12
 
 
  562 001c FFF7FEFF 		bl	UnityBegin
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
  611 0000 7047     		bx	lr
  612              		.cfi_endproc
  613              	.LFE145:
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 13
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 13
 
 
  615              		.section	.text.tearDown,"ax",%progbits
@@ -746,39 +746,39 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 1
  636              	.Letext0:
  637              		.file 2 "Core/test/unity_internals.h"
  638              		.file 3 "Core/Inc/function.h"
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s 			page 14
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s 			page 14
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 function_test.c
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:18     .text.test_add:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:26     .text.test_add:00000000 test_add
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:88     .text.test_subtract:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:95     .text.test_subtract:00000000 test_subtract
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:156    .text.test_multiply:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:163    .text.test_multiply:00000000 test_multiply
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:224    .text.test_divide:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:231    .text.test_divide:00000000 test_divide
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:292    .rodata.tc_add.str1.4:00000000 $d
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:299    .text.tc_add:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:306    .text.tc_add:00000000 tc_add
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:364    .text.tc_add:00000044 $d
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:371    .rodata.tc_subtract.str1.4:00000000 $d
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:375    .text.tc_subtract:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:382    .text.tc_subtract:00000000 tc_subtract
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:439    .text.tc_subtract:00000040 $d
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:446    .rodata.tc_multiply.str1.4:00000000 $d
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:450    .text.tc_multiply:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:457    .text.tc_multiply:00000000 tc_multiply
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:514    .text.tc_multiply:00000040 $d
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:521    .rodata.tc_divide.str1.4:00000000 $d
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:525    .text.tc_divide:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:532    .text.tc_divide:00000000 tc_divide
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:589    .text.tc_divide:00000040 $d
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:596    .text.setUp:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:603    .text.setUp:00000000 setUp
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:616    .text.tearDown:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccN8rie7.s:623    .text.tearDown:00000000 tearDown
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:18     .text.test_add:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:26     .text.test_add:00000000 test_add
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:88     .text.test_subtract:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:95     .text.test_subtract:00000000 test_subtract
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:156    .text.test_multiply:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:163    .text.test_multiply:00000000 test_multiply
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:224    .text.test_divide:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:231    .text.test_divide:00000000 test_divide
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:292    .rodata.tc_add.str1.4:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:299    .text.tc_add:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:306    .text.tc_add:00000000 tc_add
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:364    .text.tc_add:00000044 $d
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:371    .rodata.tc_subtract.str1.4:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:375    .text.tc_subtract:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:382    .text.tc_subtract:00000000 tc_subtract
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:439    .text.tc_subtract:00000040 $d
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:446    .rodata.tc_multiply.str1.4:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:450    .text.tc_multiply:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:457    .text.tc_multiply:00000000 tc_multiply
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:514    .text.tc_multiply:00000040 $d
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:521    .rodata.tc_divide.str1.4:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:525    .text.tc_divide:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:532    .text.tc_divide:00000000 tc_divide
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:589    .text.tc_divide:00000040 $d
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:596    .text.setUp:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:603    .text.setUp:00000000 setUp
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:616    .text.tearDown:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cc7vXsal.s:623    .text.tearDown:00000000 tearDown
 
 UNDEFINED SYMBOLS
 add

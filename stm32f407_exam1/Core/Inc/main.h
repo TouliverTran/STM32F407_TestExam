@@ -36,7 +36,8 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-extern uint8_t yahdlc_send_frame[256];
+#define BUF_SIZE   1024
+extern uint8_t yahdlc_send_frame[BUF_SIZE];
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
