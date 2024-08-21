@@ -65,7 +65,7 @@ void tc_divide(void){
   UNITY_END();
 
   UNITY_BEGIN();
-  TEST_ASSERT_EQUAL_INT(3, divide(6,3));
+  TEST_ASSERT_EQUAL_INT(2, divide(6,3));
   UNITY_END();
 }
 

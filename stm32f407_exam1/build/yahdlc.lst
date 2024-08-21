@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
   32              		@ args = 0, pretend = 0, frame = 0
   33              		@ frame_needed = 0, uses_anonymous_args = 0
   34              		@ link register save eliminated.
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 2
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 2
 
 
   25:Core/test/yahdlc.c ****   if (!state) {
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
   81              		.thumb_func
   82              		.fpu fpv4-sp-d16
   84              	yahdlc_get_state:
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 3
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 3
 
 
   85              	.LVL4:
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  127 0020 7047     		bx	lr
  128              	.L18:
  129 0022 00BF     		.align	2
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 4
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 4
 
 
  130              	.L17:
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  175              		.cfi_remember_state
  176              		.cfi_restore 4
  177              		.cfi_def_cfa_offset 0
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 5
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 5
 
 
  178 0018 7047     		bx	lr
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  221              		.loc 1 58 3 view .LVU45
  222              		.loc 1 58 6 is_stmt 0 view .LVU46
  223 0002 10F0010F 		tst	r0, #1
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 6
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 6
 
 
  224 0006 1FD0     		beq	.L24
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  259              	.LVL13:
  260              	.L25:
  261              	.LCFI9:
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 7
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 7
 
 
  262              		.cfi_restore_state
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  305              		.loc 1 83 3 view .LVU68
  306 0002 012B     		cmp	r3, #1
  307 0004 0BD0     		beq	.L30
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 8
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 8
 
 
  308 0006 022B     		cmp	r3, #2
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
   91:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT);
  335              		.loc 1 91 7 view .LVU78
   91:Core/test/yahdlc.c ****       value |= (1 << YAHDLC_CONTROL_S_OR_U_FRAME_BIT);
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 9
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 9
 
 
  336              		.loc 1 91 24 is_stmt 0 view .LVU79
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  379              	yahdlc_get_data_reset_with_state:
  380              	.LVL29:
  381              	.LFB6:
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 10
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 10
 
 
  104:Core/test/yahdlc.c **** 
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  426              	.LCFI10:
  427              		.cfi_def_cfa_offset 8
  428              		.cfi_offset 3, -8
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 11
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 11
 
 
  429              		.cfi_offset 14, -4
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  474              		.loc 1 123 3 is_stmt 1 view .LVU110
  475              	.LVL32:
  124:Core/test/yahdlc.c ****   char value;
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 12
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 12
 
 
  476              		.loc 1 124 3 view .LVU111
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  145:Core/test/yahdlc.c ****     } else {
  146:Core/test/yahdlc.c ****       // Check for end flag sequence
  147:Core/test/yahdlc.c ****       if (src[i] == YAHDLC_FLAG_SEQUENCE) {
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 13
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 13
 
 
  148:Core/test/yahdlc.c ****         // Check if an additional flag sequence byte is present or earlier received
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  520              	.LVL34:
  521              	.L42:
  133:Core/test/yahdlc.c ****     // First find the start flag sequence
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 14
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 14
 
 
  522              		.loc 1 133 15 is_stmt 1 discriminator 1 view .LVU128
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  178:Core/test/yahdlc.c **** 
  559              		.loc 1 178 9 is_stmt 1 view .LVU146
  178:Core/test/yahdlc.c **** 
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 15
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 15
 
 
  560              		.loc 1 178 22 is_stmt 0 view .LVU147
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  598              		.loc 1 138 40 discriminator 1 view .LVU163
  599 009e 7319     		adds	r3, r6, r5
  600 00a0 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 16
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 16
 
 
  138:Core/test/yahdlc.c ****           // Just loop again to silently discard it (accordingly to HDLC)
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  638              		.loc 1 161 12 view .LVU180
  639 00c6 BA42     		cmp	r2, r7
  640 00c8 17D0     		beq	.L70
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 17
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 17
 
 
  641              	.L49:
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  210:Core/test/yahdlc.c ****     // Reset values for next frame
  211:Core/test/yahdlc.c ****     yahdlc_get_data_reset_with_state(state);
  675              		.loc 1 211 5 is_stmt 1 view .LVU195
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 18
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 18
 
 
  676 00ee 2046     		mov	r0, r4
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  716              	.LVL46:
  196:Core/test/yahdlc.c ****   } else {
  717              		.loc 1 196 9 is_stmt 0 view .LVU207
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 19
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 19
 
 
  718 0120 6FF02205 		mvn	r5, #34
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  763              		.thumb
  764              		.thumb_func
  765              		.fpu fpv4-sp-d16
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 20
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 20
 
 
  767              	yahdlc_get_data:
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  811 001a 00BF     		.align	2
  812              	.L73:
  813 001c 00000000 		.word	.LANCHOR0
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 21
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 21
 
 
  814              		.cfi_endproc
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  860              		.loc 1 225 6 is_stmt 0 view .LVU237
  861 000e 0028     		cmp	r0, #0
  862 0010 57D0     		beq	.L83
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 22
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 22
 
 
  863 0012 8846     		mov	r8, r1
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  905              	.LVL67:
  906 0046 0546     		mov	r5, r0
  907              	.LVL68:
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 23
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 23
 
 
  238:Core/test/yahdlc.c ****   fcs = calc_fcs(fcs, value);
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  944              		.loc 1 225 25 discriminator 2 view .LVU265
  945 006a 002A     		cmp	r2, #0
  946 006c D5D0     		beq	.L77
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 24
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 24
 
 
  226:Core/test/yahdlc.c ****   }
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  989              		.loc 1 255 19 discriminator 3 view .LVU279
  990 009a 44FA00F0 		asr	r0, r4, r0
  991              	.LVL84:
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 25
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 25
 
 
  256:Core/test/yahdlc.c ****     yahdlc_escape_value(value, dest, &dest_index);
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  1033              	.LCFI18:
  1034              		.cfi_restore_state
  226:Core/test/yahdlc.c ****   }
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 26
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 26
 
 
  1035              		.loc 1 226 12 view .LVU294
@@ -1542,37 +1542,37 @@ ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 1
  1071              	.Letext0:
  1072              		.file 2 "Core/test/yahdlc.h"
  1073              		.file 3 "Core/test/fcs.h"
-ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s 			page 27
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s 			page 27
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 yahdlc.c
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:18     .text.yahdlc_set_state:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:26     .text.yahdlc_set_state:00000000 yahdlc_set_state
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:72     .text.yahdlc_set_state:00000024 $d
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:77     .text.yahdlc_get_state:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:84     .text.yahdlc_get_state:00000000 yahdlc_get_state
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:131    .text.yahdlc_get_state:00000024 $d
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:136    .text.yahdlc_escape_value:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:143    .text.yahdlc_escape_value:00000000 yahdlc_escape_value
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:201    .text.yahdlc_get_control_type:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:208    .text.yahdlc_get_control_type:00000000 yahdlc_get_control_type
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:286    .text.yahdlc_frame_control_type:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:293    .text.yahdlc_frame_control_type:00000000 yahdlc_frame_control_type
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:372    .text.yahdlc_get_data_reset_with_state:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:379    .text.yahdlc_get_data_reset_with_state:00000000 yahdlc_get_data_reset_with_state
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:412    .text.yahdlc_get_data_reset:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:419    .text.yahdlc_get_data_reset:00000000 yahdlc_get_data_reset
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:439    .text.yahdlc_get_data_reset:0000000c $d
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:444    .text.yahdlc_get_data_with_state:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:451    .text.yahdlc_get_data_with_state:00000000 yahdlc_get_data_with_state
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:760    .text.yahdlc_get_data:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:767    .text.yahdlc_get_data:00000000 yahdlc_get_data
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:813    .text.yahdlc_get_data:0000001c $d
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:818    .text.yahdlc_frame_data:00000000 $t
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:825    .text.yahdlc_frame_data:00000000 yahdlc_frame_data
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:1058   .data.yahdlc_state:00000000 $d
-C:\Users\ASUS\AppData\Local\Temp\ccUa7wZJ.s:1062   .data.yahdlc_state:00000000 yahdlc_state
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:18     .text.yahdlc_set_state:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:26     .text.yahdlc_set_state:00000000 yahdlc_set_state
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:72     .text.yahdlc_set_state:00000024 $d
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:77     .text.yahdlc_get_state:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:84     .text.yahdlc_get_state:00000000 yahdlc_get_state
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:131    .text.yahdlc_get_state:00000024 $d
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:136    .text.yahdlc_escape_value:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:143    .text.yahdlc_escape_value:00000000 yahdlc_escape_value
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:201    .text.yahdlc_get_control_type:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:208    .text.yahdlc_get_control_type:00000000 yahdlc_get_control_type
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:286    .text.yahdlc_frame_control_type:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:293    .text.yahdlc_frame_control_type:00000000 yahdlc_frame_control_type
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:372    .text.yahdlc_get_data_reset_with_state:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:379    .text.yahdlc_get_data_reset_with_state:00000000 yahdlc_get_data_reset_with_state
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:412    .text.yahdlc_get_data_reset:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:419    .text.yahdlc_get_data_reset:00000000 yahdlc_get_data_reset
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:439    .text.yahdlc_get_data_reset:0000000c $d
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:444    .text.yahdlc_get_data_with_state:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:451    .text.yahdlc_get_data_with_state:00000000 yahdlc_get_data_with_state
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:760    .text.yahdlc_get_data:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:767    .text.yahdlc_get_data:00000000 yahdlc_get_data
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:813    .text.yahdlc_get_data:0000001c $d
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:818    .text.yahdlc_frame_data:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:825    .text.yahdlc_frame_data:00000000 yahdlc_frame_data
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:1058   .data.yahdlc_state:00000000 $d
+C:\Users\ASUS\AppData\Local\Temp\ccziDEcs.s:1062   .data.yahdlc_state:00000000 yahdlc_state
 
 UNDEFINED SYMBOLS
 calc_fcs

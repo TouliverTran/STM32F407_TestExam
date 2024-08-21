@@ -1,0 +1,1465 @@
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"stub_eth_transceive.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.vsc85xx_update_rgmii_cntl,"ax",%progbits
+  18              		.align	1
+  19              		.arch armv7e-m
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  23              		.fpu fpv4-sp-d16
+  25              	vsc85xx_update_rgmii_cntl:
+  26              	.LVL0:
+  27              	.LFB33:
+  28              		.file 1 "Core/ETH_Transceive/stub_eth_transceive.c"
+   1:Core/ETH_Transceive/stub_eth_transceive.c **** #include "mscc-phy-vsc8531.h"
+   2:Core/ETH_Transceive/stub_eth_transceive.c **** #include "mscc_serdes.h"
+   3:Core/ETH_Transceive/stub_eth_transceive.c **** #include "mscc.h"
+   4:Core/ETH_Transceive/stub_eth_transceive.c **** #include "phy.h"
+   5:Core/ETH_Transceive/stub_eth_transceive.c **** #include "misc.h"
+   6:Core/ETH_Transceive/stub_eth_transceive.c **** #include "ethtool.h"
+   7:Core/ETH_Transceive/stub_eth_transceive.c **** #include "uapi/mii.h"
+   8:Core/ETH_Transceive/stub_eth_transceive.c **** 
+   9:Core/ETH_Transceive/stub_eth_transceive.c **** #include <errno.h>
+  10:Core/ETH_Transceive/stub_eth_transceive.c **** #include <stdio.h>
+  11:Core/ETH_Transceive/stub_eth_transceive.c **** #include <stdbool.h>
+  12:Core/ETH_Transceive/stub_eth_transceive.c **** #include <strings.h>
+  13:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  14:Core/ETH_Transceive/stub_eth_transceive.c **** static const int vsc85xx_internal_delay[] = {200, 800, 1100, 1700, 2000, 2300,
+  15:Core/ETH_Transceive/stub_eth_transceive.c **** 					     2600, 3400};
+  16:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  17:Core/ETH_Transceive/stub_eth_transceive.c **** /**
+  18:Core/ETH_Transceive/stub_eth_transceive.c ****  * mii_bmcr_encode_fixed - encode fixed speed/duplex settings to a BMCR value
+  19:Core/ETH_Transceive/stub_eth_transceive.c ****  * @speed: a SPEED_* value
+  20:Core/ETH_Transceive/stub_eth_transceive.c ****  * @duplex: a DUPLEX_* value
+  21:Core/ETH_Transceive/stub_eth_transceive.c ****  *
+  22:Core/ETH_Transceive/stub_eth_transceive.c ****  * Encode the speed and duplex to a BMCR value. 2500, 1000, 100 and 10 Mbps are
+  23:Core/ETH_Transceive/stub_eth_transceive.c ****  * supported. 2500Mbps is encoded to 1000Mbps. Other speeds are encoded as 10
+  24:Core/ETH_Transceive/stub_eth_transceive.c ****  * Mbps. Unknown duplex values are encoded to half-duplex.
+  25:Core/ETH_Transceive/stub_eth_transceive.c ****  */
+  26:Core/ETH_Transceive/stub_eth_transceive.c **** static inline u16 mii_bmcr_encode_fixed(int speed, int duplex)
+  27:Core/ETH_Transceive/stub_eth_transceive.c **** {
+  28:Core/ETH_Transceive/stub_eth_transceive.c **** 	u16 bmcr;
+  29:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  30:Core/ETH_Transceive/stub_eth_transceive.c **** 	switch (speed) {
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 2
+
+
+  31:Core/ETH_Transceive/stub_eth_transceive.c **** 		case SPEED_2500:
+  32:Core/ETH_Transceive/stub_eth_transceive.c **** 		case SPEED_1000:
+  33:Core/ETH_Transceive/stub_eth_transceive.c **** 			bmcr = BMCR_SPEED1000;
+  34:Core/ETH_Transceive/stub_eth_transceive.c **** 			break;
+  35:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  36:Core/ETH_Transceive/stub_eth_transceive.c **** 		case SPEED_100:
+  37:Core/ETH_Transceive/stub_eth_transceive.c **** 			bmcr = BMCR_SPEED100;
+  38:Core/ETH_Transceive/stub_eth_transceive.c **** 			break;
+  39:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  40:Core/ETH_Transceive/stub_eth_transceive.c **** 		case SPEED_10:
+  41:Core/ETH_Transceive/stub_eth_transceive.c **** 		default:
+  42:Core/ETH_Transceive/stub_eth_transceive.c **** 			bmcr = BMCR_SPEED10;
+  43:Core/ETH_Transceive/stub_eth_transceive.c **** 			break;
+  44:Core/ETH_Transceive/stub_eth_transceive.c **** 	}
+  45:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  46:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (duplex == DUPLEX_FULL)
+  47:Core/ETH_Transceive/stub_eth_transceive.c **** 		bmcr |= BMCR_FULLDPLX;
+  48:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  49:Core/ETH_Transceive/stub_eth_transceive.c **** 	return bmcr;
+  50:Core/ETH_Transceive/stub_eth_transceive.c **** }
+  51:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  52:Core/ETH_Transceive/stub_eth_transceive.c **** /**
+  53:Core/ETH_Transceive/stub_eth_transceive.c ****  * genphy_setup_forced - configures/forces speed/duplex from @phydev
+  54:Core/ETH_Transceive/stub_eth_transceive.c ****  * @phydev: target phy_device struct
+  55:Core/ETH_Transceive/stub_eth_transceive.c ****  *
+  56:Core/ETH_Transceive/stub_eth_transceive.c ****  * Description: Configures MII_BMCR to force speed/duplex
+  57:Core/ETH_Transceive/stub_eth_transceive.c ****  *   to the values in phydev. Assumes that the values are valid.
+  58:Core/ETH_Transceive/stub_eth_transceive.c ****  *   Please see phy_sanitize_settings().
+  59:Core/ETH_Transceive/stub_eth_transceive.c ****  */
+  60:Core/ETH_Transceive/stub_eth_transceive.c **** int genphy_setup_forced(struct phy_device *phydev)
+  61:Core/ETH_Transceive/stub_eth_transceive.c **** {
+  62:Core/ETH_Transceive/stub_eth_transceive.c **** 	u16 ctl;
+  63:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  64:Core/ETH_Transceive/stub_eth_transceive.c **** 	phydev->pause = 0;
+  65:Core/ETH_Transceive/stub_eth_transceive.c **** 	phydev->asym_pause = 0;
+  66:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  67:Core/ETH_Transceive/stub_eth_transceive.c **** 	ctl = mii_bmcr_encode_fixed(phydev->speed, phydev->duplex);
+  68:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  69:Core/ETH_Transceive/stub_eth_transceive.c **** 	return phy_modify(phydev, MII_BMCR,
+  70:Core/ETH_Transceive/stub_eth_transceive.c **** 			  ~(BMCR_LOOPBACK | BMCR_ISOLATE | BMCR_PDOWN), ctl);
+  71:Core/ETH_Transceive/stub_eth_transceive.c **** }
+  72:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  73:Core/ETH_Transceive/stub_eth_transceive.c **** /**
+  74:Core/ETH_Transceive/stub_eth_transceive.c ****  * phy_poll_reset - Safely wait until a PHY reset has properly completed
+  75:Core/ETH_Transceive/stub_eth_transceive.c ****  * @phydev: The PHY device to poll
+  76:Core/ETH_Transceive/stub_eth_transceive.c ****  *
+  77:Core/ETH_Transceive/stub_eth_transceive.c ****  * Description: According to IEEE 802.3, Section 2, Subsection 22.2.4.1.1, as
+  78:Core/ETH_Transceive/stub_eth_transceive.c ****  *   published in 2008, a PHY reset may take up to 0.5 seconds.  The MII BMCR
+  79:Core/ETH_Transceive/stub_eth_transceive.c ****  *   register must be polled until the BMCR_RESET bit clears.
+  80:Core/ETH_Transceive/stub_eth_transceive.c ****  *
+  81:Core/ETH_Transceive/stub_eth_transceive.c ****  *   Furthermore, any attempts to write to PHY registers may have no effect
+  82:Core/ETH_Transceive/stub_eth_transceive.c ****  *   or even generate MDIO bus errors until this is complete.
+  83:Core/ETH_Transceive/stub_eth_transceive.c ****  *
+  84:Core/ETH_Transceive/stub_eth_transceive.c ****  *   Some PHYs (such as the Marvell 88E1111) don't entirely conform to the
+  85:Core/ETH_Transceive/stub_eth_transceive.c ****  *   standard and do not fully reset after the BMCR_RESET bit is set, and may
+  86:Core/ETH_Transceive/stub_eth_transceive.c ****  *   even *REQUIRE* a soft-reset to properly restart autonegotiation.  In an
+  87:Core/ETH_Transceive/stub_eth_transceive.c ****  *   effort to support such broken PHYs, this function is separate from the
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 3
+
+
+  88:Core/ETH_Transceive/stub_eth_transceive.c ****  *   standard phy_init_hw() which will zero all the other bits in the BMCR
+  89:Core/ETH_Transceive/stub_eth_transceive.c ****  *   and reapply all driver-specific and board-specific fixups.
+  90:Core/ETH_Transceive/stub_eth_transceive.c ****  */
+  91:Core/ETH_Transceive/stub_eth_transceive.c **** static int phy_poll_reset(struct phy_device *phydev)
+  92:Core/ETH_Transceive/stub_eth_transceive.c **** {
+  93:Core/ETH_Transceive/stub_eth_transceive.c **** 	/* Poll until the reset bit clears (50ms per retry == 0.6 sec) */
+  94:Core/ETH_Transceive/stub_eth_transceive.c **** 	int ret, val;
+  95:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  96:Core/ETH_Transceive/stub_eth_transceive.c **** 	ret = phy_read_poll_timeout(phydev, MII_BMCR, val, !(val & BMCR_RESET),
+  97:Core/ETH_Transceive/stub_eth_transceive.c **** 				    50000, 600000, true);
+  98:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (ret)
+  99:Core/ETH_Transceive/stub_eth_transceive.c **** 		return ret;
+ 100:Core/ETH_Transceive/stub_eth_transceive.c **** 	/* Some chips (smsc911x) may still need up to another 1ms after the
+ 101:Core/ETH_Transceive/stub_eth_transceive.c **** 	 * BMCR_RESET bit is cleared before they are usable.
+ 102:Core/ETH_Transceive/stub_eth_transceive.c **** 	 */
+ 103:Core/ETH_Transceive/stub_eth_transceive.c **** 	msleep(1);
+ 104:Core/ETH_Transceive/stub_eth_transceive.c **** 	return 0;
+ 105:Core/ETH_Transceive/stub_eth_transceive.c **** }
+ 106:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 107:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 108:Core/ETH_Transceive/stub_eth_transceive.c **** /**
+ 109:Core/ETH_Transceive/stub_eth_transceive.c ****  * genphy_soft_reset - software reset the PHY via BMCR_RESET bit
+ 110:Core/ETH_Transceive/stub_eth_transceive.c ****  * @phydev: target phy_device struct
+ 111:Core/ETH_Transceive/stub_eth_transceive.c ****  *
+ 112:Core/ETH_Transceive/stub_eth_transceive.c ****  * Description: Perform a software PHY reset using the standard
+ 113:Core/ETH_Transceive/stub_eth_transceive.c ****  * BMCR_RESET bit and poll for the reset bit to be cleared.
+ 114:Core/ETH_Transceive/stub_eth_transceive.c ****  *
+ 115:Core/ETH_Transceive/stub_eth_transceive.c ****  * Returns: 0 on success, < 0 on failure
+ 116:Core/ETH_Transceive/stub_eth_transceive.c ****  */
+ 117:Core/ETH_Transceive/stub_eth_transceive.c **** int genphy_soft_reset(struct phy_device *phydev)
+ 118:Core/ETH_Transceive/stub_eth_transceive.c **** {
+ 119:Core/ETH_Transceive/stub_eth_transceive.c **** 	u16 res = BMCR_RESET;
+ 120:Core/ETH_Transceive/stub_eth_transceive.c **** 	int ret;
+ 121:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 122:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (phydev->autoneg == AUTONEG_ENABLE)
+ 123:Core/ETH_Transceive/stub_eth_transceive.c **** 		res |= BMCR_ANRESTART;
+ 124:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 125:Core/ETH_Transceive/stub_eth_transceive.c **** 	ret = phy_modify(phydev, MII_BMCR, BMCR_ISOLATE, res);
+ 126:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (ret < 0)
+ 127:Core/ETH_Transceive/stub_eth_transceive.c **** 		return ret;
+ 128:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 129:Core/ETH_Transceive/stub_eth_transceive.c **** 	/* Clause 22 states that setting bit BMCR_RESET sets control registers
+ 130:Core/ETH_Transceive/stub_eth_transceive.c **** 	 * to their default value. Therefore the POWER DOWN bit is supposed to
+ 131:Core/ETH_Transceive/stub_eth_transceive.c **** 	 * be cleared after soft reset.
+ 132:Core/ETH_Transceive/stub_eth_transceive.c **** 	 */
+ 133:Core/ETH_Transceive/stub_eth_transceive.c **** 	phydev->suspended = 0;
+ 134:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 135:Core/ETH_Transceive/stub_eth_transceive.c **** 	ret = phy_poll_reset(phydev);
+ 136:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (ret)
+ 137:Core/ETH_Transceive/stub_eth_transceive.c **** 		return ret;
+ 138:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 139:Core/ETH_Transceive/stub_eth_transceive.c **** 	/* BMCR may be reset to defaults */
+ 140:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (phydev->autoneg == AUTONEG_DISABLE)
+ 141:Core/ETH_Transceive/stub_eth_transceive.c **** 		ret = genphy_setup_forced(phydev);
+ 142:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 143:Core/ETH_Transceive/stub_eth_transceive.c **** 	return ret;
+ 144:Core/ETH_Transceive/stub_eth_transceive.c **** }
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 4
+
+
+ 145:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 146:Core/ETH_Transceive/stub_eth_transceive.c **** /* Set the RGMII RX and TX clock skews individually, according to the PHY
+ 147:Core/ETH_Transceive/stub_eth_transceive.c ****  * interface type, to:
+ 148:Core/ETH_Transceive/stub_eth_transceive.c ****  *  * 0.2 ns (their default, and lowest, hardware value) if delays should
+ 149:Core/ETH_Transceive/stub_eth_transceive.c ****  *    not be enabled
+ 150:Core/ETH_Transceive/stub_eth_transceive.c ****  *  * 2.0 ns (which causes the data to be sampled at exactly half way between
+ 151:Core/ETH_Transceive/stub_eth_transceive.c ****  *    clock transitions at 1000 Mbps) if delays should be enabled
+ 152:Core/ETH_Transceive/stub_eth_transceive.c ****  */
+ 153:Core/ETH_Transceive/stub_eth_transceive.c **** static int vsc85xx_update_rgmii_cntl(struct phy_device *phydev, u32 rgmii_cntl,
+ 154:Core/ETH_Transceive/stub_eth_transceive.c **** 				     u16 rgmii_rx_delay_mask,
+ 155:Core/ETH_Transceive/stub_eth_transceive.c **** 				     u16 rgmii_tx_delay_mask)
+ 156:Core/ETH_Transceive/stub_eth_transceive.c **** {
+  29              		.loc 1 156 1 view -0
+  30              		.cfi_startproc
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		@ link register save eliminated.
+ 157:Core/ETH_Transceive/stub_eth_transceive.c **** 	u16 rgmii_rx_delay_pos = ffs(rgmii_rx_delay_mask) - 1;
+  34              		.loc 1 157 2 view .LVU1
+ 158:Core/ETH_Transceive/stub_eth_transceive.c **** 	u16 rgmii_tx_delay_pos = ffs(rgmii_tx_delay_mask) - 1;
+  35              		.loc 1 158 2 view .LVU2
+ 159:Core/ETH_Transceive/stub_eth_transceive.c **** 	int delay_size = ARRAY_SIZE(vsc85xx_internal_delay);
+  36              		.loc 1 159 2 view .LVU3
+ 160:Core/ETH_Transceive/stub_eth_transceive.c **** 	struct device *dev = &phydev->mdio.dev;
+  37              		.loc 1 160 2 view .LVU4
+ 161:Core/ETH_Transceive/stub_eth_transceive.c **** 	u16 reg_val = 0;
+  38              		.loc 1 161 2 view .LVU5
+ 162:Core/ETH_Transceive/stub_eth_transceive.c **** 	u16 mask = 0;
+  39              		.loc 1 162 2 view .LVU6
+ 163:Core/ETH_Transceive/stub_eth_transceive.c **** 	s32 rx_delay;
+  40              		.loc 1 163 2 view .LVU7
+ 164:Core/ETH_Transceive/stub_eth_transceive.c **** 	s32 tx_delay;
+  41              		.loc 1 164 2 view .LVU8
+ 165:Core/ETH_Transceive/stub_eth_transceive.c **** 	int rc = 0;
+  42              		.loc 1 165 2 view .LVU9
+ 166:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 167:Core/ETH_Transceive/stub_eth_transceive.c **** 	/* For traffic to pass, the VSC8502 family needs the RX_CLK disable bit
+ 168:Core/ETH_Transceive/stub_eth_transceive.c **** 	 * to be unset for all PHY modes, so do that as part of the paged
+ 169:Core/ETH_Transceive/stub_eth_transceive.c **** 	 * register modification.
+ 170:Core/ETH_Transceive/stub_eth_transceive.c **** 	 * For some family members (like VSC8530/31/40/41) this bit is reserved
+ 171:Core/ETH_Transceive/stub_eth_transceive.c **** 	 * and read-only, and the RX clock is enabled by default.
+ 172:Core/ETH_Transceive/stub_eth_transceive.c **** 	 */
+ 173:Core/ETH_Transceive/stub_eth_transceive.c **** 	/* commented as the RX clock is enabled by default for VSC8541*/
+ 174:Core/ETH_Transceive/stub_eth_transceive.c **** 	// if (rgmii_cntl == VSC8502_RGMII_CNTL)
+ 175:Core/ETH_Transceive/stub_eth_transceive.c **** 	// 	mask |= VSC8502_RGMII_RX_CLK_DISABLE;
+ 176:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 177:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (phy_interface_is_rgmii(phydev))
+  43              		.loc 1 177 2 view .LVU10
+  44              	.LBB34:
+  45              	.LBI34:
+  46              		.file 2 "Core/ETH_Transceive/inc/phy.h"
+   1:Core/ETH_Transceive/inc/phy.h **** #ifndef __PHY_H
+   2:Core/ETH_Transceive/inc/phy.h **** #define __PHY_H
+   3:Core/ETH_Transceive/inc/phy.h **** 
+   4:Core/ETH_Transceive/inc/phy.h **** #include "misc.h"
+   5:Core/ETH_Transceive/inc/phy.h **** #include "ethtool.h"
+   6:Core/ETH_Transceive/inc/phy.h **** 
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 5
+
+
+   7:Core/ETH_Transceive/inc/phy.h **** /**
+   8:Core/ETH_Transceive/inc/phy.h ****  * enum phy_state - PHY state machine states:
+   9:Core/ETH_Transceive/inc/phy.h ****  *
+  10:Core/ETH_Transceive/inc/phy.h ****  * @PHY_DOWN: PHY device and driver are not ready for anything.  probe
+  11:Core/ETH_Transceive/inc/phy.h ****  * should be called if and only if the PHY is in this state,
+  12:Core/ETH_Transceive/inc/phy.h ****  * given that the PHY device exists.
+  13:Core/ETH_Transceive/inc/phy.h ****  * - PHY driver probe function will set the state to @PHY_READY
+  14:Core/ETH_Transceive/inc/phy.h ****  *
+  15:Core/ETH_Transceive/inc/phy.h ****  * @PHY_READY: PHY is ready to send and receive packets, but the
+  16:Core/ETH_Transceive/inc/phy.h ****  * controller is not.  By default, PHYs which do not implement
+  17:Core/ETH_Transceive/inc/phy.h ****  * probe will be set to this state by phy_probe().
+  18:Core/ETH_Transceive/inc/phy.h ****  * - start will set the state to UP
+  19:Core/ETH_Transceive/inc/phy.h ****  *
+  20:Core/ETH_Transceive/inc/phy.h ****  * @PHY_UP: The PHY and attached device are ready to do work.
+  21:Core/ETH_Transceive/inc/phy.h ****  * Interrupts should be started here.
+  22:Core/ETH_Transceive/inc/phy.h ****  * - timer moves to @PHY_NOLINK or @PHY_RUNNING
+  23:Core/ETH_Transceive/inc/phy.h ****  *
+  24:Core/ETH_Transceive/inc/phy.h ****  * @PHY_NOLINK: PHY is up, but not currently plugged in.
+  25:Core/ETH_Transceive/inc/phy.h ****  * - irq or timer will set @PHY_RUNNING if link comes back
+  26:Core/ETH_Transceive/inc/phy.h ****  * - phy_stop moves to @PHY_HALTED
+  27:Core/ETH_Transceive/inc/phy.h ****  *
+  28:Core/ETH_Transceive/inc/phy.h ****  * @PHY_RUNNING: PHY is currently up, running, and possibly sending
+  29:Core/ETH_Transceive/inc/phy.h ****  * and/or receiving packets
+  30:Core/ETH_Transceive/inc/phy.h ****  * - irq or timer will set @PHY_NOLINK if link goes down
+  31:Core/ETH_Transceive/inc/phy.h ****  * - phy_stop moves to @PHY_HALTED
+  32:Core/ETH_Transceive/inc/phy.h ****  *
+  33:Core/ETH_Transceive/inc/phy.h ****  * @PHY_CABLETEST: PHY is performing a cable test. Packet reception/sending
+  34:Core/ETH_Transceive/inc/phy.h ****  * is not expected to work, carrier will be indicated as down. PHY will be
+  35:Core/ETH_Transceive/inc/phy.h ****  * poll once per second, or on interrupt for it current state.
+  36:Core/ETH_Transceive/inc/phy.h ****  * Once complete, move to UP to restart the PHY.
+  37:Core/ETH_Transceive/inc/phy.h ****  * - phy_stop aborts the running test and moves to @PHY_HALTED
+  38:Core/ETH_Transceive/inc/phy.h ****  *
+  39:Core/ETH_Transceive/inc/phy.h ****  * @PHY_HALTED: PHY is up, but no polling or interrupts are done.
+  40:Core/ETH_Transceive/inc/phy.h ****  * - phy_start moves to @PHY_UP
+  41:Core/ETH_Transceive/inc/phy.h ****  *
+  42:Core/ETH_Transceive/inc/phy.h ****  * @PHY_ERROR: PHY is up, but is in an error state.
+  43:Core/ETH_Transceive/inc/phy.h ****  * - phy_stop moves to @PHY_HALTED
+  44:Core/ETH_Transceive/inc/phy.h ****  */
+  45:Core/ETH_Transceive/inc/phy.h **** enum phy_state {
+  46:Core/ETH_Transceive/inc/phy.h **** 	PHY_DOWN = 0,
+  47:Core/ETH_Transceive/inc/phy.h **** 	PHY_READY,
+  48:Core/ETH_Transceive/inc/phy.h **** 	PHY_HALTED,
+  49:Core/ETH_Transceive/inc/phy.h **** 	PHY_ERROR,
+  50:Core/ETH_Transceive/inc/phy.h **** 	PHY_UP,
+  51:Core/ETH_Transceive/inc/phy.h **** 	PHY_RUNNING,
+  52:Core/ETH_Transceive/inc/phy.h **** 	PHY_NOLINK,
+  53:Core/ETH_Transceive/inc/phy.h **** 	PHY_CABLETEST,
+  54:Core/ETH_Transceive/inc/phy.h **** };
+  55:Core/ETH_Transceive/inc/phy.h **** 
+  56:Core/ETH_Transceive/inc/phy.h **** /**
+  57:Core/ETH_Transceive/inc/phy.h ****  * enum phy_interface_t - Interface Mode definitions
+  58:Core/ETH_Transceive/inc/phy.h ****  *
+  59:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_NA: Not Applicable - don't touch
+  60:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_INTERNAL: No interface, MAC and PHY combined
+  61:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_MII: Media-independent interface
+  62:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_GMII: Gigabit media-independent interface
+  63:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_SGMII: Serial gigabit media-independent interface
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 6
+
+
+  64:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_TBI: Ten Bit Interface
+  65:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_REVMII: Reverse Media Independent Interface
+  66:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_RMII: Reduced Media Independent Interface
+  67:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_REVRMII: Reduced Media Independent Interface in PHY role
+  68:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_RGMII: Reduced gigabit media-independent interface
+  69:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_RGMII_ID: RGMII with Internal RX+TX delay
+  70:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_RGMII_RXID: RGMII with Internal RX delay
+  71:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_RGMII_TXID: RGMII with Internal RX delay
+  72:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_RTBI: Reduced TBI
+  73:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_SMII: Serial MII
+  74:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_XGMII: 10 gigabit media-independent interface
+  75:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_XLGMII:40 gigabit media-independent interface
+  76:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_MOCA: Multimedia over Coax
+  77:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_PSGMII: Penta SGMII
+  78:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_QSGMII: Quad SGMII
+  79:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_TRGMII: Turbo RGMII
+  80:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_100BASEX: 100 BaseX
+  81:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_1000BASEX: 1000 BaseX
+  82:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_2500BASEX: 2500 BaseX
+  83:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_5GBASER: 5G BaseR
+  84:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_RXAUI: Reduced XAUI
+  85:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_XAUI: 10 Gigabit Attachment Unit Interface
+  86:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_10GBASER: 10G BaseR
+  87:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_25GBASER: 25G BaseR
+  88:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_USXGMII:  Universal Serial 10GE MII
+  89:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_10GKR: 10GBASE-KR - with Clause 73 AN
+  90:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_QUSGMII: Quad Universal SGMII
+  91:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_1000BASEKX: 1000Base-KX - with Clause 73 AN
+  92:Core/ETH_Transceive/inc/phy.h ****  * @PHY_INTERFACE_MODE_MAX: Book keeping
+  93:Core/ETH_Transceive/inc/phy.h ****  *
+  94:Core/ETH_Transceive/inc/phy.h ****  * Describes the interface between the MAC and PHY.
+  95:Core/ETH_Transceive/inc/phy.h ****  */
+  96:Core/ETH_Transceive/inc/phy.h **** typedef enum {
+  97:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_NA,
+  98:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_INTERNAL,
+  99:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_MII,
+ 100:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_GMII,
+ 101:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_SGMII,
+ 102:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_TBI,
+ 103:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_REVMII,
+ 104:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_RMII,
+ 105:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_REVRMII,
+ 106:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_RGMII,
+ 107:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_RGMII_ID,
+ 108:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_RGMII_RXID,
+ 109:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_RGMII_TXID,
+ 110:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_RTBI,
+ 111:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_SMII,
+ 112:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_XGMII,
+ 113:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_XLGMII,
+ 114:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_MOCA,
+ 115:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_PSGMII,
+ 116:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_QSGMII,
+ 117:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_TRGMII,
+ 118:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_100BASEX,
+ 119:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_1000BASEX,
+ 120:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_2500BASEX,
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 7
+
+
+ 121:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_5GBASER,
+ 122:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_RXAUI,
+ 123:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_XAUI,
+ 124:Core/ETH_Transceive/inc/phy.h **** 	/* 10GBASE-R, XFI, SFI - single lane 10G Serdes */
+ 125:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_10GBASER,
+ 126:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_25GBASER,
+ 127:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_USXGMII,
+ 128:Core/ETH_Transceive/inc/phy.h **** 	/* 10GBASE-KR - with Clause 73 AN */
+ 129:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_10GKR,
+ 130:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_QUSGMII,
+ 131:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_1000BASEKX,
+ 132:Core/ETH_Transceive/inc/phy.h **** 	PHY_INTERFACE_MODE_MAX,
+ 133:Core/ETH_Transceive/inc/phy.h **** } phy_interface_t;
+ 134:Core/ETH_Transceive/inc/phy.h **** 
+ 135:Core/ETH_Transceive/inc/phy.h **** #define BITS_TO_LONGS(nr) (((nr) + (8 * sizeof(long) - 1)) / (8 * sizeof(long)))
+ 136:Core/ETH_Transceive/inc/phy.h **** #define DECLARE_BITMAP(name,bits) \
+ 137:Core/ETH_Transceive/inc/phy.h **** 	unsigned long name[BITS_TO_LONGS(bits)]
+ 138:Core/ETH_Transceive/inc/phy.h **** 
+ 139:Core/ETH_Transceive/inc/phy.h **** /* PHY interface mode bitmap handling */
+ 140:Core/ETH_Transceive/inc/phy.h **** #define DECLARE_PHY_INTERFACE_MASK(name) \
+ 141:Core/ETH_Transceive/inc/phy.h **** 	DECLARE_BITMAP(name, PHY_INTERFACE_MODE_MAX)
+ 142:Core/ETH_Transceive/inc/phy.h **** 
+ 143:Core/ETH_Transceive/inc/phy.h **** struct phy_driver {
+ 144:Core/ETH_Transceive/inc/phy.h **** 	u32 phy_id;
+ 145:Core/ETH_Transceive/inc/phy.h **** 	u32 phy_id_mask;
+ 146:Core/ETH_Transceive/inc/phy.h **** };
+ 147:Core/ETH_Transceive/inc/phy.h **** 
+ 148:Core/ETH_Transceive/inc/phy.h **** 
+ 149:Core/ETH_Transceive/inc/phy.h **** struct phy_device {
+ 150:Core/ETH_Transceive/inc/phy.h **** 	struct mdio_device mdio;
+ 151:Core/ETH_Transceive/inc/phy.h **** 
+ 152:Core/ETH_Transceive/inc/phy.h **** 	/* Information about the PHY type */
+ 153:Core/ETH_Transceive/inc/phy.h **** 	/* And management functions */
+ 154:Core/ETH_Transceive/inc/phy.h **** 	struct phy_driver *drv;
+ 155:Core/ETH_Transceive/inc/phy.h **** 
+ 156:Core/ETH_Transceive/inc/phy.h **** 	struct device_link *devlink;
+ 157:Core/ETH_Transceive/inc/phy.h **** 
+ 158:Core/ETH_Transceive/inc/phy.h **** 	u32 phy_id;
+ 159:Core/ETH_Transceive/inc/phy.h **** 
+ 160:Core/ETH_Transceive/inc/phy.h **** 	// struct phy_c45_device_ids c45_ids;
+ 161:Core/ETH_Transceive/inc/phy.h **** 	unsigned is_c45:1;
+ 162:Core/ETH_Transceive/inc/phy.h **** 	unsigned is_internal:1;
+ 163:Core/ETH_Transceive/inc/phy.h **** 	unsigned is_pseudo_fixed_link:1;
+ 164:Core/ETH_Transceive/inc/phy.h **** 	unsigned is_gigabit_capable:1;
+ 165:Core/ETH_Transceive/inc/phy.h **** 	unsigned has_fixups:1;
+ 166:Core/ETH_Transceive/inc/phy.h **** 	unsigned suspended:1;
+ 167:Core/ETH_Transceive/inc/phy.h **** 	unsigned suspended_by_mdio_bus:1;
+ 168:Core/ETH_Transceive/inc/phy.h **** 	unsigned sysfs_links:1;
+ 169:Core/ETH_Transceive/inc/phy.h **** 	unsigned loopback_enabled:1;
+ 170:Core/ETH_Transceive/inc/phy.h **** 	unsigned downshifted_rate:1;
+ 171:Core/ETH_Transceive/inc/phy.h **** 	unsigned is_on_sfp_module:1;
+ 172:Core/ETH_Transceive/inc/phy.h **** 	unsigned mac_managed_pm:1;
+ 173:Core/ETH_Transceive/inc/phy.h **** 	unsigned wol_enabled:1;
+ 174:Core/ETH_Transceive/inc/phy.h **** 
+ 175:Core/ETH_Transceive/inc/phy.h **** 	unsigned autoneg:1;
+ 176:Core/ETH_Transceive/inc/phy.h **** 	/* The most recently read link state */
+ 177:Core/ETH_Transceive/inc/phy.h **** 	unsigned link:1;
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 8
+
+
+ 178:Core/ETH_Transceive/inc/phy.h **** 	unsigned autoneg_complete:1;
+ 179:Core/ETH_Transceive/inc/phy.h **** 
+ 180:Core/ETH_Transceive/inc/phy.h **** 	/* Interrupts are enabled */
+ 181:Core/ETH_Transceive/inc/phy.h **** 	unsigned interrupts:1;
+ 182:Core/ETH_Transceive/inc/phy.h **** 	unsigned irq_suspended:1;
+ 183:Core/ETH_Transceive/inc/phy.h **** 	unsigned irq_rerun:1;
+ 184:Core/ETH_Transceive/inc/phy.h **** 
+ 185:Core/ETH_Transceive/inc/phy.h **** 	int rate_matching;
+ 186:Core/ETH_Transceive/inc/phy.h **** 
+ 187:Core/ETH_Transceive/inc/phy.h **** 	enum phy_state state;
+ 188:Core/ETH_Transceive/inc/phy.h **** 
+ 189:Core/ETH_Transceive/inc/phy.h **** 	u32 dev_flags;
+ 190:Core/ETH_Transceive/inc/phy.h **** 
+ 191:Core/ETH_Transceive/inc/phy.h **** 	phy_interface_t interface;
+ 192:Core/ETH_Transceive/inc/phy.h **** 
+ 193:Core/ETH_Transceive/inc/phy.h **** 	/*
+ 194:Core/ETH_Transceive/inc/phy.h **** 	 * forced speed & duplex (no autoneg)
+ 195:Core/ETH_Transceive/inc/phy.h **** 	 * partner speed & duplex & pause (autoneg)
+ 196:Core/ETH_Transceive/inc/phy.h **** 	 */
+ 197:Core/ETH_Transceive/inc/phy.h **** 	int speed;
+ 198:Core/ETH_Transceive/inc/phy.h **** 	int duplex;
+ 199:Core/ETH_Transceive/inc/phy.h **** 	int port;
+ 200:Core/ETH_Transceive/inc/phy.h **** 	int pause;
+ 201:Core/ETH_Transceive/inc/phy.h **** 	int asym_pause;
+ 202:Core/ETH_Transceive/inc/phy.h **** 	u8 master_slave_get;
+ 203:Core/ETH_Transceive/inc/phy.h **** 	u8 master_slave_set;
+ 204:Core/ETH_Transceive/inc/phy.h **** 	u8 master_slave_state;
+ 205:Core/ETH_Transceive/inc/phy.h **** 
+ 206:Core/ETH_Transceive/inc/phy.h **** 	/* Union of PHY and Attached devices' supported link modes */
+ 207:Core/ETH_Transceive/inc/phy.h **** 	/* See ethtool.h for more info */
+ 208:Core/ETH_Transceive/inc/phy.h **** 	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported);
+ 209:Core/ETH_Transceive/inc/phy.h **** 	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertising);
+ 210:Core/ETH_Transceive/inc/phy.h **** 	__ETHTOOL_DECLARE_LINK_MODE_MASK(lp_advertising);
+ 211:Core/ETH_Transceive/inc/phy.h **** 	/* used with phy_speed_down */
+ 212:Core/ETH_Transceive/inc/phy.h **** 	__ETHTOOL_DECLARE_LINK_MODE_MASK(adv_old);
+ 213:Core/ETH_Transceive/inc/phy.h **** 	/* used for eee validation */
+ 214:Core/ETH_Transceive/inc/phy.h **** 	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported_eee);
+ 215:Core/ETH_Transceive/inc/phy.h **** 	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertising_eee);
+ 216:Core/ETH_Transceive/inc/phy.h **** 	bool eee_enabled;
+ 217:Core/ETH_Transceive/inc/phy.h **** 
+ 218:Core/ETH_Transceive/inc/phy.h **** 	/* Host supported PHY interface types. Should be ignored if empty. */
+ 219:Core/ETH_Transceive/inc/phy.h **** 	DECLARE_PHY_INTERFACE_MASK(host_interfaces);
+ 220:Core/ETH_Transceive/inc/phy.h **** 
+ 221:Core/ETH_Transceive/inc/phy.h **** 	/* Energy efficient ethernet modes which should be prohibited */
+ 222:Core/ETH_Transceive/inc/phy.h **** 	u32 eee_broken_modes;
+ 223:Core/ETH_Transceive/inc/phy.h **** 
+ 224:Core/ETH_Transceive/inc/phy.h **** #ifdef CONFIG_LED_TRIGGER_PHY
+ 225:Core/ETH_Transceive/inc/phy.h **** 	struct phy_led_trigger *phy_led_triggers;
+ 226:Core/ETH_Transceive/inc/phy.h **** 	unsigned int phy_num_led_triggers;
+ 227:Core/ETH_Transceive/inc/phy.h **** 	struct phy_led_trigger *last_triggered;
+ 228:Core/ETH_Transceive/inc/phy.h **** 
+ 229:Core/ETH_Transceive/inc/phy.h **** 	struct phy_led_trigger *led_link_trigger;
+ 230:Core/ETH_Transceive/inc/phy.h **** #endif
+ 231:Core/ETH_Transceive/inc/phy.h **** 	/*
+ 232:Core/ETH_Transceive/inc/phy.h **** 	 * Interrupt number for this PHY
+ 233:Core/ETH_Transceive/inc/phy.h **** 	 * -1 means no interrupt
+ 234:Core/ETH_Transceive/inc/phy.h **** 	 */
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 9
+
+
+ 235:Core/ETH_Transceive/inc/phy.h **** 	int irq;
+ 236:Core/ETH_Transceive/inc/phy.h **** 
+ 237:Core/ETH_Transceive/inc/phy.h **** 	/* private data pointer */
+ 238:Core/ETH_Transceive/inc/phy.h **** 	/* For use by PHYs to maintain extra state */
+ 239:Core/ETH_Transceive/inc/phy.h **** 	void *priv;
+ 240:Core/ETH_Transceive/inc/phy.h **** 
+ 241:Core/ETH_Transceive/inc/phy.h **** 	/* shared data pointer */
+ 242:Core/ETH_Transceive/inc/phy.h **** 	/* For use by PHYs inside the same package that need a shared state. */
+ 243:Core/ETH_Transceive/inc/phy.h **** 	struct phy_package_shared *shared;
+ 244:Core/ETH_Transceive/inc/phy.h **** 
+ 245:Core/ETH_Transceive/inc/phy.h **** 	/* Reporting cable test results */
+ 246:Core/ETH_Transceive/inc/phy.h **** 	struct sk_buff *skb;
+ 247:Core/ETH_Transceive/inc/phy.h **** 	void *ehdr;
+ 248:Core/ETH_Transceive/inc/phy.h **** 	struct nlattr *nest;
+ 249:Core/ETH_Transceive/inc/phy.h **** 
+ 250:Core/ETH_Transceive/inc/phy.h **** 	u8 lock;
+ 251:Core/ETH_Transceive/inc/phy.h **** 
+ 252:Core/ETH_Transceive/inc/phy.h **** 	/* This may be modified under the rtnl lock */
+ 253:Core/ETH_Transceive/inc/phy.h **** 	bool sfp_bus_attached;
+ 254:Core/ETH_Transceive/inc/phy.h **** 	struct sfp_bus *sfp_bus;
+ 255:Core/ETH_Transceive/inc/phy.h **** 	struct phylink *phylink;
+ 256:Core/ETH_Transceive/inc/phy.h **** 	struct net_device *attached_dev;
+ 257:Core/ETH_Transceive/inc/phy.h **** 	struct mii_timestamper *mii_ts;
+ 258:Core/ETH_Transceive/inc/phy.h **** 	struct pse_control *psec;
+ 259:Core/ETH_Transceive/inc/phy.h **** 
+ 260:Core/ETH_Transceive/inc/phy.h **** 	u8 mdix;
+ 261:Core/ETH_Transceive/inc/phy.h **** 	u8 mdix_ctrl;
+ 262:Core/ETH_Transceive/inc/phy.h **** 
+ 263:Core/ETH_Transceive/inc/phy.h **** 	int pma_extable;
+ 264:Core/ETH_Transceive/inc/phy.h **** 
+ 265:Core/ETH_Transceive/inc/phy.h **** 	unsigned int link_down_events;
+ 266:Core/ETH_Transceive/inc/phy.h **** 
+ 267:Core/ETH_Transceive/inc/phy.h **** 	void (*phy_link_change)(struct phy_device *phydev, bool up);
+ 268:Core/ETH_Transceive/inc/phy.h **** 	void (*adjust_link)(struct net_device *dev);
+ 269:Core/ETH_Transceive/inc/phy.h **** 
+ 270:Core/ETH_Transceive/inc/phy.h **** #if IS_ENABLED(CONFIG_MACSEC)
+ 271:Core/ETH_Transceive/inc/phy.h **** 	/* MACsec management functions */
+ 272:Core/ETH_Transceive/inc/phy.h **** 	const struct macsec_ops *macsec_ops;
+ 273:Core/ETH_Transceive/inc/phy.h **** #endif
+ 274:Core/ETH_Transceive/inc/phy.h **** };
+ 275:Core/ETH_Transceive/inc/phy.h **** 
+ 276:Core/ETH_Transceive/inc/phy.h **** /**
+ 277:Core/ETH_Transceive/inc/phy.h ****  * phy_interface_mode_is_rgmii - Convenience function for testing if a
+ 278:Core/ETH_Transceive/inc/phy.h ****  * PHY interface mode is RGMII (all variants)
+ 279:Core/ETH_Transceive/inc/phy.h ****  * @mode: the &phy_interface_t enum
+ 280:Core/ETH_Transceive/inc/phy.h ****  */
+ 281:Core/ETH_Transceive/inc/phy.h **** static inline bool phy_interface_mode_is_rgmii(phy_interface_t mode)
+ 282:Core/ETH_Transceive/inc/phy.h **** {
+ 283:Core/ETH_Transceive/inc/phy.h **** 	return mode >= PHY_INTERFACE_MODE_RGMII &&
+ 284:Core/ETH_Transceive/inc/phy.h **** 		mode <= PHY_INTERFACE_MODE_RGMII_TXID;
+ 285:Core/ETH_Transceive/inc/phy.h **** };
+ 286:Core/ETH_Transceive/inc/phy.h **** 
+ 287:Core/ETH_Transceive/inc/phy.h **** /**
+ 288:Core/ETH_Transceive/inc/phy.h ****  * phy_interface_is_rgmii - Convenience function for testing if a PHY interface
+ 289:Core/ETH_Transceive/inc/phy.h ****  * is RGMII (all variants)
+ 290:Core/ETH_Transceive/inc/phy.h ****  * @phydev: the phy_device struct
+ 291:Core/ETH_Transceive/inc/phy.h ****  */
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 10
+
+
+ 292:Core/ETH_Transceive/inc/phy.h **** static inline bool phy_interface_is_rgmii(struct phy_device *phydev)
+  47              		.loc 2 292 20 view .LVU11
+  48              	.LBB35:
+ 293:Core/ETH_Transceive/inc/phy.h **** {
+ 294:Core/ETH_Transceive/inc/phy.h **** 	return phy_interface_mode_is_rgmii(phydev->interface);
+  49              		.loc 2 294 2 view .LVU12
+  50              		.loc 2 294 9 is_stmt 0 view .LVU13
+  51 0000 90F82410 		ldrb	r1, [r0, #36]	@ zero_extendqisi2
+  52              	.LVL1:
+  53              	.LBB36:
+  54              	.LBI36:
+ 281:Core/ETH_Transceive/inc/phy.h **** {
+  55              		.loc 2 281 20 is_stmt 1 view .LVU14
+  56              	.LBB37:
+ 283:Core/ETH_Transceive/inc/phy.h **** 		mode <= PHY_INTERFACE_MODE_RGMII_TXID;
+  57              		.loc 2 283 2 view .LVU15
+ 283:Core/ETH_Transceive/inc/phy.h **** 		mode <= PHY_INTERFACE_MODE_RGMII_TXID;
+  58              		.loc 2 283 42 is_stmt 0 view .LVU16
+  59 0004 0939     		subs	r1, r1, #9
+  60              	.LVL2:
+ 283:Core/ETH_Transceive/inc/phy.h **** 		mode <= PHY_INTERFACE_MODE_RGMII_TXID;
+  61              		.loc 2 283 42 view .LVU17
+  62 0006 C9B2     		uxtb	r1, r1
+  63              	.LVL3:
+ 283:Core/ETH_Transceive/inc/phy.h **** 		mode <= PHY_INTERFACE_MODE_RGMII_TXID;
+  64              		.loc 2 283 42 view .LVU18
+  65              	.LBE37:
+  66              	.LBE36:
+  67              	.LBE35:
+  68              	.LBE34:
+  69              		.loc 1 177 5 view .LVU19
+  70 0008 0329     		cmp	r1, #3
+  71 000a 03D8     		bhi	.L4
+ 178:Core/ETH_Transceive/stub_eth_transceive.c **** 		mask |= rgmii_rx_delay_mask | rgmii_tx_delay_mask;
+  72              		.loc 1 178 3 is_stmt 1 view .LVU20
+  73              		.loc 1 178 8 is_stmt 0 view .LVU21
+  74 000c 1A43     		orrs	r2, r2, r3
+  75              	.LVL4:
+  76              	.L2:
+ 179:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 180:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID ||
+  77              		.loc 1 180 2 is_stmt 1 view .LVU22
+ 181:Core/ETH_Transceive/stub_eth_transceive.c **** 		phydev->interface == PHY_INTERFACE_MODE_RGMII_ID)
+ 182:Core/ETH_Transceive/stub_eth_transceive.c **** 		rx_delay = RGMII_CLK_DELAY_2_0_NS;
+ 183:Core/ETH_Transceive/stub_eth_transceive.c **** 	else
+ 184:Core/ETH_Transceive/stub_eth_transceive.c **** 		rx_delay = RGMII_CLK_DELAY_0_2_NS;
+ 185:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 186:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 187:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID ||
+  78              		.loc 1 187 2 view .LVU23
+ 188:Core/ETH_Transceive/stub_eth_transceive.c **** 		phydev->interface == PHY_INTERFACE_MODE_RGMII_ID)
+ 189:Core/ETH_Transceive/stub_eth_transceive.c **** 		tx_delay = RGMII_CLK_DELAY_2_0_NS;
+ 190:Core/ETH_Transceive/stub_eth_transceive.c **** 	else
+ 191:Core/ETH_Transceive/stub_eth_transceive.c **** 		tx_delay = RGMII_CLK_DELAY_0_2_NS;
+ 192:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 193:Core/ETH_Transceive/stub_eth_transceive.c **** 	reg_val |= rx_delay << rgmii_rx_delay_pos;
+  79              		.loc 1 193 2 view .LVU24
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 11
+
+
+ 194:Core/ETH_Transceive/stub_eth_transceive.c **** 	reg_val |= tx_delay << rgmii_tx_delay_pos;
+  80              		.loc 1 194 2 view .LVU25
+ 195:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 196:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 197:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (mask)
+  81              		.loc 1 197 2 view .LVU26
+  82              		.loc 1 197 5 is_stmt 0 view .LVU27
+  83 000e 1AB9     		cbnz	r2, .L5
+ 165:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  84              		.loc 1 165 6 view .LVU28
+  85 0010 0020     		movs	r0, #0
+  86              	.LVL5:
+ 165:Core/ETH_Transceive/stub_eth_transceive.c **** 
+  87              		.loc 1 165 6 view .LVU29
+  88 0012 7047     		bx	lr
+  89              	.LVL6:
+  90              	.L4:
+ 162:Core/ETH_Transceive/stub_eth_transceive.c **** 	s32 rx_delay;
+  91              		.loc 1 162 6 view .LVU30
+  92 0014 0022     		movs	r2, #0
+  93              	.LVL7:
+ 162:Core/ETH_Transceive/stub_eth_transceive.c **** 	s32 rx_delay;
+  94              		.loc 1 162 6 view .LVU31
+  95 0016 FAE7     		b	.L2
+  96              	.LVL8:
+  97              	.L5:
+ 198:Core/ETH_Transceive/stub_eth_transceive.c **** 		rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_EXTENDED_2,
+  98              		.loc 1 198 8 view .LVU32
+  99 0018 6FF01500 		mvn	r0, #21
+ 100              	.LVL9:
+ 199:Core/ETH_Transceive/stub_eth_transceive.c **** 				      rgmii_cntl, mask, reg_val);
+ 200:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 201:Core/ETH_Transceive/stub_eth_transceive.c **** 	return rc;
+ 101              		.loc 1 201 2 is_stmt 1 view .LVU33
+ 202:Core/ETH_Transceive/stub_eth_transceive.c **** }
+ 102              		.loc 1 202 1 is_stmt 0 view .LVU34
+ 103 001c 7047     		bx	lr
+ 104              		.cfi_endproc
+ 105              	.LFE33:
+ 107              		.section	.text.vsc85xx_default_config,"ax",%progbits
+ 108              		.align	1
+ 109              		.syntax unified
+ 110              		.thumb
+ 111              		.thumb_func
+ 112              		.fpu fpv4-sp-d16
+ 114              	vsc85xx_default_config:
+ 115              	.LVL10:
+ 116              	.LFB34:
+ 203:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 204:Core/ETH_Transceive/stub_eth_transceive.c **** static int vsc85xx_default_config(struct phy_device *phydev)
+ 205:Core/ETH_Transceive/stub_eth_transceive.c **** {
+ 117              		.loc 1 205 1 is_stmt 1 view -0
+ 118              		.cfi_startproc
+ 119              		@ args = 0, pretend = 0, frame = 0
+ 120              		@ frame_needed = 0, uses_anonymous_args = 0
+ 121              		.loc 1 205 1 is_stmt 0 view .LVU36
+ 122 0000 08B5     		push	{r3, lr}
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 12
+
+
+ 123              	.LCFI0:
+ 124              		.cfi_def_cfa_offset 8
+ 125              		.cfi_offset 3, -8
+ 126              		.cfi_offset 14, -4
+ 206:Core/ETH_Transceive/stub_eth_transceive.c **** 	phydev->mdix_ctrl = ETH_TP_MDI_AUTO;
+ 127              		.loc 1 206 2 is_stmt 1 view .LVU37
+ 128              		.loc 1 206 20 is_stmt 0 view .LVU38
+ 129 0002 0323     		movs	r3, #3
+ 130 0004 80F8E130 		strb	r3, [r0, #225]
+ 207:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 208:Core/ETH_Transceive/stub_eth_transceive.c **** 	return vsc85xx_update_rgmii_cntl(phydev, VSC8502_RGMII_CNTL,
+ 131              		.loc 1 208 2 is_stmt 1 view .LVU39
+ 132              		.loc 1 208 9 is_stmt 0 view .LVU40
+ 133 0008 0723     		movs	r3, #7
+ 134 000a 7022     		movs	r2, #112
+ 135 000c 1421     		movs	r1, #20
+ 136 000e FFF7FEFF 		bl	vsc85xx_update_rgmii_cntl
+ 137              	.LVL11:
+ 209:Core/ETH_Transceive/stub_eth_transceive.c **** 					 VSC8502_RGMII_RX_DELAY_MASK,
+ 210:Core/ETH_Transceive/stub_eth_transceive.c **** 					 VSC8502_RGMII_TX_DELAY_MASK);
+ 211:Core/ETH_Transceive/stub_eth_transceive.c **** }
+ 138              		.loc 1 211 1 view .LVU41
+ 139 0012 08BD     		pop	{r3, pc}
+ 140              		.cfi_endproc
+ 141              	.LFE34:
+ 143              		.section	.text.vsc85xx_mac_if_set,"ax",%progbits
+ 144              		.align	1
+ 145              		.syntax unified
+ 146              		.thumb
+ 147              		.thumb_func
+ 148              		.fpu fpv4-sp-d16
+ 150              	vsc85xx_mac_if_set:
+ 151              	.LVL12:
+ 152              	.LFB36:
+ 212:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 213:Core/ETH_Transceive/stub_eth_transceive.c **** static int vsc85xx_eee_init_seq_set(struct phy_device *phydev)
+ 214:Core/ETH_Transceive/stub_eth_transceive.c **** {
+ 215:Core/ETH_Transceive/stub_eth_transceive.c **** 	static const struct reg_val init_eee[] = {
+ 216:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0f82, 0x0012b00a},
+ 217:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x1686, 0x00000004},
+ 218:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x168c, 0x00d2c46f},
+ 219:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x17a2, 0x00000620},
+ 220:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x16a0, 0x00eeffdd},
+ 221:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x16a6, 0x00071448},
+ 222:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x16a4, 0x0013132f},
+ 223:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x16a8, 0x00000000},
+ 224:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0ffc, 0x00c0a028},
+ 225:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0fe8, 0x0091b06c},
+ 226:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0fea, 0x00041600},
+ 227:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0f80, 0x00000af4},
+ 228:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0fec, 0x00901809},
+ 229:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0fee, 0x0000a6a1},
+ 230:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0ffe, 0x00b01007},
+ 231:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x16b0, 0x00eeff00},
+ 232:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x16b2, 0x00007000},
+ 233:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x16b4, 0x00000814},
+ 234:Core/ETH_Transceive/stub_eth_transceive.c **** 	};
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 13
+
+
+ 235:Core/ETH_Transceive/stub_eth_transceive.c **** 	unsigned int i;
+ 236:Core/ETH_Transceive/stub_eth_transceive.c **** 	int oldpage;
+ 237:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 238:Core/ETH_Transceive/stub_eth_transceive.c **** 	oldpage = phy_select_page(phydev, MSCC_PHY_PAGE_TR);
+ 239:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (oldpage < 0)
+ 240:Core/ETH_Transceive/stub_eth_transceive.c **** 		{
+ 241:Core/ETH_Transceive/stub_eth_transceive.c **** 			oldpage = phy_restore_page(phydev, oldpage, oldpage);
+ 242:Core/ETH_Transceive/stub_eth_transceive.c **** 			return oldpage;
+ 243:Core/ETH_Transceive/stub_eth_transceive.c **** 		}
+ 244:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 245:Core/ETH_Transceive/stub_eth_transceive.c **** 	for (i = 0; i < ARRAY_SIZE(init_eee); i++)
+ 246:Core/ETH_Transceive/stub_eth_transceive.c **** 		vsc85xx_tr_write(phydev, init_eee[i].reg, init_eee[i].val);
+ 247:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 248:Core/ETH_Transceive/stub_eth_transceive.c **** 	oldpage = phy_restore_page(phydev, oldpage, oldpage);
+ 249:Core/ETH_Transceive/stub_eth_transceive.c **** 	return oldpage;
+ 250:Core/ETH_Transceive/stub_eth_transceive.c **** }
+ 251:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 252:Core/ETH_Transceive/stub_eth_transceive.c **** static int vsc85xx_mac_if_set(struct phy_device *phydev,
+ 253:Core/ETH_Transceive/stub_eth_transceive.c **** 			      phy_interface_t interface)
+ 254:Core/ETH_Transceive/stub_eth_transceive.c **** {
+ 153              		.loc 1 254 1 is_stmt 1 view -0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 0
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157              		@ link register save eliminated.
+ 255:Core/ETH_Transceive/stub_eth_transceive.c **** 	int rc;
+ 158              		.loc 1 255 2 view .LVU43
+ 256:Core/ETH_Transceive/stub_eth_transceive.c **** 	u16 reg_val;
+ 159              		.loc 1 256 2 view .LVU44
+ 257:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 258:Core/ETH_Transceive/stub_eth_transceive.c **** 	reg_val = phy_read(phydev, MSCC_PHY_EXT_PHY_CNTL_1);
+ 160              		.loc 1 258 2 view .LVU45
+ 295:Core/ETH_Transceive/inc/phy.h **** };
+ 296:Core/ETH_Transceive/inc/phy.h **** 
+ 297:Core/ETH_Transceive/inc/phy.h **** 
+ 298:Core/ETH_Transceive/inc/phy.h **** 
+ 299:Core/ETH_Transceive/inc/phy.h **** 
+ 300:Core/ETH_Transceive/inc/phy.h **** 
+ 301:Core/ETH_Transceive/inc/phy.h **** 
+ 302:Core/ETH_Transceive/inc/phy.h **** 
+ 303:Core/ETH_Transceive/inc/phy.h **** 
+ 304:Core/ETH_Transceive/inc/phy.h **** 
+ 305:Core/ETH_Transceive/inc/phy.h **** 
+ 306:Core/ETH_Transceive/inc/phy.h **** 
+ 307:Core/ETH_Transceive/inc/phy.h **** 
+ 308:Core/ETH_Transceive/inc/phy.h **** 
+ 309:Core/ETH_Transceive/inc/phy.h **** /**
+ 310:Core/ETH_Transceive/inc/phy.h ****  * 
+ 311:Core/ETH_Transceive/inc/phy.h ****  * 
+ 312:Core/ETH_Transceive/inc/phy.h ****  * TO DO
+ 313:Core/ETH_Transceive/inc/phy.h ****  * 
+ 314:Core/ETH_Transceive/inc/phy.h ****  *
+ 315:Core/ETH_Transceive/inc/phy.h ****  * 
+ 316:Core/ETH_Transceive/inc/phy.h ****  * 
+ 317:Core/ETH_Transceive/inc/phy.h ****  *
+ 318:Core/ETH_Transceive/inc/phy.h ****  */
+ 319:Core/ETH_Transceive/inc/phy.h **** /**
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 14
+
+
+ 320:Core/ETH_Transceive/inc/phy.h ****  * phy_write - Convenience function for writing a given PHY register
+ 321:Core/ETH_Transceive/inc/phy.h ****  * @phydev: the phy_device struct
+ 322:Core/ETH_Transceive/inc/phy.h ****  * @regnum: register number to write
+ 323:Core/ETH_Transceive/inc/phy.h ****  * @val: value to write to @regnum
+ 324:Core/ETH_Transceive/inc/phy.h ****  *
+ 325:Core/ETH_Transceive/inc/phy.h ****  * NOTE: MUST NOT be called from interrupt context,
+ 326:Core/ETH_Transceive/inc/phy.h ****  * because the bus read/write functions may wait for an interrupt
+ 327:Core/ETH_Transceive/inc/phy.h ****  * to conclude the operation.
+ 328:Core/ETH_Transceive/inc/phy.h ****  */
+ 329:Core/ETH_Transceive/inc/phy.h **** static inline int phy_write(struct phy_device *phydev, u32 regnum, u16 val)
+ 330:Core/ETH_Transceive/inc/phy.h **** {
+ 331:Core/ETH_Transceive/inc/phy.h **** 	// return mdiobus_write(phydev->mdio.bus, phydev->mdio.addr, regnum, val);
+ 332:Core/ETH_Transceive/inc/phy.h **** 	return -EINVAL;
+ 333:Core/ETH_Transceive/inc/phy.h **** }
+ 334:Core/ETH_Transceive/inc/phy.h **** 
+ 335:Core/ETH_Transceive/inc/phy.h **** /**
+ 336:Core/ETH_Transceive/inc/phy.h ****  * phy_read - Convenience function for reading a given PHY register
+ 337:Core/ETH_Transceive/inc/phy.h ****  * @phydev: the phy_device struct
+ 338:Core/ETH_Transceive/inc/phy.h ****  * @regnum: register number to read
+ 339:Core/ETH_Transceive/inc/phy.h ****  *
+ 340:Core/ETH_Transceive/inc/phy.h ****  * NOTE: MUST NOT be called from interrupt context,
+ 341:Core/ETH_Transceive/inc/phy.h ****  * because the bus read/write functions may wait for an interrupt
+ 342:Core/ETH_Transceive/inc/phy.h ****  * to conclude the operation.
+ 343:Core/ETH_Transceive/inc/phy.h ****  */
+ 344:Core/ETH_Transceive/inc/phy.h **** static inline int phy_read(struct phy_device *phydev, u32 regnum)
+ 345:Core/ETH_Transceive/inc/phy.h **** {
+ 346:Core/ETH_Transceive/inc/phy.h **** 	// return mdiobus_read(phydev->mdio.bus, phydev->mdio.addr, regnum);
+ 347:Core/ETH_Transceive/inc/phy.h **** 	return -EINVAL;
+ 161              		.loc 2 347 2 view .LVU46
+ 259:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 260:Core/ETH_Transceive/stub_eth_transceive.c **** 	reg_val &= ~(MAC_IF_SELECTION_MASK);
+ 162              		.loc 1 260 2 view .LVU47
+ 261:Core/ETH_Transceive/stub_eth_transceive.c **** 	switch (interface) {
+ 163              		.loc 1 261 2 view .LVU48
+ 262:Core/ETH_Transceive/stub_eth_transceive.c **** 		case PHY_INTERFACE_MODE_RGMII_TXID:
+ 263:Core/ETH_Transceive/stub_eth_transceive.c **** 		case PHY_INTERFACE_MODE_RGMII_RXID:
+ 264:Core/ETH_Transceive/stub_eth_transceive.c **** 		case PHY_INTERFACE_MODE_RGMII_ID:
+ 265:Core/ETH_Transceive/stub_eth_transceive.c **** 		case PHY_INTERFACE_MODE_RGMII:
+ 266:Core/ETH_Transceive/stub_eth_transceive.c **** 			reg_val |= (MAC_IF_SELECTION_RGMII << MAC_IF_SELECTION_POS);
+ 267:Core/ETH_Transceive/stub_eth_transceive.c **** 			break;
+ 268:Core/ETH_Transceive/stub_eth_transceive.c **** 		case PHY_INTERFACE_MODE_RMII:
+ 269:Core/ETH_Transceive/stub_eth_transceive.c **** 			reg_val |= (MAC_IF_SELECTION_RMII << MAC_IF_SELECTION_POS);
+ 270:Core/ETH_Transceive/stub_eth_transceive.c **** 			break;
+ 271:Core/ETH_Transceive/stub_eth_transceive.c **** 		case PHY_INTERFACE_MODE_MII:
+ 272:Core/ETH_Transceive/stub_eth_transceive.c **** 		case PHY_INTERFACE_MODE_GMII:
+ 273:Core/ETH_Transceive/stub_eth_transceive.c **** 			reg_val |= (MAC_IF_SELECTION_GMII << MAC_IF_SELECTION_POS);
+ 274:Core/ETH_Transceive/stub_eth_transceive.c **** 			break;
+ 275:Core/ETH_Transceive/stub_eth_transceive.c **** 		default:
+ 276:Core/ETH_Transceive/stub_eth_transceive.c **** 			rc = -EINVAL;
+ 277:Core/ETH_Transceive/stub_eth_transceive.c **** 			return rc;
+ 278:Core/ETH_Transceive/stub_eth_transceive.c **** 	}
+ 279:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 280:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = phy_write(phydev, MSCC_PHY_EXT_PHY_CNTL_1, reg_val);
+ 281:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (rc)
+ 282:Core/ETH_Transceive/stub_eth_transceive.c **** 		return rc;
+ 283:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 284:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = genphy_soft_reset(phydev);
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 15
+
+
+ 285:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 286:Core/ETH_Transceive/stub_eth_transceive.c **** 	return rc;
+ 287:Core/ETH_Transceive/stub_eth_transceive.c **** }
+ 164              		.loc 1 287 1 is_stmt 0 view .LVU49
+ 165 0000 6FF01500 		mvn	r0, #21
+ 166              	.LVL13:
+ 167              		.loc 1 287 1 view .LVU50
+ 168 0004 7047     		bx	lr
+ 169              		.cfi_endproc
+ 170              	.LFE36:
+ 172              		.section	.text.vsc85xx_edge_rate_cntl_set,"ax",%progbits
+ 173              		.align	1
+ 174              		.syntax unified
+ 175              		.thumb
+ 176              		.thumb_func
+ 177              		.fpu fpv4-sp-d16
+ 179              	vsc85xx_edge_rate_cntl_set:
+ 180              	.LVL14:
+ 181              	.LFB37:
+ 288:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 289:Core/ETH_Transceive/stub_eth_transceive.c **** static int vsc85xx_edge_rate_cntl_set(struct phy_device *phydev, u8 edge_rate)
+ 290:Core/ETH_Transceive/stub_eth_transceive.c **** {
+ 182              		.loc 1 290 1 is_stmt 1 view -0
+ 183              		.cfi_startproc
+ 184              		@ args = 0, pretend = 0, frame = 0
+ 185              		@ frame_needed = 0, uses_anonymous_args = 0
+ 186              		@ link register save eliminated.
+ 291:Core/ETH_Transceive/stub_eth_transceive.c **** 	int rc;
+ 187              		.loc 1 291 2 view .LVU52
+ 292:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 293:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_EXTENDED_2,
+ 188              		.loc 1 293 2 view .LVU53
+ 348:Core/ETH_Transceive/inc/phy.h **** }
+ 349:Core/ETH_Transceive/inc/phy.h **** 
+ 350:Core/ETH_Transceive/inc/phy.h **** /**
+ 351:Core/ETH_Transceive/inc/phy.h ****  * phy_modify_paged() - Convenience function for modifying a paged register
+ 352:Core/ETH_Transceive/inc/phy.h ****  * @phydev: a pointer to a &struct phy_device
+ 353:Core/ETH_Transceive/inc/phy.h ****  * @page: the page for the phy
+ 354:Core/ETH_Transceive/inc/phy.h ****  * @regnum: register number
+ 355:Core/ETH_Transceive/inc/phy.h ****  * @mask: bit mask of bits to clear
+ 356:Core/ETH_Transceive/inc/phy.h ****  * @set: bit mask of bits to set
+ 357:Core/ETH_Transceive/inc/phy.h ****  *
+ 358:Core/ETH_Transceive/inc/phy.h ****  * Same rules as for phy_read() and phy_write().
+ 359:Core/ETH_Transceive/inc/phy.h ****  */
+ 360:Core/ETH_Transceive/inc/phy.h **** static inline int phy_modify_paged(struct phy_device *phydev, int page, u32 regnum,
+ 361:Core/ETH_Transceive/inc/phy.h **** 		     u16 mask, u16 set)
+ 362:Core/ETH_Transceive/inc/phy.h **** {
+ 363:Core/ETH_Transceive/inc/phy.h **** 	// int ret = phy_modify_paged_changed(phydev, page, regnum, mask, set);
+ 364:Core/ETH_Transceive/inc/phy.h **** 
+ 365:Core/ETH_Transceive/inc/phy.h **** 	// return ret < 0 ? ret : 0;
+ 366:Core/ETH_Transceive/inc/phy.h **** 	return -EINVAL;
+ 189              		.loc 2 366 2 view .LVU54
+ 294:Core/ETH_Transceive/stub_eth_transceive.c **** 			      MSCC_PHY_WOL_MAC_CONTROL, EDGE_RATE_CNTL_MASK,
+ 295:Core/ETH_Transceive/stub_eth_transceive.c **** 			      edge_rate << EDGE_RATE_CNTL_POS);
+ 296:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 297:Core/ETH_Transceive/stub_eth_transceive.c **** 	return rc;
+ 190              		.loc 1 297 2 view .LVU55
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 16
+
+
+ 298:Core/ETH_Transceive/stub_eth_transceive.c **** }
+ 191              		.loc 1 298 1 is_stmt 0 view .LVU56
+ 192 0000 6FF01500 		mvn	r0, #21
+ 193              	.LVL15:
+ 194              		.loc 1 298 1 view .LVU57
+ 195 0004 7047     		bx	lr
+ 196              		.cfi_endproc
+ 197              	.LFE37:
+ 199              		.section	.text.vsc8531_pre_init_seq_set,"ax",%progbits
+ 200              		.align	1
+ 201              		.syntax unified
+ 202              		.thumb
+ 203              		.thumb_func
+ 204              		.fpu fpv4-sp-d16
+ 206              	vsc8531_pre_init_seq_set:
+ 207              	.LVL16:
+ 208              	.LFB38:
+ 299:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 300:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 301:Core/ETH_Transceive/stub_eth_transceive.c **** static int vsc8531_pre_init_seq_set(struct phy_device *phydev)
+ 302:Core/ETH_Transceive/stub_eth_transceive.c **** {
+ 209              		.loc 1 302 1 is_stmt 1 view -0
+ 210              		.cfi_startproc
+ 211              		@ args = 0, pretend = 0, frame = 0
+ 212              		@ frame_needed = 0, uses_anonymous_args = 0
+ 213              		@ link register save eliminated.
+ 303:Core/ETH_Transceive/stub_eth_transceive.c **** 	int rc;
+ 214              		.loc 1 303 2 view .LVU59
+ 304:Core/ETH_Transceive/stub_eth_transceive.c **** 	static const struct reg_val init_seq[] = {
+ 215              		.loc 1 304 2 view .LVU60
+ 305:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0f90, 0x00688980},
+ 306:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0696, 0x00000003},
+ 307:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x07fa, 0x0050100f},
+ 308:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x1686, 0x00000004},
+ 309:Core/ETH_Transceive/stub_eth_transceive.c **** 	};
+ 310:Core/ETH_Transceive/stub_eth_transceive.c **** 	unsigned int i;
+ 216              		.loc 1 310 2 view .LVU61
+ 311:Core/ETH_Transceive/stub_eth_transceive.c **** 	int oldpage;
+ 217              		.loc 1 311 2 view .LVU62
+ 312:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 313:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_STANDARD,
+ 218              		.loc 1 313 2 view .LVU63
+ 219              		.loc 2 366 2 view .LVU64
+ 314:Core/ETH_Transceive/stub_eth_transceive.c **** 			      MSCC_PHY_EXT_CNTL_STATUS, SMI_BROADCAST_WR_EN,
+ 315:Core/ETH_Transceive/stub_eth_transceive.c **** 			      SMI_BROADCAST_WR_EN);
+ 316:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (rc < 0)
+ 220              		.loc 1 316 2 view .LVU65
+ 317:Core/ETH_Transceive/stub_eth_transceive.c **** 		return rc;
+ 221              		.loc 1 317 3 view .LVU66
+ 318:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_TEST,
+ 319:Core/ETH_Transceive/stub_eth_transceive.c **** 			      MSCC_PHY_TEST_PAGE_24, 0, 0x0400);
+ 320:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (rc < 0)
+ 321:Core/ETH_Transceive/stub_eth_transceive.c **** 		return rc;
+ 322:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_TEST,
+ 323:Core/ETH_Transceive/stub_eth_transceive.c **** 			      MSCC_PHY_TEST_PAGE_5, 0x0a00, 0x0e00);
+ 324:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (rc < 0)
+ 325:Core/ETH_Transceive/stub_eth_transceive.c **** 		return rc;
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 17
+
+
+ 326:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_TEST,
+ 327:Core/ETH_Transceive/stub_eth_transceive.c **** 			      MSCC_PHY_TEST_PAGE_8, TR_CLK_DISABLE, TR_CLK_DISABLE);
+ 328:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (rc < 0)
+ 329:Core/ETH_Transceive/stub_eth_transceive.c **** 		return rc;
+ 330:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 331:Core/ETH_Transceive/stub_eth_transceive.c **** 	oldpage = phy_select_page(phydev, MSCC_PHY_PAGE_TR);
+ 332:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (oldpage < 0)
+ 333:Core/ETH_Transceive/stub_eth_transceive.c **** 		oldpage = phy_restore_page(phydev, oldpage, oldpage);
+ 334:Core/ETH_Transceive/stub_eth_transceive.c **** 		return oldpage;
+ 335:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 336:Core/ETH_Transceive/stub_eth_transceive.c **** 	for (i = 0; i < ARRAY_SIZE(init_seq); i++)
+ 337:Core/ETH_Transceive/stub_eth_transceive.c **** 		vsc85xx_tr_write(phydev, init_seq[i].reg, init_seq[i].val);
+ 338:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 339:Core/ETH_Transceive/stub_eth_transceive.c **** 	oldpage = phy_restore_page(phydev, oldpage, oldpage);
+ 340:Core/ETH_Transceive/stub_eth_transceive.c **** 	return oldpage;
+ 341:Core/ETH_Transceive/stub_eth_transceive.c **** }
+ 222              		.loc 1 341 1 is_stmt 0 view .LVU67
+ 223 0000 6FF01500 		mvn	r0, #21
+ 224              	.LVL17:
+ 225              		.loc 1 341 1 view .LVU68
+ 226 0004 7047     		bx	lr
+ 227              		.cfi_endproc
+ 228              	.LFE38:
+ 230              		.section	.text.phy_restore_page,"ax",%progbits
+ 231              		.align	1
+ 232              		.global	phy_restore_page
+ 233              		.syntax unified
+ 234              		.thumb
+ 235              		.thumb_func
+ 236              		.fpu fpv4-sp-d16
+ 238              	phy_restore_page:
+ 239              	.LVL18:
+ 240              	.LFB25:
+ 367:Core/ETH_Transceive/inc/phy.h **** }
+ 368:Core/ETH_Transceive/inc/phy.h **** 
+ 369:Core/ETH_Transceive/inc/phy.h **** /**
+ 370:Core/ETH_Transceive/inc/phy.h ****  * phy_modify - Convenience function for modifying a given PHY register
+ 371:Core/ETH_Transceive/inc/phy.h ****  * @phydev: the phy_device struct
+ 372:Core/ETH_Transceive/inc/phy.h ****  * @regnum: register number to write
+ 373:Core/ETH_Transceive/inc/phy.h ****  * @mask: bit mask of bits to clear
+ 374:Core/ETH_Transceive/inc/phy.h ****  * @set: new value of bits set in mask to write to @regnum
+ 375:Core/ETH_Transceive/inc/phy.h ****  *
+ 376:Core/ETH_Transceive/inc/phy.h ****  * NOTE: MUST NOT be called from interrupt context,
+ 377:Core/ETH_Transceive/inc/phy.h ****  * because the bus read/write functions may wait for an interrupt
+ 378:Core/ETH_Transceive/inc/phy.h ****  * to conclude the operation.
+ 379:Core/ETH_Transceive/inc/phy.h ****  */
+ 380:Core/ETH_Transceive/inc/phy.h **** static inline int phy_modify(struct phy_device *phydev, u32 regnum, u16 mask, u16 set)
+ 381:Core/ETH_Transceive/inc/phy.h **** {
+ 382:Core/ETH_Transceive/inc/phy.h **** 	// int ret;
+ 383:Core/ETH_Transceive/inc/phy.h **** 
+ 384:Core/ETH_Transceive/inc/phy.h **** 	// phy_lock_mdio_bus(phydev);
+ 385:Core/ETH_Transceive/inc/phy.h **** 	// ret = __phy_modify(phydev, regnum, mask, set);
+ 386:Core/ETH_Transceive/inc/phy.h **** 	// phy_unlock_mdio_bus(phydev);
+ 387:Core/ETH_Transceive/inc/phy.h **** 
+ 388:Core/ETH_Transceive/inc/phy.h **** 	// return ret;
+ 389:Core/ETH_Transceive/inc/phy.h **** 	return -EINVAL;
+ 390:Core/ETH_Transceive/inc/phy.h **** }
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 18
+
+
+ 391:Core/ETH_Transceive/inc/phy.h **** 
+ 392:Core/ETH_Transceive/inc/phy.h **** /**
+ 393:Core/ETH_Transceive/inc/phy.h ****  * phy_save_page() - take the bus lock and save the current page
+ 394:Core/ETH_Transceive/inc/phy.h ****  * @phydev: a pointer to a &struct phy_device
+ 395:Core/ETH_Transceive/inc/phy.h ****  *
+ 396:Core/ETH_Transceive/inc/phy.h ****  * Take the MDIO bus lock, and return the current page number. On error,
+ 397:Core/ETH_Transceive/inc/phy.h ****  * returns a negative errno. phy_restore_page() must always be called
+ 398:Core/ETH_Transceive/inc/phy.h ****  * after this, irrespective of success or failure of this call.
+ 399:Core/ETH_Transceive/inc/phy.h ****  */
+ 400:Core/ETH_Transceive/inc/phy.h **** static inline int phy_save_page(struct phy_device *phydev)
+ 401:Core/ETH_Transceive/inc/phy.h **** {
+ 402:Core/ETH_Transceive/inc/phy.h **** 	// phy_lock_mdio_bus(phydev);
+ 403:Core/ETH_Transceive/inc/phy.h **** 	// return __phy_read_page(phydev);
+ 404:Core/ETH_Transceive/inc/phy.h **** 	return -EINVAL;
+ 405:Core/ETH_Transceive/inc/phy.h **** }
+ 406:Core/ETH_Transceive/inc/phy.h **** 
+ 407:Core/ETH_Transceive/inc/phy.h **** /**
+ 408:Core/ETH_Transceive/inc/phy.h ****  * phy_select_page() - take the bus lock, save the current page, and set a page
+ 409:Core/ETH_Transceive/inc/phy.h ****  * @phydev: a pointer to a &struct phy_device
+ 410:Core/ETH_Transceive/inc/phy.h ****  * @page: desired page
+ 411:Core/ETH_Transceive/inc/phy.h ****  *
+ 412:Core/ETH_Transceive/inc/phy.h ****  * Take the MDIO bus lock to protect against concurrent access, save the
+ 413:Core/ETH_Transceive/inc/phy.h ****  * current PHY page, and set the current page.  On error, returns a
+ 414:Core/ETH_Transceive/inc/phy.h ****  * negative errno, otherwise returns the previous page number.
+ 415:Core/ETH_Transceive/inc/phy.h ****  * phy_restore_page() must always be called after this, irrespective
+ 416:Core/ETH_Transceive/inc/phy.h ****  * of success or failure of this call.
+ 417:Core/ETH_Transceive/inc/phy.h ****  */
+ 418:Core/ETH_Transceive/inc/phy.h **** static inline int phy_select_page(struct phy_device *phydev, int page)
+ 419:Core/ETH_Transceive/inc/phy.h **** {
+ 420:Core/ETH_Transceive/inc/phy.h **** 	// int ret, oldpage;
+ 421:Core/ETH_Transceive/inc/phy.h **** 
+ 422:Core/ETH_Transceive/inc/phy.h **** 	// oldpage = ret = phy_save_page(phydev);
+ 423:Core/ETH_Transceive/inc/phy.h **** 	// if (ret < 0)
+ 424:Core/ETH_Transceive/inc/phy.h **** 	// 	return ret;
+ 425:Core/ETH_Transceive/inc/phy.h **** 
+ 426:Core/ETH_Transceive/inc/phy.h **** 	// if (oldpage != page) {
+ 427:Core/ETH_Transceive/inc/phy.h **** 	// 	ret = __phy_write_page(phydev, page);
+ 428:Core/ETH_Transceive/inc/phy.h **** 	// 	if (ret < 0)
+ 429:Core/ETH_Transceive/inc/phy.h **** 	// 		return ret;
+ 430:Core/ETH_Transceive/inc/phy.h **** 	// }
+ 431:Core/ETH_Transceive/inc/phy.h **** 
+ 432:Core/ETH_Transceive/inc/phy.h **** 	// return oldpage;
+ 433:Core/ETH_Transceive/inc/phy.h **** 	return -EINVAL;
+ 434:Core/ETH_Transceive/inc/phy.h **** }
+ 435:Core/ETH_Transceive/inc/phy.h **** 
+ 436:Core/ETH_Transceive/inc/phy.h **** /**
+ 437:Core/ETH_Transceive/inc/phy.h ****  * phy_restore_page() - restore the page register and release the bus lock
+ 438:Core/ETH_Transceive/inc/phy.h ****  * @phydev: a pointer to a &struct phy_device
+ 439:Core/ETH_Transceive/inc/phy.h ****  * @oldpage: the old page, return value from phy_save_page() or phy_select_page()
+ 440:Core/ETH_Transceive/inc/phy.h ****  * @ret: operation's return code
+ 441:Core/ETH_Transceive/inc/phy.h ****  *
+ 442:Core/ETH_Transceive/inc/phy.h ****  * Release the MDIO bus lock, restoring @oldpage if it is a valid page.
+ 443:Core/ETH_Transceive/inc/phy.h ****  * This function propagates the earliest error code from the group of
+ 444:Core/ETH_Transceive/inc/phy.h ****  * operations.
+ 445:Core/ETH_Transceive/inc/phy.h ****  *
+ 446:Core/ETH_Transceive/inc/phy.h ****  * Returns:
+ 447:Core/ETH_Transceive/inc/phy.h ****  *   @oldpage if it was a negative value, otherwise
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 19
+
+
+ 448:Core/ETH_Transceive/inc/phy.h ****  *   @ret if it was a negative errno value, otherwise
+ 449:Core/ETH_Transceive/inc/phy.h ****  *   phy_write_page()'s negative value if it were in error, otherwise
+ 450:Core/ETH_Transceive/inc/phy.h ****  *   @ret.
+ 451:Core/ETH_Transceive/inc/phy.h ****  */
+ 452:Core/ETH_Transceive/inc/phy.h **** int phy_restore_page(struct phy_device *phydev, int oldpage, int ret)
+ 453:Core/ETH_Transceive/inc/phy.h **** {
+ 241              		.loc 2 453 1 is_stmt 1 view -0
+ 242              		.cfi_startproc
+ 243              		@ args = 0, pretend = 0, frame = 0
+ 244              		@ frame_needed = 0, uses_anonymous_args = 0
+ 245              		@ link register save eliminated.
+ 454:Core/ETH_Transceive/inc/phy.h **** 	// int r;
+ 455:Core/ETH_Transceive/inc/phy.h **** 
+ 456:Core/ETH_Transceive/inc/phy.h **** 	// if (oldpage >= 0) {
+ 457:Core/ETH_Transceive/inc/phy.h **** 	// 	r = __phy_write_page(phydev, oldpage);
+ 458:Core/ETH_Transceive/inc/phy.h **** 
+ 459:Core/ETH_Transceive/inc/phy.h **** 	// 	/* Propagate the operation return code if the page write
+ 460:Core/ETH_Transceive/inc/phy.h **** 	// 	 * was successful.
+ 461:Core/ETH_Transceive/inc/phy.h **** 	// 	 */
+ 462:Core/ETH_Transceive/inc/phy.h **** 	// 	if (ret >= 0 && r < 0)
+ 463:Core/ETH_Transceive/inc/phy.h **** 	// 		ret = r;
+ 464:Core/ETH_Transceive/inc/phy.h **** 	// } else {
+ 465:Core/ETH_Transceive/inc/phy.h **** 	// 	/* Propagate the phy page selection error code */
+ 466:Core/ETH_Transceive/inc/phy.h **** 	// 	ret = oldpage;
+ 467:Core/ETH_Transceive/inc/phy.h **** 	// }
+ 468:Core/ETH_Transceive/inc/phy.h **** 
+ 469:Core/ETH_Transceive/inc/phy.h **** 	// phy_unlock_mdio_bus(phydev);
+ 470:Core/ETH_Transceive/inc/phy.h **** 
+ 471:Core/ETH_Transceive/inc/phy.h **** 	// return ret;
+ 472:Core/ETH_Transceive/inc/phy.h **** 	return -EINVAL;
+ 246              		.loc 2 472 2 view .LVU70
+ 473:Core/ETH_Transceive/inc/phy.h **** }
+ 247              		.loc 2 473 1 is_stmt 0 view .LVU71
+ 248 0000 6FF01500 		mvn	r0, #21
+ 249              	.LVL19:
+ 250              		.loc 2 473 1 view .LVU72
+ 251 0004 7047     		bx	lr
+ 252              		.cfi_endproc
+ 253              	.LFE25:
+ 255              		.section	.text.vsc85xx_eee_init_seq_set,"ax",%progbits
+ 256              		.align	1
+ 257              		.syntax unified
+ 258              		.thumb
+ 259              		.thumb_func
+ 260              		.fpu fpv4-sp-d16
+ 262              	vsc85xx_eee_init_seq_set:
+ 263              	.LVL20:
+ 264              	.LFB35:
+ 214:Core/ETH_Transceive/stub_eth_transceive.c **** 	static const struct reg_val init_eee[] = {
+ 265              		.loc 1 214 1 is_stmt 1 view -0
+ 266              		.cfi_startproc
+ 267              		@ args = 0, pretend = 0, frame = 0
+ 268              		@ frame_needed = 0, uses_anonymous_args = 0
+ 214:Core/ETH_Transceive/stub_eth_transceive.c **** 	static const struct reg_val init_eee[] = {
+ 269              		.loc 1 214 1 is_stmt 0 view .LVU74
+ 270 0000 08B5     		push	{r3, lr}
+ 271              	.LCFI1:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 20
+
+
+ 272              		.cfi_def_cfa_offset 8
+ 273              		.cfi_offset 3, -8
+ 274              		.cfi_offset 14, -4
+ 215:Core/ETH_Transceive/stub_eth_transceive.c **** 		{0x0f82, 0x0012b00a},
+ 275              		.loc 1 215 2 is_stmt 1 view .LVU75
+ 235:Core/ETH_Transceive/stub_eth_transceive.c **** 	int oldpage;
+ 276              		.loc 1 235 2 view .LVU76
+ 236:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 277              		.loc 1 236 2 view .LVU77
+ 238:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (oldpage < 0)
+ 278              		.loc 1 238 2 view .LVU78
+ 279              	.LVL21:
+ 433:Core/ETH_Transceive/inc/phy.h **** }
+ 280              		.loc 2 433 2 view .LVU79
+ 239:Core/ETH_Transceive/stub_eth_transceive.c **** 		{
+ 281              		.loc 1 239 2 view .LVU80
+ 241:Core/ETH_Transceive/stub_eth_transceive.c **** 			return oldpage;
+ 282              		.loc 1 241 4 view .LVU81
+ 241:Core/ETH_Transceive/stub_eth_transceive.c **** 			return oldpage;
+ 283              		.loc 1 241 14 is_stmt 0 view .LVU82
+ 284 0002 6FF01502 		mvn	r2, #21
+ 285 0006 1146     		mov	r1, r2
+ 286 0008 FFF7FEFF 		bl	phy_restore_page
+ 287              	.LVL22:
+ 242:Core/ETH_Transceive/stub_eth_transceive.c **** 		}
+ 288              		.loc 1 242 4 is_stmt 1 view .LVU83
+ 250:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 289              		.loc 1 250 1 is_stmt 0 view .LVU84
+ 290 000c 08BD     		pop	{r3, pc}
+ 291              		.cfi_endproc
+ 292              	.LFE35:
+ 294              		.section	.text.genphy_setup_forced,"ax",%progbits
+ 295              		.align	1
+ 296              		.global	genphy_setup_forced
+ 297              		.syntax unified
+ 298              		.thumb
+ 299              		.thumb_func
+ 300              		.fpu fpv4-sp-d16
+ 302              	genphy_setup_forced:
+ 303              	.LVL23:
+ 304              	.LFB30:
+  61:Core/ETH_Transceive/stub_eth_transceive.c **** 	u16 ctl;
+ 305              		.loc 1 61 1 is_stmt 1 view -0
+ 306              		.cfi_startproc
+ 307              		@ args = 0, pretend = 0, frame = 0
+ 308              		@ frame_needed = 0, uses_anonymous_args = 0
+ 309              		@ link register save eliminated.
+  62:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 310              		.loc 1 62 2 view .LVU86
+  64:Core/ETH_Transceive/stub_eth_transceive.c **** 	phydev->asym_pause = 0;
+ 311              		.loc 1 64 2 view .LVU87
+  64:Core/ETH_Transceive/stub_eth_transceive.c **** 	phydev->asym_pause = 0;
+ 312              		.loc 1 64 16 is_stmt 0 view .LVU88
+ 313 0000 0023     		movs	r3, #0
+ 314 0002 4363     		str	r3, [r0, #52]
+  65:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 315              		.loc 1 65 2 is_stmt 1 view .LVU89
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 21
+
+
+  65:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 316              		.loc 1 65 21 is_stmt 0 view .LVU90
+ 317 0004 8363     		str	r3, [r0, #56]
+  67:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 318              		.loc 1 67 2 is_stmt 1 view .LVU91
+  69:Core/ETH_Transceive/stub_eth_transceive.c **** 			  ~(BMCR_LOOPBACK | BMCR_ISOLATE | BMCR_PDOWN), ctl);
+ 319              		.loc 1 69 2 view .LVU92
+ 320              	.LVL24:
+ 389:Core/ETH_Transceive/inc/phy.h **** }
+ 321              		.loc 2 389 2 view .LVU93
+  71:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 322              		.loc 1 71 1 is_stmt 0 view .LVU94
+ 323 0006 6FF01500 		mvn	r0, #21
+ 324              	.LVL25:
+  71:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 325              		.loc 1 71 1 view .LVU95
+ 326 000a 7047     		bx	lr
+ 327              		.cfi_endproc
+ 328              	.LFE30:
+ 330              		.section	.text.genphy_soft_reset,"ax",%progbits
+ 331              		.align	1
+ 332              		.global	genphy_soft_reset
+ 333              		.syntax unified
+ 334              		.thumb
+ 335              		.thumb_func
+ 336              		.fpu fpv4-sp-d16
+ 338              	genphy_soft_reset:
+ 339              	.LVL26:
+ 340              	.LFB32:
+ 118:Core/ETH_Transceive/stub_eth_transceive.c **** 	u16 res = BMCR_RESET;
+ 341              		.loc 1 118 1 is_stmt 1 view -0
+ 342              		.cfi_startproc
+ 343              		@ args = 0, pretend = 0, frame = 0
+ 344              		@ frame_needed = 0, uses_anonymous_args = 0
+ 345              		@ link register save eliminated.
+ 119:Core/ETH_Transceive/stub_eth_transceive.c **** 	int ret;
+ 346              		.loc 1 119 2 view .LVU97
+ 120:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 347              		.loc 1 120 2 view .LVU98
+ 122:Core/ETH_Transceive/stub_eth_transceive.c **** 		res |= BMCR_ANRESTART;
+ 348              		.loc 1 122 2 view .LVU99
+ 125:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (ret < 0)
+ 349              		.loc 1 125 2 view .LVU100
+ 389:Core/ETH_Transceive/inc/phy.h **** }
+ 350              		.loc 2 389 2 view .LVU101
+ 126:Core/ETH_Transceive/stub_eth_transceive.c **** 		return ret;
+ 351              		.loc 1 126 2 view .LVU102
+ 127:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 352              		.loc 1 127 3 view .LVU103
+ 144:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 353              		.loc 1 144 1 is_stmt 0 view .LVU104
+ 354 0000 6FF01500 		mvn	r0, #21
+ 355              	.LVL27:
+ 144:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 356              		.loc 1 144 1 view .LVU105
+ 357 0004 7047     		bx	lr
+ 358              		.cfi_endproc
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 22
+
+
+ 359              	.LFE32:
+ 361              		.section	.text.vsc85xx_config_init,"ax",%progbits
+ 362              		.align	1
+ 363              		.global	vsc85xx_config_init
+ 364              		.syntax unified
+ 365              		.thumb
+ 366              		.thumb_func
+ 367              		.fpu fpv4-sp-d16
+ 369              	vsc85xx_config_init:
+ 370              	.LVL28:
+ 371              	.LFB39:
+ 342:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 343:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 344:Core/ETH_Transceive/stub_eth_transceive.c **** int vsc85xx_config_init(struct phy_device *phydev)
+ 345:Core/ETH_Transceive/stub_eth_transceive.c **** {
+ 372              		.loc 1 345 1 is_stmt 1 view -0
+ 373              		.cfi_startproc
+ 374              		@ args = 0, pretend = 0, frame = 0
+ 375              		@ frame_needed = 0, uses_anonymous_args = 0
+ 376              		.loc 1 345 1 is_stmt 0 view .LVU107
+ 377 0000 38B5     		push	{r3, r4, r5, lr}
+ 378              	.LCFI2:
+ 379              		.cfi_def_cfa_offset 16
+ 380              		.cfi_offset 3, -16
+ 381              		.cfi_offset 4, -12
+ 382              		.cfi_offset 5, -8
+ 383              		.cfi_offset 14, -4
+ 384 0002 0446     		mov	r4, r0
+ 346:Core/ETH_Transceive/stub_eth_transceive.c **** 	int rc, i, phy_id;
+ 385              		.loc 1 346 2 is_stmt 1 view .LVU108
+ 347:Core/ETH_Transceive/stub_eth_transceive.c **** 	struct vsc8531_private *vsc8531 = phydev->priv;
+ 386              		.loc 1 347 2 view .LVU109
+ 387              		.loc 1 347 26 is_stmt 0 view .LVU110
+ 388 0004 D0F8B450 		ldr	r5, [r0, #180]
+ 389              	.LVL29:
+ 348:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 349:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = vsc85xx_default_config(phydev);
+ 390              		.loc 1 349 2 is_stmt 1 view .LVU111
+ 391              		.loc 1 349 7 is_stmt 0 view .LVU112
+ 392 0008 FFF7FEFF 		bl	vsc85xx_default_config
+ 393              	.LVL30:
+ 350:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (rc)
+ 394              		.loc 1 350 2 is_stmt 1 view .LVU113
+ 395              		.loc 1 350 5 is_stmt 0 view .LVU114
+ 396 000c 0346     		mov	r3, r0
+ 397 000e 40BB     		cbnz	r0, .L16
+ 351:Core/ETH_Transceive/stub_eth_transceive.c **** 		return rc;
+ 352:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 353:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = vsc85xx_mac_if_set(phydev, phydev->interface);
+ 398              		.loc 1 353 2 is_stmt 1 view .LVU115
+ 399              		.loc 1 353 7 is_stmt 0 view .LVU116
+ 400 0010 94F82410 		ldrb	r1, [r4, #36]	@ zero_extendqisi2
+ 401 0014 2046     		mov	r0, r4
+ 402              	.LVL31:
+ 403              		.loc 1 353 7 view .LVU117
+ 404 0016 FFF7FEFF 		bl	vsc85xx_mac_if_set
+ 405              	.LVL32:
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 23
+
+
+ 354:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (rc)
+ 406              		.loc 1 354 2 is_stmt 1 view .LVU118
+ 407              		.loc 1 354 5 is_stmt 0 view .LVU119
+ 408 001a 0346     		mov	r3, r0
+ 409 001c 08BB     		cbnz	r0, .L16
+ 355:Core/ETH_Transceive/stub_eth_transceive.c **** 		return rc;
+ 356:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 357:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = vsc85xx_edge_rate_cntl_set(phydev, vsc8531->rate_magic);
+ 410              		.loc 1 357 2 is_stmt 1 view .LVU120
+ 411              		.loc 1 357 7 is_stmt 0 view .LVU121
+ 412 001e 2978     		ldrb	r1, [r5]	@ zero_extendqisi2
+ 413 0020 2046     		mov	r0, r4
+ 414              	.LVL33:
+ 415              		.loc 1 357 7 view .LVU122
+ 416 0022 FFF7FEFF 		bl	vsc85xx_edge_rate_cntl_set
+ 417              	.LVL34:
+ 358:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (rc)
+ 418              		.loc 1 358 2 is_stmt 1 view .LVU123
+ 419              		.loc 1 358 5 is_stmt 0 view .LVU124
+ 420 0026 0346     		mov	r3, r0
+ 421 0028 D8B9     		cbnz	r0, .L16
+ 359:Core/ETH_Transceive/stub_eth_transceive.c **** 		return rc;
+ 360:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 361:Core/ETH_Transceive/stub_eth_transceive.c **** 	phy_id = phydev->drv->phy_id & phydev->drv->phy_id_mask;
+ 422              		.loc 1 361 2 is_stmt 1 view .LVU125
+ 423              		.loc 1 361 17 is_stmt 0 view .LVU126
+ 424 002a A268     		ldr	r2, [r4, #8]
+ 425              		.loc 1 361 22 view .LVU127
+ 426 002c 1368     		ldr	r3, [r2]
+ 427              		.loc 1 361 44 view .LVU128
+ 428 002e 5268     		ldr	r2, [r2, #4]
+ 429              		.loc 1 361 31 view .LVU129
+ 430 0030 1340     		ands	r3, r3, r2
+ 431              	.LVL35:
+ 362:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (PHY_ID_VSC8531 == phy_id || PHY_ID_VSC8541 == phy_id ||
+ 432              		.loc 1 362 2 is_stmt 1 view .LVU130
+ 433              		.loc 1 362 5 is_stmt 0 view .LVU131
+ 434 0032 0D4A     		ldr	r2, .L21
+ 435 0034 9342     		cmp	r3, r2
+ 436 0036 0BD0     		beq	.L18
+ 437              		.loc 1 362 31 discriminator 1 view .LVU132
+ 438 0038 02F50072 		add	r2, r2, #512
+ 439 003c 9342     		cmp	r3, r2
+ 440 003e 07D0     		beq	.L18
+ 441              		.loc 1 362 59 discriminator 2 view .LVU133
+ 442 0040 A2F50472 		sub	r2, r2, #528
+ 443 0044 9342     		cmp	r3, r2
+ 444 0046 03D0     		beq	.L18
+ 363:Core/ETH_Transceive/stub_eth_transceive.c **** 	    PHY_ID_VSC8530 == phy_id || PHY_ID_VSC8540 == phy_id) {
+ 445              		.loc 1 363 31 view .LVU134
+ 446 0048 02F50072 		add	r2, r2, #512
+ 447 004c 9342     		cmp	r3, r2
+ 448 004e 04D1     		bne	.L19
+ 449              	.L18:
+ 364:Core/ETH_Transceive/stub_eth_transceive.c **** 		rc = vsc8531_pre_init_seq_set(phydev);
+ 450              		.loc 1 364 3 is_stmt 1 view .LVU135
+ 451              		.loc 1 364 8 is_stmt 0 view .LVU136
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 24
+
+
+ 452 0050 2046     		mov	r0, r4
+ 453              	.LVL36:
+ 454              		.loc 1 364 8 view .LVU137
+ 455 0052 FFF7FEFF 		bl	vsc8531_pre_init_seq_set
+ 456              	.LVL37:
+ 365:Core/ETH_Transceive/stub_eth_transceive.c **** 		if (rc)
+ 457              		.loc 1 365 3 is_stmt 1 view .LVU138
+ 458              		.loc 1 365 6 is_stmt 0 view .LVU139
+ 459 0056 0346     		mov	r3, r0
+ 460 0058 18B9     		cbnz	r0, .L16
+ 461              	.L19:
+ 366:Core/ETH_Transceive/stub_eth_transceive.c **** 			return rc;
+ 367:Core/ETH_Transceive/stub_eth_transceive.c **** 	}
+ 368:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 369:Core/ETH_Transceive/stub_eth_transceive.c **** 	rc = vsc85xx_eee_init_seq_set(phydev);
+ 462              		.loc 1 369 2 is_stmt 1 view .LVU140
+ 463              		.loc 1 369 7 is_stmt 0 view .LVU141
+ 464 005a 2046     		mov	r0, r4
+ 465              	.LVL38:
+ 466              		.loc 1 369 7 view .LVU142
+ 467 005c FFF7FEFF 		bl	vsc85xx_eee_init_seq_set
+ 468              	.LVL39:
+ 469 0060 0346     		mov	r3, r0
+ 470              	.LVL40:
+ 370:Core/ETH_Transceive/stub_eth_transceive.c **** 	if (rc)
+ 471              		.loc 1 370 2 is_stmt 1 view .LVU143
+ 472              	.L16:
+ 371:Core/ETH_Transceive/stub_eth_transceive.c **** 		return rc;
+ 372:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 373:Core/ETH_Transceive/stub_eth_transceive.c **** 	// for (i = 0; i < vsc8531->nleds; i++) {
+ 374:Core/ETH_Transceive/stub_eth_transceive.c **** 	// 	rc = vsc85xx_led_cntl_set(phydev, i, vsc8531->leds_mode[i]);
+ 375:Core/ETH_Transceive/stub_eth_transceive.c **** 	// 	if (rc)
+ 376:Core/ETH_Transceive/stub_eth_transceive.c **** 	// 		return rc;
+ 377:Core/ETH_Transceive/stub_eth_transceive.c **** 	// }
+ 378:Core/ETH_Transceive/stub_eth_transceive.c **** 
+ 379:Core/ETH_Transceive/stub_eth_transceive.c **** 	return 0;
+ 380:Core/ETH_Transceive/stub_eth_transceive.c **** }...
+ 473              		.loc 1 380 1 is_stmt 0 view .LVU144
+ 474 0062 1846     		mov	r0, r3
+ 475              	.LVL41:
+ 476              		.loc 1 380 1 view .LVU145
+ 477 0064 38BD     		pop	{r3, r4, r5, pc}
+ 478              	.LVL42:
+ 479              	.L22:
+ 480              		.loc 1 380 1 view .LVU146
+ 481 0066 00BF     		.align	2
+ 482              	.L21:
+ 483 0068 70050700 		.word	460144
+ 484              		.cfi_endproc
+ 485              	.LFE39:
+ 487              		.text
+ 488              	.Letext0:
+ 489              		.file 3 "Core/ETH_Transceive/inc/misc.h"
+ 490              		.file 4 "Core/ETH_Transceive/mscc.h"
+ARM GAS  C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stub_eth_transceive.c
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:18     .text.vsc85xx_update_rgmii_cntl:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:25     .text.vsc85xx_update_rgmii_cntl:00000000 vsc85xx_update_rgmii_cntl
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:108    .text.vsc85xx_default_config:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:114    .text.vsc85xx_default_config:00000000 vsc85xx_default_config
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:144    .text.vsc85xx_mac_if_set:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:150    .text.vsc85xx_mac_if_set:00000000 vsc85xx_mac_if_set
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:173    .text.vsc85xx_edge_rate_cntl_set:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:179    .text.vsc85xx_edge_rate_cntl_set:00000000 vsc85xx_edge_rate_cntl_set
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:200    .text.vsc8531_pre_init_seq_set:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:206    .text.vsc8531_pre_init_seq_set:00000000 vsc8531_pre_init_seq_set
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:231    .text.phy_restore_page:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:238    .text.phy_restore_page:00000000 phy_restore_page
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:256    .text.vsc85xx_eee_init_seq_set:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:262    .text.vsc85xx_eee_init_seq_set:00000000 vsc85xx_eee_init_seq_set
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:295    .text.genphy_setup_forced:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:302    .text.genphy_setup_forced:00000000 genphy_setup_forced
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:331    .text.genphy_soft_reset:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:338    .text.genphy_soft_reset:00000000 genphy_soft_reset
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:362    .text.vsc85xx_config_init:00000000 $t
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:369    .text.vsc85xx_config_init:00000000 vsc85xx_config_init
+C:\Users\ASUS\AppData\Local\Temp\cchJDduf.s:483    .text.vsc85xx_config_init:00000068 $d
+
+NO UNDEFINED SYMBOLS

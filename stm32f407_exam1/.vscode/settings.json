@@ -2,6 +2,10 @@
     "files.associations": {
         "assert.h": "c",
         "unity.h": "c",
-        "function.h": "c"
+        "function.h": "c",
+        "errno.h": "c",
+        "firmware.h": "c",
+        "misc.h": "c",
+        "typeinfo": "c"
     }
 }
