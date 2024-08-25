@@ -1006,7 +1006,7 @@ static struct phy_driver vsc85xx_driver[] = {
 	.phy_id_mask	= 0xfffffff0,
 	/* PHY_BASIC_FEATURES */
 	.soft_reset	= &genphy_soft_reset,
-	.config_init	= &vsc85xx_config_init,
+	.config_init	= &stub,
 	.config_aneg    = &vsc85xx_config_aneg,
 	.read_status	= &vsc85xx_read_status,
 	.handle_interrupt = vsc85xx_handle_interrupt,
